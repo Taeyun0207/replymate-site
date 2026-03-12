@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +19,36 @@
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .language-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .language-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .language-btn:hover {
+            background: #0056b3;
+        }
+        .language-btn.active {
+            background: #28a745;
+        }
+        .language-content {
+            display: none;
+        }
+        .language-content.active {
+            display: block;
         }
         h1, h2 {
             color: #2c3e50;
@@ -74,6 +104,14 @@
 </head>
 <body>
     <div class="container">
+        <div class="language-switcher">
+            <button class="language-btn active" onclick="switchLanguage('en')">English</button>
+            <button class="language-btn" onclick="switchLanguage('ko')">한국어</button>
+            <button class="language-btn" onclick="switchLanguage('ja')">日本語</button>
+        </div>
+
+        <!-- English Content -->
+        <div id="en" class="language-content active">
         <h1>ReplyMate Privacy Policy</h1>
         <p><strong>Last Updated:</strong> March 12, 2026</p>
         
@@ -209,6 +247,323 @@
         <div class="last-updated">
             <p>This Privacy Policy is effective as of March 12, 2026.</p>
         </div>
+        </div>
+
+        <!-- Korean Content -->
+        <div id="ko" class="language-content">
+            <h1>ReplyMate 개인정보 처리방침</h1>
+            <p><strong>최종 업데이트:</strong> 2026년 3월 12일</p>
+            
+            <h2>서론</h2>
+            <p>ReplyMate는 Gmail 사용자가 AI 기반 이메일 답장을 생성하도록 도와주는 Chrome 확장 프로그램입니다. 우리는 사용자의 개인정보를 보호하고 데이터 처리 방식에 대해 투명하게 공개할 것을 약속합니다.</p>
+            <p>이 개인정보 처리방침은 우리가 수집하는 정보, 사용 방법 및 데이터에 대한 사용자의 권리를 설명합니다.</p>
+
+            <h2>수집하는 정보</h2>
+            <h3>자동으로 수집되는 정보</h3>
+            <ul>
+                <li><strong>익명 사용자 ID:</strong> 암호화 방법(UUID)을 사용하여 브라우저에서 생성된 고유 식별자입니다. 이 ID는 브라우저에 로컬로 저장되며 사용량 추적 및 구독 관리에 도움이 됩니다.</li>
+                <li><strong>사용 데이터:</strong> 생성하는 AI 답장 수와 현재 구독 플랜(무료, Pro, Pro+)입니다.</li>
+                <li><strong>구독 정보:</strong> 결제 목적의 Stripe 고객 ID 및 구독 ID(유료 플랜으로 업그레이드한 경우에만).</li>
+                <li><strong>기술 데이터:</strong> 개인정보가 포함되지 않은 브라우저 유형, 확장 프로그램 버전 및 오류 로그입니다.</li>
+            </ul>
+
+            <h3>사용자가 제공하는 정보</h3>
+            <ul>
+                <li><strong>이메일 컨텍스트:</strong> 이메일 제목, 메시지 내용, 발신자/수신자 이름 및 대화 스레드입니다. 이 데이터는 AI 답장 생성을 위해 <span class="highlight">일시적으로 처리</span>되며 <span class="highlight">데이터베이스에 저장되지 않습니다</span>.</li>
+                <li><strong>사용자 선호도:</strong> 답장 톤(전문적, 친근한, 정중한), 길이 선호도 및 언어 설정입니다.</li>
+                <li><strong>선택적 정보:</strong> 서명 생성을 위한 이름과 결제 처리를 위한 이메일 주소(선택 사항)입니다.</li>
+            </ul>
+
+            <h2>정보 사용 방법</h2>
+            <ul>
+                <li><strong>서비스 제공:</strong> AI 이메일 답장을 생성하고 실시간으로 제공하기 위해.</li>
+                <li><strong>사용량 관리:</strong> 플랜 제한에 대한 답장 수를 추적하고 청구 주기를 관리하기 위해.</li>
+                <li><strong>고객 지원:</strong> 기술 문제 및 계정 관리를 지원하기 위해.</li>
+                <li><strong>서비스 개선:</strong> 사용 패턴을 분석하고 ReplyMate 기능을 개선하기 위해.</li>
+                <li><strong>결제 처리:</strong> Stripe의 보안 결제 시스템을 통해 구독을 관리하기 위해.</li>
+            </ul>
+
+            <h2>제3자 서비스</h2>
+            <h3>OpenAI</h3>
+            <p>이메일 답장을 생성하기 위해 OpenAI의 API를 사용합니다. 답장을 요청할 때:</p>
+            <ul>
+                <li>이메일 컨텍스트가 OpenAI 서버로 전송됩니다</li>
+                <li>OpenAI는 개인정보 처리방침에 따라 이 데이터를 처리합니다</li>
+                <li>답장 생성에 필요한 것 이상으로 OpenAI와 데이터를 공유하지 않습니다</li>
+                <li>이메일 내용은 OpenAI에 장기간 저장되지 않습니다</li>
+            </ul>
+            <p><strong>OpenAI 개인정보 처리방침:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>보안 결제 처리를 위해 Stripe를 사용합니다:</p>
+            <ul>
+                <li>결제 정보는 Stripe의 보안 시스템에서 직접 처리됩니다</li>
+                <li>데이터베이스에 Stripe 고객 ID와 구독 ID만 저장합니다</li>
+                <li>신용카드 세부정보는 서버에 저장되지 않습니다</li>
+                <li>모든 결제 처리는 PCI DSS 표준을 준수합니다</li>
+            </ul>
+            <p><strong>Stripe 개인정보 처리방침:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>데이터 저장 및 보관</h2>
+            <h3>데이터베이스</h3>
+            <p>다음을 저장하는 보안 SQLite 데이터베이스를 유지합니다:</p>
+            <ul>
+                <li><strong>익명 사용자 ID:</strong> 고유 식별자(개인정보 없음)</li>
+                <li><strong>플랜 정보:</strong> 현재 구독 플랜 및 청구 주기 날짜</li>
+                <li><strong>사용량 카운트:</strong> 현재 청구 주기에서 생성된 답장 수</li>
+                <li><strong>Stripe ID:</strong> 고객 및 구독 식별자(유료 플랜에만 해당)</li>
+                <li><strong>타임스탬프:</strong> 계정 생성, 마지막 업데이트 및 청구 주기 날짜</li>
+            </ul>
+
+            <h3>이메일 내용</h3>
+            <p><span class="highlight">이메일 내용은 데이터베이스에 저장되지 않습니다.</span> 일시적으로만 처리합니다:</p>
+            <ul>
+                <li>답장 생성을 위해 OpenAI로 전송됩니다</li>
+                <li>AI 응답이 생성된 후 서버에서 삭제됩니다</li>
+                <li>다른 목적으로 사용되지 않습니다</li>
+                <li>처리 후 팀이 접근할 수 없습니다</li>
+            </ul>
+
+            <h3>로컬 저장소</h3>
+            <p>확장 프로그램은 브라우저에 일부 데이터를 로컬로 저장합니다:</p>
+            <ul>
+                <li><strong>사용자 선호도:</strong> 언어, 톤 및 길이 설정</li>
+                <li><strong>사용량 캐시:</strong> 임시 사용량 데이터(30초 후 만료)</li>
+                <li><strong>사용자 ID:</strong> 익명 식별자</li>
+            </ul>
+
+            <h3>데이터 보관 기간</h3>
+            <ul>
+                <li><strong>사용자 계정 데이터:</strong> 삭제 요청이 없는 한 무기간 보관</li>
+                <li><strong>사용 기록:</strong> 현재 청구 주기 데이터만</li>
+                <li><strong>이메일 내용:</strong> 보관되지 않음(임시 처리만)</li>
+                <li><strong>로컬 캐시:</strong> 30초 후 자동 만료</li>
+            </ul>
+
+            <h2>보안</h2>
+            <p>데이터를 보호하기 위해 여러 보안 조치를 구현합니다:</p>
+            <ul>
+                <li><strong>HTTPS 암호화:</strong> 브라우저와 서버 간의 모든 통신은 암호화됩니다</li>
+                <li><strong>익명 식별:</strong> 개인 식별자를 수집하지 않고 암호화된 UUID만 사용합니다</li>
+                <li><strong>최소 데이터 수집:</strong> 서비스 제공에 필수적인 데이터만 수집합니다</li>
+                <li><strong>보안 제3자 서비스:</strong> 강력한 보안 관행을 가진 평판 좋은 서비스(OpenAI, Stripe) 사용</li>
+                <li><strong>정기 보안 업데이트:</strong> 시스템이 정기적으로 업데이트되고 모니터링됩니다</li>
+                <li><strong>접근 제어:</strong> 데이터베이스 접근이 엄격하게 제어되고 기록됩니다</li>
+            </ul>
+
+            <h2>사용자 권리</h2>
+            <p>데이터에 대해 다음 권리가 있습니다:</p>
+            <ul>
+                <li><strong>접근:</strong> 확장 프로그램 설정을 통해 우리가 가진 모든 데이터 보기</li>
+                <li><strong>수정:</strong> 사용자 선호도 및 계정 정보 업데이트</li>
+                <li><strong>이식성:</strong> 기계 판독 가능 형식의 데이터 사본 요청</li>
+                <li><strong>삭제:</strong> 계정 및 모든 관련 데이터 삭제 요청</li>
+                <li><strong>제한:</strong> 데이터 처리에 반대하거나 제한</li>
+                <li><strong>불만:</strong> 필요한 경우 개인정보 보호 당국에 불만 제기</li>
+            </ul>
+
+            <h2>어린이 개인정보 보호</h2>
+            <p>ReplyMate는 13세 미만 어린이를 위한 서비스가 아닙니다. 우리는 13세 미만 어린이의 개인정보를 의도적으로 수집하지 않습니다. 13세 미만 어린이의 정보를 수집했다는 사실을 알게 되면 즉시 이 정보를 삭제할 것입니다.</p>
+
+            <h2>개인정보 처리방침 변경</h2>
+            <p>우리는 관행, 기술 또는 법적 요구사항의 변경을 반영하기 위해 이 개인정보 처리방침을 수시로 업데이트할 수 있습니다. 다음을 수행합니다:</p>
+            <ul>
+                <li>이 페이지에 모든 변경사항 게시</li>
+                <li>상단의 "최종 업데이트" 날짜 업데이트</li>
+                <li>확장 프로그램을 통해 중요한 변경사항 사용자에게 알림</li>
+            </ul>
+            <p>변경 후 ReplyMate를 계속 사용하면 업데이트된 정책에 동의하는 것입니다.</p>
+
+            <h2>연락처</h2>
+            <p>이 개인정보 처리방침에 대한 질문이 있거나 데이터 권리를 행사하려면 다음으로 연락하십시오:</p>
+            
+            <div class="contact-info">
+                <p><strong>이메일:</strong> replymate.support@gmail.com</p>
+                <p><strong>확장 프로그램 지원:</strong> Chrome 확장 프로그램 또는 웹사이트를 통해</p>
+                <p><strong>응답 시간:</strong> 일반적으로 7 영업일 이내에 응답합니다</p>
+            </div>
+
+            <div class="last-updated">
+                <p>이 개인정보 처리방침은 2026년 3월 12일부터 효력이 있습니다.</p>
+            </div>
+        </div>
+
+        <!-- Japanese Content -->
+        <div id="ja" class="language-content">
+            <h1>ReplyMateプライバシーポリシー</h1>
+            <p><strong>最終更新:</strong> 2026年3月12日</p>
+            
+            <h2>はじめに</h2>
+            <p>ReplyMateは、GmailユーザーがAI搭載メール返信を生成するのを支援するChrome拡張機能です。私たちはお客様のプライバシーを保護し、データの取り扱いについて透明性を確保することに努めています。</p>
+            <p>このプライバシーポリシーでは、収集する情報、使用方法、およびデータに関するお客様の権利について説明します。</p>
+
+            <h2>収集する情報</h2>
+            <h3>自動的に収集される情報</h3>
+            <ul>
+                <li><strong>匿名ユーザーID:</strong> 暗号化方式（UUID）を使用してブラウザで生成された一意の識別子です。このIDはブラウザにローカルに保存され、使用状況の追跡とサブスクリプションの管理に役立ちます。</li>
+                <li><strong>使用データ:</strong> 生成するAI返信の数と現在のサブスクリプションプラン（無料、Pro、Pro+）です。</li>
+                <li><strong>サブスクリプション情報:</strong> 請求目的のStripe顧客IDとサブスクリプションID（有料プランにアップグレードした場合のみ）。</li>
+                <li><strong>技術データ:</strong> 個人情報を含まないブラウザタイプ、拡張機能バージョン、エラーログです。</li>
+            </ul>
+
+            <h3>お客様が提供する情報</h3>
+            <ul>
+                <li><strong>メールコンテキスト:</strong> メール件名、メッセージ内容、送信者/受信者名、会話スレッドです。このデータはAI返信生成のために<span class="highlight">一時的に処理</span>され、<span class="highlight">データベースに保存されません</span>。</li>
+                <li><strong>ユーザー設定:</strong> 返信トーン（プロフェッショナル、フレンドリー、丁寧）、長さの設定、言語設定です。</li>
+                <li><strong>オプション情報:</strong> 署名生成用の名前と決済処理用のメールアドレス（オプション）です。</li>
+            </ul>
+
+            <h2>情報の使用方法</h2>
+            <ul>
+                <li><strong>サービス提供:</strong> AIメール返信を生成し、リアルタイムで提供するため。</li>
+                <li><strong>使用状況管理:</strong> プラン制限に対する返信数を追跡し、請求サイクルを管理するため。</li>
+                <li><strong>カスタマーサポート:</strong> 技術的な問題とアカウント管理を支援するため。</li>
+                <li><strong>サービス改善:</strong> 使用パターンを分析し、ReplyMateの機能を改善するため。</li>
+                <li><strong>請求処理:</strong> Stripeの安全な決済システムを通じてサブスクリプションを管理するため。</li>
+            </ul>
+
+            <h2>第三者サービス</h2>
+            <h3>OpenAI</h3>
+            <p>メール返信を生成するためにOpenAIのAPIを使用します。返信をリクエストするとき：</p>
+            <ul>
+                <li>メールコンテキストがOpenAIサーバーに送信されます</li>
+                <li>OpenAIはプライバシーポリシーに従ってこのデータを処理します</li>
+                <li>返信生成に必要以上のデータをOpenAIと共有しません</li>
+                <li>メール内容はOpenAIに長期間保存されません</li>
+            </ul>
+            <p><strong>OpenAIプライバシーポリシー:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>安全な決済処理のためにStripeを使用します：</p>
+            <ul>
+                <li>決済情報はStripeの安全なシステムで直接処理されます</li>
+                <li>データベースにStripe顧客IDとサブスクリプションIDのみを保存します</li>
+                <li>クレジットカード詳細はサーバーに保存されません</li>
+                <li>すべての決済処理はPCI DSS基準に準拠しています</li>
+            </ul>
+            <p><strong>Stripeプライバシーポリシー:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>データ保存と保持</h2>
+            <h3>データベース</h3>
+            <p>次の情報を保存する安全なSQLiteデータベースを維持します：</p>
+            <ul>
+                <li><strong>匿名ユーザーID:</strong> 一意の識別子（個人情報なし）</li>
+                <li><strong>プラン情報:</strong> 現在のサブスクリプションプランと請求サイクル日付</li>
+                <li><strong>使用回数:</strong> 現在の請求サイクルで生成された返信数</li>
+                <li><strong>Stripe ID:</strong> 顧客とサブスクリプション識別子（有料プランのみ）</li>
+                <li><strong>タイムスタンプ:</strong> アカウント作成、最終更新、請求サイクル日付</li>
+            </ul>
+
+            <h3>メール内容</h3>
+            <p><span class="highlight">メール内容はデータベースに保存されません。</span>一時的にのみ処理します：</p>
+            <ul>
+                <li>返信生成のためにOpenAIに送信されます</li>
+                <li>AI応答が生成された後にサーバーから削除されます</li>
+                <li>他の目的では使用されません</li>
+                <li>処理後、チームがアクセスできません</li>
+            </ul>
+
+            <h3>ローカルストレージ</h3>
+            <p>拡張機能はブラウザに一部のデータをローカルに保存します：</p>
+            <ul>
+                <li><strong>ユーザー設定:</strong> 言語、トーン、長さの設定</li>
+                <li><strong>使用キャッシュ:</strong> 一時的な使用データ（30秒後に期限切れ）</li>
+                <li><strong>ユーザーID:</strong> 匿名識別子</li>
+            </ul>
+
+            <h3>データ保持期間</h3>
+            <ul>
+                <li><strong>ユーザーアカウントデータ:</strong> 削除要求がない限り無期限に保持</li>
+                <li><strong>使用履歴:</strong> 現在の請求サイクルデータのみ</li>
+                <li><strong>メール内容:</strong> 保持されません（一時処理のみ）</li>
+                <li><strong>ローカルキャッシュ:</strong> 30秒後に自動的に期限切れ</li>
+            </ul>
+
+            <h2>セキュリティ</h2>
+            <p>データを保護するために複数のセキュリティ対策を実装しています：</p>
+            <ul>
+                <li><strong>HTTPS暗号化:</strong> ブラウザとサーバー間のすべての通信は暗号化されます</li>
+                <li><strong>匿名識別:</strong> 個人識別子を収集せず、暗号化されたUUIDのみを使用します</li>
+                <li><strong>最小限のデータ収集:</strong> サービス提供に不可欠なデータのみを収集します</li>
+                <li><strong>安全な第三者サービス:</strong> 強力なセキュリティ慣行を持つ信頼できるサービス（OpenAI、Stripe）を使用</li>
+                <li><strong>定期的なセキュリティ更新:</strong> システムは定期的に更新・監視されています</li>
+                <li><strong>アクセス制御:</strong> データベースアクセスは厳格に制御・記録されます</li>
+            </ul>
+
+            <h2>お客様の権利</h2>
+            <p>データについて以下の権利があります：</p>
+            <ul>
+                <li><strong>アクセス:</strong> 拡張機能設定を通じて私たちが持つすべてのデータを表示</li>
+                <li><strong>修正:</strong> ユーザー設定とアカウント情報を更新</li>
+                <li><strong>移植性:</strong> 機械可読形式でのデータコピーを要求</li>
+                <li><strong>削除:</strong> アカウントと関連するすべてのデータの削除を要求</li>
+                <li><strong>制限:</strong> データ処理に異議を申し立てたり制限したりする</li>
+                <li><strong>苦情:</strong> 必要に応じてデータ保護当局に苦情を申し立てる</li>
+            </ul>
+
+            <h2>子供のプライバシー</h2>
+            <p>ReplyMateは13歳未満の子供を対象としたサービスではありません。私たちは13歳未満の子供から個人情報を意図的に収集しません。13歳未満の子供から情報を収集したことを知った場合、直ちにこの情報を削除します。</p>
+
+            <h2>プライバシーポリシーの変更</h2>
+            <p>私たちは慣行、技術、または法的要件の変更を反映するために、このプライバシーポリシーを随時更新することがあります。以下を行います：</p>
+            <ul>
+                <li>このページにすべての変更を掲載</li>
+                <li>上部の「最終更新」日付を更新</li>
+                <li>拡張機能を通じて重要な変更をユーザーに通知</li>
+            </ul>
+            <p>変更後もReplyMateを継続して使用することで、更新されたポリシーに同意したことになります。</p>
+
+            <h2>お問い合わせ</h2>
+            <p>このプライバシーポリシーについて質問がある場合やデータ権利を行使したい場合は、以下までご連絡ください：</p>
+            
+            <div class="contact-info">
+                <p><strong>メール:</strong> replymate.support@gmail.com</p>
+                <p><strong>拡張機能サポート:</strong> Chrome拡張機能またはウェブサイトを通じて</p>
+                <p><strong>応答時間:</strong> 通常7営業日以内に応答します</p>
+            </div>
+
+            <div class="last-updated">
+                <p>このプライバシーポリシーは2026年3月12日から効力を持ちます。</p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function switchLanguage(lang) {
+            // Hide all language contents
+            const contents = document.querySelectorAll('.language-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.language-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected language content
+            document.getElementById(lang).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update page title and lang attribute
+            const titles = {
+                'en': 'ReplyMate Privacy Policy',
+                'ko': 'ReplyMate 개인정보 처리방침',
+                'ja': 'ReplyMateプライバシーポリシー'
+            };
+            
+            const langs = {
+                'en': 'en',
+                'ko': 'ko',
+                'ja': 'ja'
+            };
+            
+            document.title = titles[lang];
+            document.documentElement.lang = langs[lang];
+        }
+    </script>
 </body>
 </html>

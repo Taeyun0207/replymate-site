@@ -103,116 +103,12 @@
     </style>
 </head>
 <body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReplyMate Privacy Policy</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fafafa;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .language-switcher {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .language-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        .language-btn:hover {
-            background: #0056b3;
-        }
-        .language-btn.active {
-            background: #28a745;
-        }
-        .language-content {
-            display: none;
-        }
-        .language-content.active {
-            display: block;
-        }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #e1e5e9;
-            padding-bottom: 10px;
-        }
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 30px;
-        }
-        h2 {
-            font-size: 1.5em;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-        h3 {
-            font-size: 1.2em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #495057;
-        }
-        p {
-            margin-bottom: 16px;
-        }
-        ul {
-            margin-bottom: 16px;
-            padding-left: 25px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-        .last-updated {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e1e5e9;
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-        .contact-info {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 6px;
-            margin-top: 30px;
-        }
-    </style>
-</head>
-<body>
     <div class="container">
         <div class="language-switcher">
             <button class="language-btn active" onclick="switchLanguage('en')">English</button>
             <button class="language-btn" onclick="switchLanguage('ko')">한국어</button>
             <button class="language-btn" onclick="switchLanguage('ja')">日本語</button>
+            <button class="language-btn" onclick="switchLanguage('es')">Español</button>
         </div>
 
         <!-- English Content -->
@@ -681,6 +577,163 @@
                 <p>このプライバシーポリシーは2026年3月14日から効力を持ちます。</p>
             </div>
         </div>
+
+        <!-- Spanish Content -->
+        <div id="es" class="language-content">
+            <h1>Política de Privacidad de ReplyMate</h1>
+            <p><strong>Última actualización:</strong> 14 de marzo de 2026</p>
+            
+            <h2>Introducción</h2>
+            <p>ReplyMate es una extensión de Chrome que ayuda a los usuarios de Gmail a generar respuestas de correo electrónico impulsadas por IA. Nos comprometemos a proteger su privacidad y a ser transparentes sobre cómo manejamos sus datos.</p>
+            <p>Esta Política de Privacidad explica qué información recopilamos, cómo la utilizamos y sus derechos con respecto a sus datos.</p>
+
+            <h2>Información que recopilamos</h2>
+            <h3>Cuenta y autenticación</h3>
+            <ul>
+                <li><strong>Dirección de correo electrónico:</strong> Cuando inicia sesión con Google, recibimos su dirección de correo electrónico de Google para crear y administrar su cuenta.</li>
+                <li><strong>ID de usuario:</strong> Un identificador único (ID de usuario de Supabase) asociado con su cuenta para el seguimiento del uso y la gestión de suscripciones.</li>
+            </ul>
+
+            <h3>Información recopilada automáticamente</h3>
+            <ul>
+                <li><strong>Datos de uso:</strong> Número de respuestas de IA que genera y su plan de suscripción actual (Gratis, Pro, Pro+).</li>
+                <li><strong>Información de suscripción:</strong> ID de cliente e ID de suscripción de Stripe con fines de facturación (solo si actualiza a un plan de pago).</li>
+                <li><strong>Créditos adicionales:</strong> Si compra paquetes de respuestas de un solo uso, rastreamos los créditos restantes y las fechas de vencimiento.</li>
+                <li><strong>Datos técnicos:</strong> Tipo de navegador, versión de la extensión y registros de errores que no contienen información personal.</li>
+            </ul>
+
+            <h3>Información que usted proporciona</h3>
+            <ul>
+                <li><strong>Contexto del correo:</strong> Asunto del correo, contenido del mensaje, nombres de remitente/destinatario e hilo de conversación. Estos datos se <span class="highlight">procesan temporalmente</span> para la generación de respuestas de IA y <span class="highlight">no se almacenan en nuestra base de datos</span>.</li>
+                <li><strong>Preferencias del usuario:</strong> Tono de respuesta (Profesional, Amigable, Educado), preferencias de longitud y configuración de idioma.</li>
+                <li><strong>Información opcional:</strong> Su nombre para la generación de firmas.</li>
+            </ul>
+
+            <h2>Cómo utilizamos la información</h2>
+            <ul>
+                <li><strong>Prestación del servicio:</strong> Para generar respuestas de correo electrónico con IA y proporcionárselas en tiempo real.</li>
+                <li><strong>Gestión del uso:</strong> Para rastrear su número de respuestas con respecto a los límites de su plan (suscripción y créditos adicionales) y gestionar los ciclos de facturación.</li>
+                <li><strong>Soporte al cliente:</strong> Para ayudarle con problemas técnicos y gestión de cuentas.</li>
+                <li><strong>Mejora del servicio:</strong> Para analizar patrones de uso y mejorar la funcionalidad de ReplyMate.</li>
+                <li><strong>Procesamiento de facturación:</strong> Para gestionar su suscripción y compras únicas a través del sistema de pago seguro de Stripe.</li>
+            </ul>
+
+            <h2>Servicios de terceros</h2>
+            <h3>Supabase</h3>
+            <p>Utilizamos Supabase para autenticación y almacenamiento de base de datos:</p>
+            <ul>
+                <li>El inicio de sesión con Google se gestiona a través de Supabase Auth</li>
+                <li>Los datos de su cuenta (ID de usuario, correo, plan, uso) se almacenan en la base de datos en la nube segura de Supabase</li>
+                <li>Supabase procesa los datos según su política de privacidad</li>
+            </ul>
+            <p><strong>Política de Privacidad de Supabase:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
+
+            <h3>OpenAI</h3>
+            <p>Utilizamos la API de OpenAI para generar respuestas de correo electrónico. Cuando solicita una respuesta:</p>
+            <ul>
+                <li>El contexto de su correo se envía a los servidores de OpenAI</li>
+                <li>OpenAI procesa estos datos según su política de privacidad</li>
+                <li>No compartimos sus datos con OpenAI más allá de lo necesario para la generación de respuestas</li>
+                <li>El contenido del correo no se almacena a largo plazo en OpenAI</li>
+            </ul>
+            <p><strong>Política de Privacidad de OpenAI:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>Utilizamos Stripe para el procesamiento seguro de pagos:</p>
+            <ul>
+                <li>La información de pago es manejada directamente por los sistemas seguros de Stripe</li>
+                <li>Solo almacenamos el ID de cliente y el ID de suscripción de Stripe en nuestra base de datos</li>
+                <li>Los detalles de tarjetas de crédito nunca se almacenan en nuestros servidores</li>
+                <li>Todo el procesamiento de pagos cumple con los estándares PCI DSS</li>
+            </ul>
+            <p><strong>Política de Privacidad de Stripe:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>Almacenamiento y retención de datos</h2>
+            <h3>Nuestra base de datos</h3>
+            <p>Mantenemos una base de datos en la nube segura (Supabase/PostgreSQL) que almacena:</p>
+            <ul>
+                <li><strong>ID de usuario y correo:</strong> Su identificador de cuenta y correo del inicio de sesión con Google</li>
+                <li><strong>Información del plan:</strong> Plan de suscripción actual, fechas del ciclo de facturación y estado de cancelación (si cancela al final del período)</li>
+                <li><strong>Conteo de uso:</strong> Número de respuestas generadas en el ciclo de facturación actual</li>
+                <li><strong>Créditos adicionales:</strong> Créditos de respuesta únicos restantes y fechas de vencimiento (si se compraron)</li>
+                <li><strong>IDs de Stripe:</strong> Identificadores de cliente y suscripción (solo para planes de pago)</li>
+                <li><strong>Marcas de tiempo:</strong> Creación de cuenta, última actualización y fechas del ciclo de facturación</li>
+            </ul>
+
+            <h3>Contenido del correo</h3>
+            <p><span class="highlight">El contenido del correo nunca se almacena en nuestra base de datos.</span> Solo lo procesamos temporalmente:</p>
+            <ul>
+                <li>Se envía a OpenAI para la generación de respuestas</li>
+                <li>Se elimina de nuestros servidores después de que se genera la respuesta de IA</li>
+                <li>No se utiliza para ningún otro propósito</li>
+                <li>No es accesible para nuestro equipo después del procesamiento</li>
+            </ul>
+            <p>ReplyMate solo utiliza el contenido del correo de Gmail para generar respuestas de IA solicitadas por el usuario. Estos datos nunca se utilizan para publicidad, perfilado o entrenamiento de modelos de IA, y no se venden ni comparten con terceros.</p>
+
+            <h3>Almacenamiento local</h3>
+            <p>La extensión almacena algunos datos localmente en su navegador:</p>
+            <ul>
+                <li><strong>Preferencias del usuario:</strong> Configuración de idioma, tono y longitud</li>
+                <li><strong>Caché de uso:</strong> Datos de uso temporales (caducan después de 30 segundos)</li>
+                <li><strong>Datos de sesión:</strong> Tokens de autenticación para el estado de inicio de sesión</li>
+            </ul>
+
+            <h3>Período de retención de datos</h3>
+            <ul>
+                <li><strong>Datos de cuenta de usuario:</strong> Se conservan indefinidamente a menos que solicite su eliminación</li>
+                <li><strong>Historial de uso:</strong> Solo datos del ciclo de facturación actual</li>
+                <li><strong>Contenido del correo:</strong> No se conserva (solo procesamiento temporal)</li>
+                <li><strong>Caché local:</strong> Caduca automáticamente después de 30 segundos</li>
+            </ul>
+
+            <h2>Seguridad</h2>
+            <p>Implementamos múltiples medidas de seguridad para proteger sus datos:</p>
+            <ul>
+                <li><strong>Cifrado HTTPS:</strong> Todas las comunicaciones entre su navegador y nuestros servidores están cifradas</li>
+                <li><strong>Autenticación segura:</strong> Inicio de sesión con Google a través de Supabase; no almacenamos contraseñas</li>
+                <li><strong>Recopilación mínima de datos:</strong> Solo recopilamos datos esenciales para la prestación del servicio</li>
+                <li><strong>Servicios de terceros seguros:</strong> Uso de servicios reputados (Supabase, OpenAI, Stripe) con sólidas prácticas de seguridad</li>
+                <li><strong>Actualizaciones de seguridad regulares:</strong> Nuestros sistemas se actualizan y monitorean regularmente</li>
+                <li><strong>Controles de acceso:</strong> El acceso a la base de datos está estrictamente controlado y registrado</li>
+            </ul>
+            <p>ReplyMate cumple con la Política de Datos de Usuario de Google Chrome Web Store. No vendemos datos de usuarios, no los utilizamos para publicidad ni los transferimos a terceros excepto cuando sea necesario para proporcionar el servicio (como Supabase para autenticación y almacenamiento, OpenAI para generación de respuestas y Stripe para procesamiento de pagos).</p>
+
+            <h2>Sus derechos</h2>
+            <p>Tiene los siguientes derechos con respecto a sus datos:</p>
+            <ul>
+                <li><strong>Acceso:</strong> Ver todos los datos que tenemos sobre usted a través de la configuración de la extensión</li>
+                <li><strong>Corrección:</strong> Actualizar sus preferencias de usuario e información de cuenta</li>
+                <li><strong>Portabilidad:</strong> Solicitar una copia de sus datos en un formato legible por máquina</li>
+                <li><strong>Eliminación:</strong> Solicitar la eliminación de su cuenta y todos los datos asociados. Los usuarios pueden solicitar la eliminación de su cuenta y datos asociados contactando a replymate.support@gmail.com. Al recibir una solicitud válida, eliminaremos los datos de nuestros sistemas en un plazo razonable.</li>
+                <li><strong>Restricción:</strong> Oponerse o restringir el procesamiento de sus datos</li>
+                <li><strong>Queja:</strong> Presentar una queja ante las autoridades de protección de datos si es necesario</li>
+            </ul>
+
+            <h2>Privacidad de menores</h2>
+            <p>ReplyMate no está destinado a menores de 13 años. No recopilamos conscientemente información personal de menores de 13 años. Si nos enteramos de que hemos recopilado información de un menor de 13 años, eliminaremos inmediatamente esta información.</p>
+
+            <h2>Cambios en esta Política de Privacidad</h2>
+            <p>Podemos actualizar esta Política de Privacidad de vez en cuando para reflejar cambios en nuestras prácticas, tecnología o requisitos legales. Haremos lo siguiente:</p>
+            <ul>
+                <li>Publicar cualquier cambio en esta página</li>
+                <li>Actualizar la fecha de "Última actualización" en la parte superior</li>
+                <li>Notificar a los usuarios sobre cambios significativos a través de la extensión</li>
+            </ul>
+            <p>El uso continuado de ReplyMate después de cualquier cambio constituye la aceptación de la política actualizada.</p>
+
+            <h2>Contacto</h2>
+            <p>Si tiene preguntas sobre esta Política de Privacidad o desea ejercer sus derechos sobre sus datos, contáctenos:</p>
+            
+            <div class="contact-info">
+                <p><strong>Correo electrónico:</strong> replymate.support@gmail.com</p>
+                <p><strong>Soporte de la extensión:</strong> A través de la extensión de Chrome o nuestro sitio web</p>
+                <p><strong>Tiempo de respuesta:</strong> Normalmente respondemos en un plazo de 7 días hábiles</p>
+            </div>
+
+            <div class="last-updated">
+                <p>Esta Política de Privacidad es efectiva a partir del 14 de marzo de 2026.</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -691,13 +744,11 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             document.getElementById(lang).classList.add('active');
             event.target.classList.add('active');
-            const titles = { 'en': 'ReplyMate Privacy Policy', 'ko': 'ReplyMate 개인정보 처리방침', 'ja': 'ReplyMateプライバシーポリシー' };
-            const langs = { 'en': 'en', 'ko': 'ko', 'ja': 'ja' };
+            const titles = { 'en': 'ReplyMate Privacy Policy', 'ko': 'ReplyMate 개인정보 처리방침', 'ja': 'ReplyMateプライバシーポリシー', 'es': 'Política de Privacidad de ReplyMate' };
+            const langs = { 'en': 'en', 'ko': 'ko', 'ja': 'ja', 'es': 'es' };
             document.title = titles[lang];
             document.documentElement.lang = langs[lang];
         }
     </script>
-</body>
-</html>
 </body>
 </html>

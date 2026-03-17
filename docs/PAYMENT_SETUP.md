@@ -40,7 +40,7 @@ BILLING_CANCEL_URL=https://taeyun0207.github.io/replymate-site/upgrade/
    - `https://taeyun0207.github.io/replymate-site/**`
 3. Set **Site URL** to `https://taeyun0207.github.io`
 
-**Important:** If localhost is listed and you get "localhost refused to connect" after sign-in, remove localhost or ensure the upgrade page is opened from the production URL.
+**Important:** Remove `http://localhost:*` from Redirect URLs if you're testing from the production site. The upgrade page uses `REPLYMATE_UPGRADE_URL` so that when opened from localhost, it redirects back to production after sign-in.
 
 ---
 

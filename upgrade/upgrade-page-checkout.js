@@ -67,10 +67,20 @@
     return session?.access_token || null;
   }
 
-  async function signInWithGoogle() {
+  async function signInWithGoogle(plan, billing) {
+    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    let redirectTo;
+    if (window.REPLYMATE_UPGRADE_URL && isLocalhost) {
+      const base = window.REPLYMATE_UPGRADE_URL.split("?")[0];
+      redirectTo = plan && billing
+        ? base + "?replymate_plan=" + encodeURIComponent(plan) + "&replymate_billing=" + encodeURIComponent(billing)
+        : base;
+    } else {
+      redirectTo = window.location.origin + window.location.pathname + window.location.search;
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.href }
+      options: { redirectTo }
     });
     if (error) throw error;
   }
@@ -98,11 +108,15 @@
   const PENDING_CHECKOUT_KEY = "replymate_pending_checkout";
 
   async function createCheckout(plan, billingType) {
+    const billing = billingType || "annual";
     const token = await getAccessToken();
     if (!token) {
       try {
-        sessionStorage.setItem(PENDING_CHECKOUT_KEY, JSON.stringify({ plan, billing: billingType || "annual" }));
-        await signInWithGoogle();
+        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        if (!isLocalhost) {
+          sessionStorage.setItem(PENDING_CHECKOUT_KEY, JSON.stringify({ plan, billing }));
+        }
+        await signInWithGoogle(plan, billing);
       } catch (err) {
         sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
         throw err;
@@ -281,11 +295,23 @@
 
     // Auto-redirect to Stripe after returning from Google sign-in
     (async () => {
-      const pending = sessionStorage.getItem(PENDING_CHECKOUT_KEY);
-      if (!pending) return;
+      const params = new URLSearchParams(location.search);
+      if (params.has("success") || params.has("session_id")) return;
+      let plan = params.get("replymate_plan");
+      let billing = params.get("replymate_billing") || "annual";
+      if (!plan) {
+        const pending = sessionStorage.getItem(PENDING_CHECKOUT_KEY);
+        if (!pending) return;
+        try {
+          const p = JSON.parse(pending);
+          plan = p.plan;
+          billing = p.billing || "annual";
+        } catch {
+          return;
+        }
+      }
+      if (!plan || !["pro", "pro_plus"].includes(plan)) return;
       try {
-        const { plan, billing } = JSON.parse(pending);
-        if (!plan || !["pro", "pro_plus"].includes(plan)) return;
         let token = await getAccessToken();
         if (!token) {
           await new Promise((r) => setTimeout(r, 500));
@@ -293,6 +319,9 @@
         }
         if (token) {
           sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
+          if (params.has("replymate_plan")) {
+            history.replaceState(null, "", location.pathname + (location.hash || ""));
+          }
           await createCheckout(plan, billing);
         }
       } catch (e) {

@@ -32,15 +32,18 @@ BILLING_CANCEL_URL=https://taeyun0207.github.io/replymate-site/upgrade/
 
 ---
 
-## 3. Supabase Auth – Redirect URLs
+## 3. Supabase Auth – Redirect URLs (required)
+
+**If you get redirected to localhost after Google sign-in, fix this in Supabase:**
 
 1. Go to **Supabase Dashboard** → **Authentication** → **URL Configuration**
-2. Under **Redirect URLs**, add:
+2. Set **Site URL** to `https://taeyun0207.github.io` (or `https://taeyun0207.github.io/replymate-site/upgrade/index.html`)
+3. Under **Redirect URLs**, add:
    - `https://taeyun0207.github.io/replymate-site/upgrade/index.html`
    - `https://taeyun0207.github.io/replymate-site/**`
-3. Set **Site URL** to `https://taeyun0207.github.io`
+4. **Remove** `http://localhost:3000` and any other localhost URLs from Redirect URLs
 
-**Important:** Remove `http://localhost:*` from Redirect URLs if you're testing from the production site. The upgrade page uses `REPLYMATE_UPGRADE_URL` so that when opened from localhost, it redirects back to production after sign-in.
+**Site URL** is the fallback when Supabase rejects the redirect. If it's set to localhost, you'll land on localhost after sign-in. Set it to production.
 
 ---
 

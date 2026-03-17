@@ -34,9 +34,15 @@
   const SUPABASE_URL = window.REPLYMATE_SUPABASE_URL;
   const SUPABASE_ANON = window.REPLYMATE_SUPABASE_ANON;
   const LABELS = window.REPLYMATE_LABELS || {};
+  const PRODUCTION_UPGRADE_URL = window.REPLYMATE_UPGRADE_URL || "https://taeyun0207.github.io/replymate-site/upgrade/index.html";
 
   if (!SUPABASE_URL || !SUPABASE_ANON) {
     console.warn("[ReplyMate Upgrade] Missing REPLYMATE_SUPABASE_URL or REPLYMATE_SUPABASE_ANON");
+    return;
+  }
+
+  if (/localhost|127\.0\.0\.1/i.test(window.location.hostname) && window.location.search) {
+    window.location.replace(PRODUCTION_UPGRADE_URL + window.location.search + window.location.hash);
     return;
   }
 
@@ -68,10 +74,10 @@
   }
 
   async function signInWithGoogle(plan, billing) {
-    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const isLocalhost = /localhost|127\.0\.0\.1/i.test(window.location.hostname);
     let redirectTo;
-    if (window.REPLYMATE_UPGRADE_URL && isLocalhost) {
-      const base = window.REPLYMATE_UPGRADE_URL.split("?")[0];
+    if (window.REPLYMATE_UPGRADE_URL || isLocalhost) {
+      const base = (window.REPLYMATE_UPGRADE_URL || "https://taeyun0207.github.io/replymate-site/upgrade/index.html").split("?")[0];
       redirectTo = plan && billing
         ? base + "?replymate_plan=" + encodeURIComponent(plan) + "&replymate_billing=" + encodeURIComponent(billing)
         : base;
@@ -313,7 +319,7 @@
       if (!plan || !["pro", "pro_plus"].includes(plan)) return;
       try {
         let token = await getAccessToken();
-        if (!token) {
+        for (let i = 0; !token && i < 6; i++) {
           await new Promise((r) => setTimeout(r, 500));
           token = await getAccessToken();
         }
@@ -323,10 +329,14 @@
             history.replaceState(null, "", location.pathname + (location.hash || ""));
           }
           await createCheckout(plan, billing);
+        } else {
+          sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
+          console.error("[ReplyMate Upgrade] No session after sign-in. Check Supabase Redirect URLs.");
         }
       } catch (e) {
         sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
         console.error("[ReplyMate Upgrade] Pending checkout failed", e);
+        alert("Sign-in completed but something went wrong. Please try clicking Upgrade again.");
       }
     })();
 

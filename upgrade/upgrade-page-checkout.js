@@ -190,6 +190,37 @@
     }
   }
 
+  function getPlanDisplayName(plan) {
+    const names = LABELS.planNames;
+    if (!names || !names[plan]) return plan === "pro_plus" ? "Pro+" : (plan === "free" ? "Standard" : (plan || "Standard"));
+    return (names[plan] && names[plan][getLang()]) || names[plan]?.en || plan;
+  }
+
+  function applyCurrentPlanDisplay(currentPlan) {
+    const badges = document.querySelectorAll(".current-plan-badge");
+    badges.forEach((badge) => {
+      const lang = badge.getAttribute("data-lang") || "en";
+      if (!currentPlan) {
+        badge.classList.add("hidden");
+        badge.textContent = "";
+        badge.removeAttribute("data-current-plan");
+        return;
+      }
+      badge.setAttribute("data-current-plan", currentPlan);
+      const planName = (LABELS.planNames && LABELS.planNames[currentPlan] && LABELS.planNames[currentPlan][lang]) || getPlanDisplayName(currentPlan);
+      const template = (LABELS.currentPlan && LABELS.currentPlan[lang]) || LABELS.currentPlan?.en || "Your current plan: {plan}";
+      badge.textContent = template.replace("{plan}", planName);
+      badge.classList.remove("hidden");
+    });
+  }
+
+  function updateCurrentPlanDisplay() {
+    const badge = document.querySelector(".current-plan-badge[data-current-plan]");
+    if (!badge) return;
+    const plan = badge.getAttribute("data-current-plan");
+    if (plan) applyCurrentPlanDisplay(plan);
+  }
+
   function applyCancelUI(currentPlan) {
     if (!currentPlan || currentPlan === "free") return;
 
@@ -340,10 +371,11 @@
       }
     })();
 
-    // Fetch subscription status and apply Cancel UI for Pro/Pro+ subscribers
+    // Fetch subscription status, apply Cancel UI, and show current plan
     (async () => {
       const plan = await getSubscriptionStatus();
       applyCancelUI(plan);
+      applyCurrentPlanDisplay(plan);
     })();
 
     // Click handlers for upgrade buttons (which may become cancel buttons)
@@ -393,6 +425,9 @@
     init();
   }
 
-  const langObserver = new MutationObserver(updateCancelLabels);
+  const langObserver = new MutationObserver(() => {
+    updateCancelLabels();
+    updateCurrentPlanDisplay();
+  });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

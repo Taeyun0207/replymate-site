@@ -113,6 +113,19 @@
             width: auto;
             vertical-align: middle;
         }
+        .current-plan-badge {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.12);
+            color: #5b21b6;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+        }
+        .current-plan-badge.hidden {
+            display: none;
+        }
 
         .pricing {
             padding: 32px 24px 100px;
@@ -201,8 +214,12 @@
             font-weight: 700;
         }
         .plan-features li.feature-highlight {
-            font-weight: 600;
-            color: #334155;
+            font-weight: 700;
+            color: #1a1a2e;
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.08) 0%, transparent 100%);
+            padding: 6px 10px;
+            margin: 4px -10px;
+            border-radius: 8px;
         }
         .plan-cta {
             display: block;
@@ -345,10 +362,6 @@
             color: #1a1a2e;
             line-height: 1.2;
         }
-        .billing-option.selected .billing-price:first-of-type {
-            font-size: 1.4rem;
-            font-weight: 800;
-        }
         .billing-yearly {
             font-size: 0.8rem;
             color: #64748b;
@@ -394,29 +407,30 @@
     <!-- English -->
     <div id="en" class="language-content active">
     <section class="hero">
+        <div class="current-plan-badge hidden" data-lang="en" data-plan-text></div>
         <h1>Choose your plan</h1>
-        <p class="hero-tagline">Deep Integration with <img src="../images/google48.png" alt="Google" class="google-logo"> <img src="../images/gmail64.png" alt="Gmail" class="gmail-logo"></p>
+        <p class="hero-tagline">Integrated with <img src="../images/gmail48.png" alt="Gmail" class="gmail-logo"> <img src="../images/google48.png" alt="Google" class="google-logo"></p>
     </section>
 
     <section class="pricing">
         <div class="pricing-grid">
             <div class="plan-card">
-                <div class="plan-name">Free</div>
+                <div class="plan-name">Standard</div>
                 <div class="plan-price">$0</div>
-                <div class="plan-desc">Get started with AI replies</div>
+                <div class="plan-desc">Make email easier with AI</div>
                 <ul class="plan-features">
                     <li>25 AI replies per month</li>
                     <li>15 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Get started free</a>
+                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Get started</a>
             </div>
 
             <div class="plan-card">
                 <div class="plan-name">Pro</div>
                 <div class="plan-price pro-price">$1.99<span>/month</span></div>
-                <div class="plan-desc">For regular email users</div>
+                <div class="plan-desc">Perfect for everyday email</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">100 AI replies per month</li>
                     <li class="feature-highlight">Unlimited translations</li>
@@ -426,9 +440,9 @@
                     <li>Cancel anytime</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="pro" data-type="monthly">
+                    <label class="billing-option" data-plan="pro" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing" value="monthly" checked> <span class="billing-label">Monthly Plan</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing" value="monthly"> <span class="billing-label">Monthly Plan</span></span>
                             <span class="billing-price">$1.99 /month</span>
                         </div>
                     </label>
@@ -448,7 +462,7 @@
                 <span class="featured-badge">Most Popular</span>
                 <div class="plan-name">Pro+</div>
                 <div class="plan-price proplus-price">$4.99<span>/month</span></div>
-                <div class="plan-desc">For power users</div>
+                <div class="plan-desc">For heavy email users</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">1,000 AI replies per month</li>
                     <li class="feature-highlight">Unlimited translations</li>
@@ -458,9 +472,9 @@
                     <li>Cancel anytime</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="proplus" data-type="monthly">
+                    <label class="billing-option" data-plan="proplus" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing" value="monthly" checked> <span class="billing-label">Monthly Plan</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing" value="monthly"> <span class="billing-label">Monthly Plan</span></span>
                             <span class="billing-price">$4.99 /month</span>
                         </div>
                     </label>
@@ -486,39 +500,40 @@
     <!-- Korean -->
     <div id="ko" class="language-content">
     <section class="hero">
-        <h1>플랜 선택</h1>
-        <p class="hero-tagline">깊은 통합 <img src="../images/google48.png" alt="Google" class="google-logo"> <img src="../images/gmail64.png" alt="Gmail" class="gmail-logo"></p>
+        <div class="current-plan-badge hidden" data-lang="ko" data-plan-text></div>
+        <h1>나에게 맞는 플랜</h1>
+        <p class="hero-tagline"><img src="../images/gmail48.png" alt="Gmail" class="gmail-logo"> <img src="../images/google48.png" alt="Google" class="google-logo">와 완벽한 연동</p>
     </section>
     <section class="pricing">
         <div class="pricing-grid">
             <div class="plan-card">
-                <div class="plan-name">Free</div>
+                <div class="plan-name">Standard</div>
                 <div class="plan-price">$0</div>
-                <div class="plan-desc">AI 답장으로 시작하기</div>
+                <div class="plan-desc">AI 답장으로 이메일을 더 쉽게</div>
                 <ul class="plan-features">
                     <li>월 25회 AI 답장</li>
                     <li>일 15회 번역</li>
-                    <li>모든 말투 옵션</li>
-                    <li>Gmail 지원</li>
+                    <li>다양한 말투 선택</li>
+                    <li>Gmail에서 바로 사용</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">무료로 시작</a>
+                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">시작하기</a>
             </div>
             <div class="plan-card">
                 <div class="plan-name">Pro</div>
                 <div class="plan-price pro-price">$1.99<span>/월</span></div>
-                <div class="plan-desc">일반 이메일 사용자용</div>
+                <div class="plan-desc">일상적인 이메일 사용에 딱 맞아요</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">월 100회 AI 답장</li>
                     <li class="feature-highlight">무제한 번역</li>
-                    <li>모든 말투 옵션</li>
-                    <li>Gmail 지원</li>
-                    <li>우선 지원</li>
-                    <li>언제든 취소</li>
+                    <li>다양한 말투 선택</li>
+                    <li>Gmail에서 바로 사용</li>
+                    <li>우선 고객 지원</li>
+                    <li>언제든지 해지 가능</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="pro" data-type="monthly">
+                    <label class="billing-option" data-plan="pro" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing" value="monthly" checked> <span class="billing-label">월간 플랜</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing" value="monthly"> <span class="billing-label">월간 플랜</span></span>
                             <span class="billing-price">$1.99 /월</span>
                         </div>
                     </label>
@@ -537,19 +552,19 @@
                 <span class="featured-badge">가장 인기</span>
                 <div class="plan-name">Pro+</div>
                 <div class="plan-price proplus-price">$4.99<span>/월</span></div>
-                <div class="plan-desc">파워 유저용</div>
+                <div class="plan-desc">이메일을 많이 쓰는 분께</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">월 1,000회 AI 답장</li>
                     <li class="feature-highlight">무제한 번역</li>
-                    <li>모든 말투 옵션</li>
-                    <li>Gmail 지원</li>
-                    <li>우선 지원</li>
-                    <li>언제든 취소</li>
+                    <li>다양한 말투 선택</li>
+                    <li>Gmail에서 바로 사용</li>
+                    <li>우선 고객 지원</li>
+                    <li>언제든지 해지 가능</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="proplus" data-type="monthly">
+                    <label class="billing-option" data-plan="proplus" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing" value="monthly" checked> <span class="billing-label">월간 플랜</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing" value="monthly"> <span class="billing-label">월간 플랜</span></span>
                             <span class="billing-price">$4.99 /월</span>
                         </div>
                     </label>
@@ -574,39 +589,40 @@
     <!-- Japanese -->
     <div id="ja" class="language-content">
     <section class="hero">
-        <h1>プランを選ぶ</h1>
-        <p class="hero-tagline">深い統合 <img src="../images/google48.png" alt="Google" class="google-logo"> <img src="../images/gmail64.png" alt="Gmail" class="gmail-logo"></p>
+        <div class="current-plan-badge hidden" data-lang="ja" data-plan-text></div>
+        <h1>プランをお選びください</h1>
+        <p class="hero-tagline"><img src="../images/gmail48.png" alt="Gmail" class="gmail-logo"> <img src="../images/google48.png" alt="Google" class="google-logo">とシームレスに連携</p>
     </section>
     <section class="pricing">
         <div class="pricing-grid">
             <div class="plan-card">
-                <div class="plan-name">Free</div>
+                <div class="plan-name">Standard</div>
                 <div class="plan-price">$0</div>
-                <div class="plan-desc">AI返信で始める</div>
+                <div class="plan-desc">AI返信でメールをもっと簡単に</div>
                 <ul class="plan-features">
                     <li>月25回のAI返信</li>
                     <li>1日15回の翻訳</li>
-                    <li>全トーンオプション</li>
-                    <li>Gmail対応</li>
+                    <li>トーン選択可能</li>
+                    <li>Gmailで利用可能</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">無料で始める</a>
+                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">始める</a>
             </div>
             <div class="plan-card">
                 <div class="plan-name">Pro</div>
                 <div class="plan-price pro-price">$1.99<span>/月</span></div>
-                <div class="plan-desc">通常のメールユーザー向け</div>
+                <div class="plan-desc">日常的なメール利用に最適</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">月100回のAI返信</li>
-                    <li class="feature-highlight">無制限翻訳</li>
-                    <li>全トーンオプション</li>
-                    <li>Gmail対応</li>
-                    <li>優先サポート</li>
-                    <li>いつでも解約</li>
+                    <li class="feature-highlight">翻訳無制限</li>
+                    <li>トーン選択可能</li>
+                    <li>Gmailで利用可能</li>
+                    <li>優先サポート対応</li>
+                    <li>いつでも解約可能</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="pro" data-type="monthly">
+                    <label class="billing-option" data-plan="pro" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing-ja" value="monthly" checked> <span class="billing-label">月額プラン</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing-ja" value="monthly"> <span class="billing-label">月額プラン</span></span>
                             <span class="billing-price">$1.99 /月</span>
                         </div>
                     </label>
@@ -625,19 +641,19 @@
                 <span class="featured-badge">最も人気</span>
                 <div class="plan-name">Pro+</div>
                 <div class="plan-price proplus-price">$4.99<span>/月</span></div>
-                <div class="plan-desc">パワーユーザー向け</div>
+                <div class="plan-desc">メールを多く使う方向け</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">月1,000回のAI返信</li>
-                    <li class="feature-highlight">無制限翻訳</li>
-                    <li>全トーンオプション</li>
-                    <li>Gmail対応</li>
-                    <li>優先サポート</li>
-                    <li>いつでも解約</li>
+                    <li class="feature-highlight">翻訳無制限</li>
+                    <li>トーン選択可能</li>
+                    <li>Gmailで利用可能</li>
+                    <li>優先サポート対応</li>
+                    <li>いつでも解約可能</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="proplus" data-type="monthly">
+                    <label class="billing-option" data-plan="proplus" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing-ja" value="monthly" checked> <span class="billing-label">月額プラン</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing-ja" value="monthly"> <span class="billing-label">月額プラン</span></span>
                             <span class="billing-price">$4.99 /月</span>
                         </div>
                     </label>
@@ -662,27 +678,28 @@
     <!-- Spanish -->
     <div id="es" class="language-content">
     <section class="hero">
+        <div class="current-plan-badge hidden" data-lang="es" data-plan-text></div>
         <h1>Elige tu plan</h1>
-        <p class="hero-tagline">Integración profunda con <img src="../images/google48.png" alt="Google" class="google-logo"> <img src="../images/gmail64.png" alt="Gmail" class="gmail-logo"></p>
+        <p class="hero-tagline">Integrado con <img src="../images/gmail48.png" alt="Gmail" class="gmail-logo"> <img src="../images/google48.png" alt="Google" class="google-logo"></p>
     </section>
     <section class="pricing">
         <div class="pricing-grid">
             <div class="plan-card">
-                <div class="plan-name">Free</div>
+                <div class="plan-name">Standard</div>
                 <div class="plan-price">$0</div>
-                <div class="plan-desc">Empieza con respuestas IA</div>
+                <div class="plan-desc">Empieza a responder con IA</div>
                 <ul class="plan-features">
                     <li>25 respuestas IA al mes</li>
                     <li>15 traducciones al día</li>
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Empezar gratis</a>
+                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Comenzar</a>
             </div>
             <div class="plan-card">
                 <div class="plan-name">Pro</div>
                 <div class="plan-price pro-price">$1.99<span>/mes</span></div>
-                <div class="plan-desc">Para usuarios habituales</div>
+                <div class="plan-desc">Ideal para uso diario</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">100 respuestas IA al mes</li>
                     <li class="feature-highlight">Traducciones ilimitadas</li>
@@ -692,9 +709,9 @@
                     <li>Cancela cuando quieras</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="pro" data-type="monthly">
+                    <label class="billing-option" data-plan="pro" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing-es" value="monthly" checked> <span class="billing-label">Plan mensual</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="pro-billing-es" value="monthly"> <span class="billing-label">Plan mensual</span></span>
                             <span class="billing-price">$1.99 /mes</span>
                         </div>
                     </label>
@@ -713,7 +730,7 @@
                 <span class="featured-badge">Más popular</span>
                 <div class="plan-name">Pro+</div>
                 <div class="plan-price proplus-price">$4.99<span>/mes</span></div>
-                <div class="plan-desc">Para usuarios avanzados</div>
+                <div class="plan-desc">Para quienes envían muchos emails</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">1,000 respuestas IA al mes</li>
                     <li class="feature-highlight">Traducciones ilimitadas</li>
@@ -723,9 +740,9 @@
                     <li>Cancela cuando quieras</li>
                 </ul>
                 <div class="billing-options">
-                    <label class="billing-option selected" data-plan="proplus" data-type="monthly">
+                    <label class="billing-option" data-plan="proplus" data-type="monthly">
                         <div class="billing-row">
-                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing-es" value="monthly" checked> <span class="billing-label">Plan mensual</span></span>
+                            <span style="display:flex;align-items:center;gap:10px;"><input type="radio" name="proplus-billing-es" value="monthly"> <span class="billing-label">Plan mensual</span></span>
                             <span class="billing-price">$4.99 /mes</span>
                         </div>
                     </label>
@@ -753,12 +770,14 @@
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_UPGRADE_URL = "https://taeyun0207.github.io/replymate-site/upgrade/index.html";
         window.REPLYMATE_LABELS = {
-            cancel: { en: "Cancel subscription", ko: "구독 취소", ja: "サブスクリプションを解約", es: "Cancelar suscripción" },
-            cancelConfirm: { en: "Cancel your subscription? You'll keep access until the end of your billing period.", ko: "구독을 취소하시겠습니까? 결제 기간 종료일까지 이용 가능합니다.", ja: "サブスクリプションを解約しますか？請求期間の終了までご利用いただけます。", es: "¿Cancelar tu suscripción? Mantendrás el acceso hasta el final del período de facturación." },
-            cancelSuccess: { en: "Subscription cancelled. You'll keep access until {date}.", ko: "구독이 취소되었습니다. {date}까지 이용 가능합니다.", ja: "解約しました。{date}までご利用いただけます。", es: "Suscripción cancelada. Mantendrás el acceso hasta el {date}." },
-            loading: { en: "Loading...", ko: "로딩 중...", ja: "読み込み 중...", es: "Cargando..." },
-            tryAgain: { en: "Try again", ko: "다시 시도", ja: "再試行", es: "Reintentar" },
-            purchaseSuccess: { en: "Thank you! Your plan has been upgraded.", ko: "감사합니다! 플랜이 업그레이드되었습니다.", ja: "ありがとうございます！プランがアップグレードされました。", es: "¡Gracias! Tu plan ha sido actualizado." }
+            cancel: { en: "Cancel subscription", ko: "구독 해지", ja: "解約する", es: "Cancelar suscripción" },
+            cancelConfirm: { en: "Cancel your subscription? You'll keep access until the end of your billing period.", ko: "구독을 해지하시겠어요? 결제 기간이 끝날 때까지 이용하실 수 있어요.", ja: "解約しますか？お支払い期間の終了までご利用いただけます。", es: "¿Cancelar la suscripción? Seguirás teniendo acceso hasta el final del período de facturación." },
+            cancelSuccess: { en: "Subscription cancelled. You'll keep access until {date}.", ko: "구독이 해지되었어요. {date}까지 이용 가능해요.", ja: "解約手続きが完了しました。{date}までご利用いただけます。", es: "Suscripción cancelada. Mantendrás el acceso hasta el {date}." },
+            loading: { en: "Loading...", ko: "잠시만요...", ja: "読み込み中...", es: "Cargando..." },
+            tryAgain: { en: "Try again", ko: "다시 시도", ja: "もう一度", es: "Reintentar" },
+            purchaseSuccess: { en: "Thank you! Your plan has been upgraded.", ko: "감사해요! 플랜이 업그레이드되었어요.", ja: "ありがとうございます。プランのアップグレードが完了しました。", es: "¡Gracias! Tu plan se ha actualizado correctamente." },
+            currentPlan: { en: "Your plan: {plan}", ko: "현재 플랜: {plan}", ja: "ご利用中のプラン: {plan}", es: "Tu plan: {plan}" },
+            planNames: { free: { en: "Standard", ko: "Standard", ja: "Standard", es: "Standard" }, pro: { en: "Pro", ko: "Pro", ja: "Pro", es: "Pro" }, pro_plus: { en: "Pro+", ko: "Pro+", ja: "Pro+", es: "Pro+" } }
         };
     </script>
     <script src="upgrade-page-checkout.js"></script>

@@ -3,752 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReplyMate Privacy Policy</title>
+    <title>ReplyMate - AI Reply Generator for Gmail</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icon32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icon16.png">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fafafa;
+            color: #1a1a2e;
+            margin: 0;
+            padding: 0;
+            background: #fff;
         }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
-        .language-switcher {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
+            color: inherit;
         }
-        .language-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 0 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        .language-btn:hover {
-            background: #0056b3;
-        }
-        .language-btn.active {
-            background: #28a745;
-        }
-        .language-content {
-            display: none;
-        }
-        .language-content.active {
+        .logo img {
+            width: 32px;
+            height: 32px;
             display: block;
+            object-fit: contain;
         }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #e1e5e9;
-            padding-bottom: 10px;
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 30px;
-        }
-        h2 {
-            font-size: 1.5em;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-        h3 {
-            font-size: 1.2em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #495057;
-        }
-        p {
-            margin-bottom: 16px;
-        }
-        ul {
-            margin-bottom: 16px;
-            padding-left: 25px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-        .last-updated {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e1e5e9;
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-        .contact-info {
-            background-color: #f8f9fa;
-            padding: 20px;
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            color: #64748b;
+            cursor: pointer;
             border-radius: 6px;
-            margin-top: 30px;
+            transition: all 0.2s;
         }
+        .lang-btn:hover {
+            color: #1a1a2e;
+            background: #f1f5f9;
+        }
+        .lang-btn.active {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+        .cta-header {
+            background: #7c3aed;
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .cta-header:hover {
+            background: #6d28d9;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 24px 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #faf5ff 0%, #fff 100%);
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f3e8ff;
+            color: #6b21a8;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 100px;
+            margin-bottom: 24px;
+            letter-spacing: 0.02em;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            color: #1a1a2e;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        .hero .tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            color: #475569;
+            max-width: 560px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: #7c3aed;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+            transition: all 0.2s;
+        }
+        .hero-cta:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+        }
+
+        /* Gmail mockup */
+        .mockup {
+            max-width: 720px;
+            margin: 60px auto 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .mockup-bar {
+            height: 40px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+        .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .mockup-dot:nth-child(1) { background: #ef4444; }
+        .mockup-dot:nth-child(2) { background: #eab308; }
+        .mockup-dot:nth-child(3) { background: #22c55e; }
+        .mockup-body {
+            padding: 24px;
+            min-height: 200px;
+        }
+        .mockup-email {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .mockup-email .from { font-weight: 600; color: #1a1a2e; margin-bottom: 4px; }
+        .mockup-email .preview { font-size: 0.9rem; color: #64748b; }
+        .mockup-reply {
+            background: #f8f0ff;
+            border: 2px solid #7c3aed;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mockup-reply::before {
+            content: "✨";
+            font-size: 1.5rem;
+        }
+        .mockup-reply span { color: #7c3aed; font-weight: 600; }
+
+        /* Features */
+        .features {
+            padding: 100px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #64748b;
+            max-width: 540px;
+            margin: 0 auto 60px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            padding: 28px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .feature-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #1a1a2e;
+        }
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 100px 24px;
+            background: #faf5ff;
+        }
+        .steps {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 768px) {
+            .steps { grid-template-columns: 1fr; }
+        }
+        .step {
+            text-align: center;
+            padding: 24px 16px;
+        }
+        .step-num {
+            width: 48px;
+            height: 48px;
+            background: #7c3aed;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin: 0 auto 16px;
+        }
+        .step h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #1a1a2e;
+        }
+        .step p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* Trust / Privacy */
+        .trust {
+            padding: 80px 24px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .trust h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+        .trust p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        .footer a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .footer a:hover {
+            color: #7c3aed;
+        }
+        .footer-contact {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Language content toggle */
+        .language-content { display: none; }
+        .language-content.active { display: block; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="language-switcher">
-            <button class="language-btn active" onclick="switchLanguage('en')">English</button>
-            <button class="language-btn" onclick="switchLanguage('ko')">한국어</button>
-            <button class="language-btn" onclick="switchLanguage('ja')">日本語</button>
-            <button class="language-btn" onclick="switchLanguage('es')">Español</button>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/icon32.png" alt="ReplyMate">
+            ReplyMate
+        </a>
+        <div class="header-right">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ko">한</button>
+            <button class="lang-btn" data-lang="ja">日</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="cta-header">Add to Chrome</a>
         </div>
+    </header>
 
-        <!-- English Content -->
-        <div id="en" class="language-content active">
-        <h1>ReplyMate Privacy Policy</h1>
-        <p><strong>Last Updated:</strong> March 14, 2026</p>
-        
-        <h2>Introduction</h2>
-        <p>ReplyMate is a Chrome extension that helps Gmail users generate AI-powered email replies. We are committed to protecting your privacy and being transparent about how we handle your data.</p>
-        <p>This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.</p>
-
-        <h2>Information We Collect</h2>
-        <h3>Account and Authentication</h3>
-        <ul>
-            <li><strong>Email Address:</strong> When you sign in with Google, we receive your email address from Google to create and manage your account.</li>
-            <li><strong>User ID:</strong> A unique identifier (Supabase user ID) associated with your account for usage tracking and subscription management.</li>
-        </ul>
-
-        <h3>Automatically Collected Information</h3>
-        <ul>
-            <li><strong>Usage Data:</strong> Number of AI replies you generate and your current subscription plan (Free, Pro, Pro+).</li>
-            <li><strong>Subscription Information:</strong> Stripe customer ID and subscription ID for billing purposes (only if you upgrade to a paid plan).</li>
-            <li><strong>Top-up Credits:</strong> If you purchase one-time reply packs, we track remaining credits and expiry dates.</li>
-            <li><strong>Technical Data:</strong> Browser type, extension version, and error logs that do not contain personal information.</li>
-        </ul>
-
-        <h3>Information You Provide</h3>
-        <ul>
-            <li><strong>Email Context:</strong> Email subject, message content, sender/recipient names, and conversation thread. This data is <span class="highlight">processed temporarily</span> for AI reply generation and <span class="highlight">is not stored in our database</span>.</li>
-            <li><strong>User Preferences:</strong> Reply tone (Professional, Friendly, Polite), length preferences, and language settings.</li>
-            <li><strong>Optional Information:</strong> Your name for signature generation.</li>
-        </ul>
-
-        <h2>How We Use Information</h2>
-        <ul>
-            <li><strong>Service Delivery:</strong> To generate AI email replies and provide them to you in real-time.</li>
-            <li><strong>Usage Management:</strong> To track your reply count against your plan limits (subscription and top-up credits) and manage billing cycles.</li>
-            <li><strong>Customer Support:</strong> To assist you with technical issues and account management.</li>
-            <li><strong>Service Improvement:</strong> To analyze usage patterns and improve ReplyMate's functionality.</li>
-            <li><strong>Billing Processing:</strong> To manage your subscription and one-time purchases through Stripe's secure payment system.</li>
-        </ul>
-
-        <h2>Third-Party Services</h2>
-        <h3>Supabase</h3>
-        <p>We use Supabase for authentication and database storage:</p>
-        <ul>
-            <li>Google sign-in is handled through Supabase Auth</li>
-            <li>Your account data (user ID, email, plan, usage) is stored in Supabase's secure cloud database</li>
-            <li>Supabase processes data according to their privacy policy</li>
-        </ul>
-        <p><strong>Supabase Privacy Policy:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
-
-        <h3>OpenAI</h3>
-        <p>We use OpenAI's API to generate email replies. When you request a reply:</p>
-        <ul>
-            <li>Your email context is sent to OpenAI's servers</li>
-            <li>OpenAI processes this data according to their privacy policy</li>
-            <li>We do not share your data with OpenAI beyond what's necessary for reply generation</li>
-            <li>Email content is not stored by OpenAI long-term</li>
-        </ul>
-        <p><strong>OpenAI Privacy Policy:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
-
-        <h3>Stripe</h3>
-        <p>We use Stripe for secure payment processing:</p>
-        <ul>
-            <li>Payment information is handled directly by Stripe's secure systems</li>
-            <li>We only store Stripe customer ID and subscription ID in our database</li>
-            <li>Credit card details are never stored on our servers</li>
-            <li>All payment processing complies with PCI DSS standards</li>
-        </ul>
-        <p><strong>Stripe Privacy Policy:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
-
-        <h2>Data Storage and Retention</h2>
-        <h3>Our Database</h3>
-        <p>We maintain a secure cloud database (Supabase/PostgreSQL) that stores:</p>
-        <ul>
-            <li><strong>User ID and Email:</strong> Your account identifier and email from Google sign-in</li>
-            <li><strong>Plan Information:</strong> Current subscription plan, billing cycle dates, and cancellation status (if you cancel at period end)</li>
-            <li><strong>Usage Count:</strong> Number of replies generated in current billing cycle</li>
-            <li><strong>Top-up Credits:</strong> Remaining one-time reply credits and expiry dates (if purchased)</li>
-            <li><strong>Stripe IDs:</strong> Customer and subscription identifiers (only for paid plans)</li>
-            <li><strong>Timestamps:</strong> Account creation, last update, and billing cycle dates</li>
-        </ul>
-
-        <h3>Email Content</h3>
-        <p><span class="highlight">Email content is never stored in our database.</span> We only process it temporarily:</p>
-        <ul>
-            <li>Sent to OpenAI for reply generation</li>
-            <li>Deleted from our servers after the AI response is generated</li>
-            <li>Not used for any other purpose</li>
-            <li>Not accessible to our team after processing</li>
-        </ul>
-        <p>ReplyMate only uses Gmail email content to generate AI replies requested by the user. This data is never used for advertising, profiling, or training AI models, and is not sold or shared with third parties.</p>
-
-        <h3>Local Storage</h3>
-        <p>The extension stores some data locally in your browser:</p>
-        <ul>
-            <li><strong>User Preferences:</strong> Language, tone, and length settings</li>
-            <li><strong>Usage Cache:</strong> Temporary usage data (expires after 30 seconds)</li>
-            <li><strong>Session Data:</strong> Authentication tokens for signed-in state</li>
-        </ul>
-
-        <h3>Data Retention Period</h3>
-        <ul>
-            <li><strong>User Account Data:</strong> Retained indefinitely unless you request deletion</li>
-            <li><strong>Usage History:</strong> Current billing cycle data only</li>
-            <li><strong>Email Content:</strong> Not retained (temporary processing only)</li>
-            <li><strong>Local Cache:</strong> Automatically expires after 30 seconds</li>
-        </ul>
-
-        <h2>Security</h2>
-        <p>We implement multiple security measures to protect your data:</p>
-        <ul>
-            <li><strong>HTTPS Encryption:</strong> All communications between your browser and our servers are encrypted</li>
-            <li><strong>Secure Authentication:</strong> Google sign-in via Supabase; we do not store passwords</li>
-            <li><strong>Minimal Data Collection:</strong> We only collect data essential for service delivery</li>
-            <li><strong>Secure Third-Party Services:</strong> Use of reputable services (Supabase, OpenAI, Stripe) with strong security practices</li>
-            <li><strong>Regular Security Updates:</strong> Our systems are regularly updated and monitored</li>
-            <li><strong>Access Controls:</strong> Database access is strictly controlled and logged</li>
-        </ul>
-        <p>ReplyMate complies with the Google Chrome Web Store User Data Policy. We do not sell user data, use it for advertising, or transfer it to third parties except as necessary to provide the service (such as Supabase for auth and storage, OpenAI for reply generation, and Stripe for payment processing).</p>
-
-        <h2>Your Rights</h2>
-        <p>You have the following rights regarding your data:</p>
-        <ul>
-            <li><strong>Access:</strong> View all data we have about you through your extension settings</li>
-            <li><strong>Correction:</strong> Update your user preferences and account information</li>
-            <li><strong>Portability:</strong> Request a copy of your data in a machine-readable format</li>
-            <li><strong>Deletion:</strong> Request deletion of your account and all associated data. Users may request deletion of their account and associated data by contacting replymate.support@gmail.com. Upon receiving a valid request, we will delete the data from our systems within a reasonable timeframe.</li>
-            <li><strong>Restriction:</strong> Object to or restrict processing of your data</li>
-            <li><strong>Complaint:</strong> File a complaint with data protection authorities if needed</li>
-        </ul>
-
-        <h2>Children's Privacy</h2>
-        <p>ReplyMate is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected information from a child under 13, we will immediately delete this information.</p>
-
-        <h2>Changes to this Privacy Policy</h2>
-        <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will:</p>
-        <ul>
-            <li>Post any changes on this page</li>
-            <li>Update the "Last Updated" date at the top</li>
-            <li>Notify users of significant changes through the extension</li>
-        </ul>
-        <p>Your continued use of ReplyMate after any changes constitutes acceptance of the updated policy.</p>
-
-        <h2>Contact</h2>
-        <p>If you have questions about this Privacy Policy or want to exercise your data rights, please contact us:</p>
-        
-        <div class="contact-info">
-            <p><strong>Email:</strong> replymate.support@gmail.com</p>
-            <p><strong>Extension Support:</strong> Through the Chrome extension or our website</p>
-            <p><strong>Response Time:</strong> We typically respond within 7 business days</p>
-        </div>
-
-        <div class="last-updated">
-            <p>This Privacy Policy is effective as of March 14, 2026.</p>
-        </div>
-        </div>
-
-        <!-- Korean Content -->
-        <div id="ko" class="language-content">
-            <h1>ReplyMate 개인정보 처리방침</h1>
-            <p><strong>최종 업데이트:</strong> 2026년 3월 14일</p>
-            
-            <h2>서론</h2>
-            <p>ReplyMate는 Gmail 사용자가 AI 기반 이메일 답장을 생성하도록 도와주는 Chrome 확장 프로그램입니다. 우리는 사용자의 개인정보를 보호하고 데이터 처리 방식에 대해 투명하게 공개할 것을 약속합니다.</p>
-            <p>이 개인정보 처리방침은 우리가 수집하는 정보, 사용 방법 및 데이터에 대한 사용자의 권리를 설명합니다.</p>
-
-            <h2>수집하는 정보</h2>
-            <h3>계정 및 인증</h3>
-            <ul>
-                <li><strong>이메일 주소:</strong> Google로 로그인할 때 Google로부터 이메일 주소를 받아 계정을 생성하고 관리합니다.</li>
-                <li><strong>사용자 ID:</strong> 사용량 추적 및 구독 관리를 위한 계정과 연결된 고유 식별자(Supabase 사용자 ID)입니다.</li>
-            </ul>
-
-            <h3>자동으로 수집되는 정보</h3>
-            <ul>
-                <li><strong>사용 데이터:</strong> 생성하는 AI 답장 수와 현재 구독 플랜(무료, Pro, Pro+)입니다.</li>
-                <li><strong>구독 정보:</strong> 결제 목적의 Stripe 고객 ID 및 구독 ID(유료 플랜으로 업그레이드한 경우에만).</li>
-                <li><strong>충전 크레딧:</strong> 일회성 답장 패키지를 구매한 경우, 남은 크레딧 및 만료일을 추적합니다.</li>
-                <li><strong>기술 데이터:</strong> 개인정보가 포함되지 않은 브라우저 유형, 확장 프로그램 버전 및 오류 로그입니다.</li>
-            </ul>
-
-            <h3>사용자가 제공하는 정보</h3>
-            <ul>
-                <li><strong>이메일 컨텍스트:</strong> 이메일 제목, 메시지 내용, 발신자/수신자 이름 및 대화 스레드입니다. 이 데이터는 AI 답장 생성을 위해 <span class="highlight">일시적으로 처리</span>되며 <span class="highlight">데이터베이스에 저장되지 않습니다</span>.</li>
-                <li><strong>사용자 선호도:</strong> 답장 톤(전문적, 친근한, 정중한), 길이 선호도 및 언어 설정입니다.</li>
-                <li><strong>선택적 정보:</strong> 서명 생성을 위한 이름입니다.</li>
-            </ul>
-
-            <h2>정보 사용 방법</h2>
-            <ul>
-                <li><strong>서비스 제공:</strong> AI 이메일 답장을 생성하고 실시간으로 제공하기 위해.</li>
-                <li><strong>사용량 관리:</strong> 플랜 제한(구독 및 충전 크레딧)에 대한 답장 수를 추적하고 청구 주기를 관리하기 위해.</li>
-                <li><strong>고객 지원:</strong> 기술 문제 및 계정 관리를 지원하기 위해.</li>
-                <li><strong>서비스 개선:</strong> 사용 패턴을 분석하고 ReplyMate 기능을 개선하기 위해.</li>
-                <li><strong>결제 처리:</strong> Stripe의 보안 결제 시스템을 통해 구독 및 일회성 구매를 관리하기 위해.</li>
-            </ul>
-
-            <h2>제3자 서비스</h2>
-            <h3>Supabase</h3>
-            <p>인증 및 데이터베이스 저장을 위해 Supabase를 사용합니다:</p>
-            <ul>
-                <li>Google 로그인은 Supabase Auth를 통해 처리됩니다</li>
-                <li>계정 데이터(사용자 ID, 이메일, 플랜, 사용량)는 Supabase의 보안 클라우드 데이터베이스에 저장됩니다</li>
-                <li>Supabase는 개인정보 처리방침에 따라 데이터를 처리합니다</li>
-            </ul>
-            <p><strong>Supabase 개인정보 처리방침:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
-
-            <h3>OpenAI</h3>
-            <p>이메일 답장을 생성하기 위해 OpenAI의 API를 사용합니다. 답장을 요청할 때:</p>
-            <ul>
-                <li>이메일 컨텍스트가 OpenAI 서버로 전송됩니다</li>
-                <li>OpenAI는 개인정보 처리방침에 따라 이 데이터를 처리합니다</li>
-                <li>답장 생성에 필요한 것 이상으로 OpenAI와 데이터를 공유하지 않습니다</li>
-                <li>이메일 내용은 OpenAI에 장기간 저장되지 않습니다</li>
-            </ul>
-            <p><strong>OpenAI 개인정보 처리방침:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
-
-            <h3>Stripe</h3>
-            <p>보안 결제 처리를 위해 Stripe를 사용합니다:</p>
-            <ul>
-                <li>결제 정보는 Stripe의 보안 시스템에서 직접 처리됩니다</li>
-                <li>데이터베이스에 Stripe 고객 ID와 구독 ID만 저장합니다</li>
-                <li>신용카드 세부정보는 서버에 저장되지 않습니다</li>
-                <li>모든 결제 처리는 PCI DSS 표준을 준수합니다</li>
-            </ul>
-            <p><strong>Stripe 개인정보 처리방침:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
-
-            <h2>데이터 저장 및 보관</h2>
-            <h3>데이터베이스</h3>
-            <p>다음을 저장하는 보안 클라우드 데이터베이스(Supabase/PostgreSQL)를 유지합니다:</p>
-            <ul>
-                <li><strong>사용자 ID 및 이메일:</strong> Google 로그인에서 받은 계정 식별자 및 이메일</li>
-                <li><strong>플랜 정보:</strong> 현재 구독 플랜, 청구 주기 날짜, 취소 상태(기간 종료 시 취소한 경우)</li>
-                <li><strong>사용량 카운트:</strong> 현재 청구 주기에서 생성된 답장 수</li>
-                <li><strong>충전 크레딧:</strong> 남은 일회성 답장 크레딧 및 만료일(구매한 경우)</li>
-                <li><strong>Stripe ID:</strong> 고객 및 구독 식별자(유료 플랜에만 해당)</li>
-                <li><strong>타임스탬프:</strong> 계정 생성, 마지막 업데이트 및 청구 주기 날짜</li>
-            </ul>
-
-            <h3>이메일 내용</h3>
-            <p><span class="highlight">이메일 내용은 데이터베이스에 저장되지 않습니다.</span> 일시적으로만 처리합니다:</p>
-            <ul>
-                <li>답장 생성을 위해 OpenAI로 전송됩니다</li>
-                <li>AI 응답이 생성된 후 서버에서 삭제됩니다</li>
-                <li>다른 목적으로 사용되지 않습니다</li>
-                <li>처리 후 팀이 접근할 수 없습니다</li>
-            </ul>
-
-            <h3>로컬 저장소</h3>
-            <p>확장 프로그램은 브라우저에 일부 데이터를 로컬로 저장합니다:</p>
-            <ul>
-                <li><strong>사용자 선호도:</strong> 언어, 톤 및 길이 설정</li>
-                <li><strong>사용량 캐시:</strong> 임시 사용량 데이터(30초 후 만료)</li>
-                <li><strong>세션 데이터:</strong> 로그인 상태를 위한 인증 토큰</li>
-            </ul>
-
-            <h3>데이터 보관 기간</h3>
-            <ul>
-                <li><strong>사용자 계정 데이터:</strong> 삭제 요청이 없는 한 무기간 보관</li>
-                <li><strong>사용 기록:</strong> 현재 청구 주기 데이터만</li>
-                <li><strong>이메일 내용:</strong> 보관되지 않음(임시 처리만)</li>
-                <li><strong>로컬 캐시:</strong> 30초 후 자동 만료</li>
-            </ul>
-
-            <h2>보안</h2>
-            <p>데이터를 보호하기 위해 여러 보안 조치를 구현합니다:</p>
-            <ul>
-                <li><strong>HTTPS 암호화:</strong> 브라우저와 서버 간의 모든 통신은 암호화됩니다</li>
-                <li><strong>보안 인증:</strong> Supabase를 통한 Google 로그인; 비밀번호를 저장하지 않습니다</li>
-                <li><strong>최소 데이터 수집:</strong> 서비스 제공에 필수적인 데이터만 수집합니다</li>
-                <li><strong>보안 제3자 서비스:</strong> 강력한 보안 관행을 가진 평판 좋은 서비스(Supabase, OpenAI, Stripe) 사용</li>
-                <li><strong>정기 보안 업데이트:</strong> 시스템이 정기적으로 업데이트되고 모니터링됩니다</li>
-                <li><strong>접근 제어:</strong> 데이터베이스 접근이 엄격하게 제어되고 기록됩니다</li>
-            </ul>
-
-            <h2>사용자 권리</h2>
-            <p>데이터에 대해 다음 권리가 있습니다:</p>
-            <ul>
-                <li><strong>접근:</strong> 확장 프로그램 설정을 통해 우리가 가진 모든 데이터 보기</li>
-                <li><strong>수정:</strong> 사용자 선호도 및 계정 정보 업데이트</li>
-                <li><strong>이식성:</strong> 기계 판독 가능 형식의 데이터 사본 요청</li>
-                <li><strong>삭제:</strong> replymate.support@gmail.com으로 연락하여 계정 및 관련 데이터 삭제 요청</li>
-                <li><strong>제한:</strong> 데이터 처리에 반대하거나 제한</li>
-                <li><strong>불만:</strong> 필요한 경우 개인정보 보호 당국에 불만 제기</li>
-            </ul>
-
-            <h2>어린이 개인정보 보호</h2>
-            <p>ReplyMate는 13세 미만 어린이를 위한 서비스가 아닙니다. 우리는 13세 미만 어린이의 개인정보를 의도적으로 수집하지 않습니다. 13세 미만 어린이의 정보를 수집했다는 사실을 알게 되면 즉시 이 정보를 삭제할 것입니다.</p>
-
-            <h2>개인정보 처리방침 변경</h2>
-            <p>우리는 관행, 기술 또는 법적 요구사항의 변경을 반영하기 위해 이 개인정보 처리방침을 수시로 업데이트할 수 있습니다. 다음을 수행합니다:</p>
-            <ul>
-                <li>이 페이지에 모든 변경사항 게시</li>
-                <li>상단의 "최종 업데이트" 날짜 업데이트</li>
-                <li>확장 프로그램을 통해 중요한 변경사항 사용자에게 알림</li>
-            </ul>
-            <p>변경 후 ReplyMate를 계속 사용하면 업데이트된 정책에 동의하는 것입니다.</p>
-
-            <h2>연락처</h2>
-            <p>이 개인정보 처리방침에 대한 질문이 있거나 데이터 권리를 행사하려면 다음으로 연락하십시오:</p>
-            
-            <div class="contact-info">
-                <p><strong>이메일:</strong> replymate.support@gmail.com</p>
-                <p><strong>확장 프로그램 지원:</strong> Chrome 확장 프로그램 또는 웹사이트를 통해</p>
-                <p><strong>응답 시간:</strong> 일반적으로 7 영업일 이내에 응답합니다</p>
+    <!-- English -->
+    <div id="en" class="language-content active">
+        <section class="hero">
+            <span class="hero-badge">Chrome Extension</span>
+            <h1>Write email replies in seconds, not minutes</h1>
+            <p class="tagline">ReplyMate uses AI to generate smart replies directly inside Gmail. No copying, no pasting—just click and send.</p>
+            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Add to Chrome — It's free</a>
+            <div class="mockup">
+                <div class="mockup-bar">
+                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-email">
+                        <div class="from">Meeting follow-up</div>
+                        <div class="preview">Thanks for the call today. Please find the summary attached...</div>
+                    </div>
+                    <div class="mockup-reply">
+                        <span>AI Reply</span> — Generate your reply instantly
+                    </div>
+                </div>
             </div>
-
-            <div class="last-updated">
-                <p>이 개인정보 처리방침은 2026년 3월 14일부터 효력이 있습니다.</p>
+        </section>
+        <section class="features">
+            <h2 class="section-title">Everything you need to reply faster</h2>
+            <p class="section-subtitle">Built for Gmail users who want to save time without sacrificing quality.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant generation</h3>
+                    <p>Get AI-powered replies in seconds. No waiting, no switching tabs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎚️</div>
+                    <h3>Customize tone & length</h3>
+                    <p>Choose professional, friendly, or polite. Short or detailed—you decide.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3>Add context</h3>
+                    <p>Include extra info the AI should know. Your reply, your way.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Works in Gmail</h3>
+                    <p>No copy-paste. Reply right where you read. Seamless integration.</p>
+                </div>
             </div>
-        </div>
-
-        <!-- Japanese Content -->
-        <div id="ja" class="language-content">
-            <h1>ReplyMateプライバシーポリシー</h1>
-            <p><strong>最終更新:</strong> 2026年3月14日</p>
-            
-            <h2>はじめに</h2>
-            <p>ReplyMateは、GmailユーザーがAI搭載メール返信を生成するのを支援するChrome拡張機能です。私たちはお客様のプライバシーを保護し、データの取り扱いについて透明性を確保することに努めています。</p>
-            <p>このプライバシーポリシーでは、収集する情報、使用方法、およびデータに関するお客様の権利について説明します。</p>
-
-            <h2>収集する情報</h2>
-            <h3>アカウントと認証</h3>
-            <ul>
-                <li><strong>メールアドレス:</strong> Googleでサインインする際、Googleからメールアドレスを受け取り、アカウントを作成・管理します。</li>
-                <li><strong>ユーザーID:</strong> 使用状況の追跡とサブスクリプション管理のためのアカウントに関連付けられた一意の識別子（SupabaseユーザーID）です。</li>
-            </ul>
-
-            <h3>自動的に収集される情報</h3>
-            <ul>
-                <li><strong>使用データ:</strong> 生成するAI返信の数と現在のサブスクリプションプラン（無料、Pro、Pro+）です。</li>
-                <li><strong>サブスクリプション情報:</strong> 請求目的のStripe顧客IDとサブスクリプションID（有料プランにアップグレードした場合のみ）。</li>
-                <li><strong>追加クレジット:</strong> 一括返信パックを購入した場合、残りのクレジットと有効期限を追跡します。</li>
-                <li><strong>技術データ:</strong> 個人情報を含まないブラウザタイプ、拡張機能バージョン、エラーログです。</li>
-            </ul>
-
-            <h3>お客様が提供する情報</h3>
-            <ul>
-                <li><strong>メールコンテキスト:</strong> メール件名、メッセージ内容、送信者/受信者名、会話スレッドです。このデータはAI返信生成のために<span class="highlight">一時的に処理</span>され、<span class="highlight">データベースに保存されません</span>。</li>
-                <li><strong>ユーザー設定:</strong> 返信トーン（プロフェッショナル、フレンドリー、丁寧）、長さの設定、言語設定です。</li>
-                <li><strong>オプション情報:</strong> 署名生成用の名前です。</li>
-            </ul>
-
-            <h2>情報の使用方法</h2>
-            <ul>
-                <li><strong>サービス提供:</strong> AIメール返信を生成し、リアルタイムで提供するため。</li>
-                <li><strong>使用状況管理:</strong> プラン制限（サブスクリプションと追加クレジット）に対する返信数を追跡し、請求サイクルを管理するため。</li>
-                <li><strong>カスタマーサポート:</strong> 技術的な問題とアカウント管理を支援するため。</li>
-                <li><strong>サービス改善:</strong> 使用パターンを分析し、ReplyMateの機能を改善するため。</li>
-                <li><strong>請求処理:</strong> Stripeの安全な決済システムを通じてサブスクリプションと一括購入を管理するため。</li>
-            </ul>
-
-            <h2>第三者サービス</h2>
-            <h3>Supabase</h3>
-            <p>認証とデータベース保存のためにSupabaseを使用します：</p>
-            <ul>
-                <li>GoogleサインインはSupabase Authで処理されます</li>
-                <li>アカウントデータ（ユーザーID、メール、プラン、使用量）はSupabaseのセキュアクラウドデータベースに保存されます</li>
-                <li>Supabaseはプライバシーポリシーに従ってデータを処理します</li>
-            </ul>
-            <p><strong>Supabaseプライバシーポリシー:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
-
-            <h3>OpenAI</h3>
-            <p>メール返信を生成するためにOpenAIのAPIを使用します。返信をリクエストするとき：</p>
-            <ul>
-                <li>メールコンテキストがOpenAIサーバーに送信されます</li>
-                <li>OpenAIはプライバシーポリシーに従ってこのデータを処理します</li>
-                <li>返信生成に必要以上のデータをOpenAIと共有しません</li>
-                <li>メール内容はOpenAIに長期間保存されません</li>
-            </ul>
-            <p><strong>OpenAIプライバシーポリシー:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
-
-            <h3>Stripe</h3>
-            <p>安全な決済処理のためにStripeを使用します：</p>
-            <ul>
-                <li>決済情報はStripeの安全なシステムで直接処理されます</li>
-                <li>データベースにStripe顧客IDとサブスクリプションIDのみを保存します</li>
-                <li>クレジットカード詳細はサーバーに保存されません</li>
-                <li>すべての決済処理はPCI DSS基準に準拠しています</li>
-            </ul>
-            <p><strong>Stripeプライバシーポリシー:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
-
-            <h2>データ保存と保持</h2>
-            <h3>データベース</h3>
-            <p>次の情報を保存するセキュアクラウドデータベース（Supabase/PostgreSQL）を維持します：</p>
-            <ul>
-                <li><strong>ユーザーIDとメール:</strong> Googleサインインから受け取ったアカウント識別子とメール</li>
-                <li><strong>プラン情報:</strong> 現在のサブスクリプションプラン、請求サイクル日付、キャンセル状態（期間終了時にキャンセルした場合）</li>
-                <li><strong>使用回数:</strong> 現在の請求サイクルで生成された返信数</li>
-                <li><strong>追加クレジット:</strong> 残りの一括返信クレジットと有効期限（購入した場合）</li>
-                <li><strong>Stripe ID:</strong> 顧客とサブスクリプション識別子（有料プランのみ）</li>
-                <li><strong>タイムスタンプ:</strong> アカウント作成、最終更新、請求サイクル日付</li>
-            </ul>
-
-            <h3>メール内容</h3>
-            <p><span class="highlight">メール内容はデータベースに保存されません。</span>一時的にのみ処理します：</p>
-            <ul>
-                <li>返信生成のためにOpenAIに送信されます</li>
-                <li>AI応答が生成された後にサーバーから削除されます</li>
-                <li>他の目的では使用されません</li>
-                <li>処理後、チームがアクセスできません</li>
-            </ul>
-
-            <h3>ローカルストレージ</h3>
-            <p>拡張機能はブラウザに一部のデータをローカルに保存します：</p>
-            <ul>
-                <li><strong>ユーザー設定:</strong> 言語、トーン、長さの設定</li>
-                <li><strong>使用キャッシュ:</strong> 一時的な使用データ（30秒後に期限切れ）</li>
-                <li><strong>セッションデータ:</strong> サインイン状態のための認証トークン</li>
-            </ul>
-
-            <h3>データ保持期間</h3>
-            <ul>
-                <li><strong>ユーザーアカウントデータ:</strong> 削除要求がない限り無期限に保持</li>
-                <li><strong>使用履歴:</strong> 現在の請求サイクルデータのみ</li>
-                <li><strong>メール内容:</strong> 保持されません（一時処理のみ）</li>
-                <li><strong>ローカルキャッシュ:</strong> 30秒後に自動的に期限切れ</li>
-            </ul>
-
-            <h2>セキュリティ</h2>
-            <p>データを保護するために複数のセキュリティ対策を実装しています：</p>
-            <ul>
-                <li><strong>HTTPS暗号化:</strong> ブラウザとサーバー間のすべての通信は暗号化されます</li>
-                <li><strong>セキュア認証:</strong> Supabaseを介したGoogleサインイン；パスワードは保存しません</li>
-                <li><strong>最小限のデータ収集:</strong> サービス提供に不可欠なデータのみを収集します</li>
-                <li><strong>安全な第三者サービス:</strong> 強力なセキュリティ慣行を持つ信頼できるサービス（Supabase、OpenAI、Stripe）を使用</li>
-                <li><strong>定期的なセキュリティ更新:</strong> システムは定期的に更新・監視されています</li>
-                <li><strong>アクセス制御:</strong> データベースアクセスは厳格に制御・記録されます</li>
-            </ul>
-
-            <h2>お客様の権利</h2>
-            <p>データについて以下の権利があります：</p>
-            <ul>
-                <li><strong>アクセス:</strong> 拡張機能設定を通じて私たちが持つすべてのデータを表示</li>
-                <li><strong>修正:</strong> ユーザー設定とアカウント情報を更新</li>
-                <li><strong>移植性:</strong> 機械可読形式でのデータコピーを要求</li>
-                <li><strong>削除:</strong> replymate.support@gmail.comに連絡してアカウントと関連するすべてのデータの削除を要求</li>
-                <li><strong>制限:</strong> データ処理に異議を申し立てたり制限したりする</li>
-                <li><strong>苦情:</strong> 必要に応じてデータ保護当局に苦情を申し立てる</li>
-            </ul>
-
-            <h2>子供のプライバシー</h2>
-            <p>ReplyMateは13歳未満の子供を対象としたサービスではありません。私たちは13歳未満の子供から個人情報を意図的に収集しません。13歳未満の子供から情報を収集したことを知った場合、直ちにこの情報を削除します。</p>
-
-            <h2>プライバシーポリシーの変更</h2>
-            <p>私たちは慣行、技術、または法的要件の変更を反映するために、このプライバシーポリシーを随時更新することがあります。以下を行います：</p>
-            <ul>
-                <li>このページにすべての変更を掲載</li>
-                <li>上部の「最終更新」日付を更新</li>
-                <li>拡張機能を通じて重要な変更をユーザーに通知</li>
-            </ul>
-            <p>変更後もReplyMateを継続して使用することで、更新されたポリシーに同意したことになります。</p>
-
-            <h2>お問い合わせ</h2>
-            <p>このプライバシーポリシーについて質問がある場合やデータ権利を行使したい場合は、以下までご連絡ください：</p>
-            
-            <div class="contact-info">
-                <p><strong>メール:</strong> replymate.support@gmail.com</p>
-                <p><strong>拡張機能サポート:</strong> Chrome拡張機能またはウェブサイトを通じて</p>
-                <p><strong>応答時間:</strong> 通常7営業日以内に応答します</p>
+        </section>
+        <section class="how-it-works">
+            <h2 class="section-title">How it works</h2>
+            <p class="section-subtitle">Four simple steps to smarter replies.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Install</h3>
+                    <p>Add ReplyMate from the Chrome Web Store</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Open Gmail</h3>
+                    <p>Use it in your existing Gmail inbox</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Click AI Reply</h3>
+                    <p>One click to generate your reply</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Send</h3>
+                    <p>Review, edit if needed, and send</p>
+                </div>
             </div>
-
-            <div class="last-updated">
-                <p>このプライバシーポリシーは2026年3月14日から効力を持ちます。</p>
+        </section>
+        <section class="trust">
+            <h2>Your privacy matters</h2>
+            <p>ReplyMate uses Google sign-in for authentication. Email content is processed only to generate replies and is never stored or shared with third parties.</p>
+        </section>
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="mailto:replymate.support@gmail.com">Contact</a>
             </div>
-        </div>
+            <span class="footer-contact">replymate.support@gmail.com</span>
+        </footer>
+    </div>
 
-        <!-- Spanish Content -->
-        <div id="es" class="language-content">
-            <h1>Política de Privacidad de ReplyMate</h1>
-            <p><strong>Última actualización:</strong> 14 de marzo de 2026</p>
-            
-            <h2>Introducción</h2>
-            <p>ReplyMate es una extensión de Chrome que ayuda a los usuarios de Gmail a generar respuestas de correo electrónico impulsadas por IA. Nos comprometemos a proteger su privacidad y a ser transparentes sobre cómo manejamos sus datos.</p>
-            <p>Esta Política de Privacidad explica qué información recopilamos, cómo la utilizamos y sus derechos con respecto a sus datos.</p>
-
-            <h2>Información que recopilamos</h2>
-            <h3>Cuenta y autenticación</h3>
-            <ul>
-                <li><strong>Dirección de correo electrónico:</strong> Cuando inicia sesión con Google, recibimos su dirección de correo electrónico de Google para crear y administrar su cuenta.</li>
-                <li><strong>ID de usuario:</strong> Un identificador único (ID de usuario de Supabase) asociado con su cuenta para el seguimiento del uso y la gestión de suscripciones.</li>
-            </ul>
-
-            <h3>Información recopilada automáticamente</h3>
-            <ul>
-                <li><strong>Datos de uso:</strong> Número de respuestas de IA que genera y su plan de suscripción actual (Gratis, Pro, Pro+).</li>
-                <li><strong>Información de suscripción:</strong> ID de cliente e ID de suscripción de Stripe con fines de facturación (solo si actualiza a un plan de pago).</li>
-                <li><strong>Créditos adicionales:</strong> Si compra paquetes de respuestas de un solo uso, rastreamos los créditos restantes y las fechas de vencimiento.</li>
-                <li><strong>Datos técnicos:</strong> Tipo de navegador, versión de la extensión y registros de errores que no contienen información personal.</li>
-            </ul>
-
-            <h3>Información que usted proporciona</h3>
-            <ul>
-                <li><strong>Contexto del correo:</strong> Asunto del correo, contenido del mensaje, nombres de remitente/destinatario e hilo de conversación. Estos datos se <span class="highlight">procesan temporalmente</span> para la generación de respuestas de IA y <span class="highlight">no se almacenan en nuestra base de datos</span>.</li>
-                <li><strong>Preferencias del usuario:</strong> Tono de respuesta (Profesional, Amigable, Educado), preferencias de longitud y configuración de idioma.</li>
-                <li><strong>Información opcional:</strong> Su nombre para la generación de firmas.</li>
-            </ul>
-
-            <h2>Cómo utilizamos la información</h2>
-            <ul>
-                <li><strong>Prestación del servicio:</strong> Para generar respuestas de correo electrónico con IA y proporcionárselas en tiempo real.</li>
-                <li><strong>Gestión del uso:</strong> Para rastrear su número de respuestas con respecto a los límites de su plan (suscripción y créditos adicionales) y gestionar los ciclos de facturación.</li>
-                <li><strong>Soporte al cliente:</strong> Para ayudarle con problemas técnicos y gestión de cuentas.</li>
-                <li><strong>Mejora del servicio:</strong> Para analizar patrones de uso y mejorar la funcionalidad de ReplyMate.</li>
-                <li><strong>Procesamiento de facturación:</strong> Para gestionar su suscripción y compras únicas a través del sistema de pago seguro de Stripe.</li>
-            </ul>
-
-            <h2>Servicios de terceros</h2>
-            <h3>Supabase</h3>
-            <p>Utilizamos Supabase para autenticación y almacenamiento de base de datos:</p>
-            <ul>
-                <li>El inicio de sesión con Google se gestiona a través de Supabase Auth</li>
-                <li>Los datos de su cuenta (ID de usuario, correo, plan, uso) se almacenan en la base de datos en la nube segura de Supabase</li>
-                <li>Supabase procesa los datos según su política de privacidad</li>
-            </ul>
-            <p><strong>Política de Privacidad de Supabase:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
-
-            <h3>OpenAI</h3>
-            <p>Utilizamos la API de OpenAI para generar respuestas de correo electrónico. Cuando solicita una respuesta:</p>
-            <ul>
-                <li>El contexto de su correo se envía a los servidores de OpenAI</li>
-                <li>OpenAI procesa estos datos según su política de privacidad</li>
-                <li>No compartimos sus datos con OpenAI más allá de lo necesario para la generación de respuestas</li>
-                <li>El contenido del correo no se almacena a largo plazo en OpenAI</li>
-            </ul>
-            <p><strong>Política de Privacidad de OpenAI:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
-
-            <h3>Stripe</h3>
-            <p>Utilizamos Stripe para el procesamiento seguro de pagos:</p>
-            <ul>
-                <li>La información de pago es manejada directamente por los sistemas seguros de Stripe</li>
-                <li>Solo almacenamos el ID de cliente y el ID de suscripción de Stripe en nuestra base de datos</li>
-                <li>Los detalles de tarjetas de crédito nunca se almacenan en nuestros servidores</li>
-                <li>Todo el procesamiento de pagos cumple con los estándares PCI DSS</li>
-            </ul>
-            <p><strong>Política de Privacidad de Stripe:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
-
-            <h2>Almacenamiento y retención de datos</h2>
-            <h3>Nuestra base de datos</h3>
-            <p>Mantenemos una base de datos en la nube segura (Supabase/PostgreSQL) que almacena:</p>
-            <ul>
-                <li><strong>ID de usuario y correo:</strong> Su identificador de cuenta y correo del inicio de sesión con Google</li>
-                <li><strong>Información del plan:</strong> Plan de suscripción actual, fechas del ciclo de facturación y estado de cancelación (si cancela al final del período)</li>
-                <li><strong>Conteo de uso:</strong> Número de respuestas generadas en el ciclo de facturación actual</li>
-                <li><strong>Créditos adicionales:</strong> Créditos de respuesta únicos restantes y fechas de vencimiento (si se compraron)</li>
-                <li><strong>IDs de Stripe:</strong> Identificadores de cliente y suscripción (solo para planes de pago)</li>
-                <li><strong>Marcas de tiempo:</strong> Creación de cuenta, última actualización y fechas del ciclo de facturación</li>
-            </ul>
-
-            <h3>Contenido del correo</h3>
-            <p><span class="highlight">El contenido del correo nunca se almacena en nuestra base de datos.</span> Solo lo procesamos temporalmente:</p>
-            <ul>
-                <li>Se envía a OpenAI para la generación de respuestas</li>
-                <li>Se elimina de nuestros servidores después de que se genera la respuesta de IA</li>
-                <li>No se utiliza para ningún otro propósito</li>
-                <li>No es accesible para nuestro equipo después del procesamiento</li>
-            </ul>
-            <p>ReplyMate solo utiliza el contenido del correo de Gmail para generar respuestas de IA solicitadas por el usuario. Estos datos nunca se utilizan para publicidad, perfilado o entrenamiento de modelos de IA, y no se venden ni comparten con terceros.</p>
-
-            <h3>Almacenamiento local</h3>
-            <p>La extensión almacena algunos datos localmente en su navegador:</p>
-            <ul>
-                <li><strong>Preferencias del usuario:</strong> Configuración de idioma, tono y longitud</li>
-                <li><strong>Caché de uso:</strong> Datos de uso temporales (caducan después de 30 segundos)</li>
-                <li><strong>Datos de sesión:</strong> Tokens de autenticación para el estado de inicio de sesión</li>
-            </ul>
-
-            <h3>Período de retención de datos</h3>
-            <ul>
-                <li><strong>Datos de cuenta de usuario:</strong> Se conservan indefinidamente a menos que solicite su eliminación</li>
-                <li><strong>Historial de uso:</strong> Solo datos del ciclo de facturación actual</li>
-                <li><strong>Contenido del correo:</strong> No se conserva (solo procesamiento temporal)</li>
-                <li><strong>Caché local:</strong> Caduca automáticamente después de 30 segundos</li>
-            </ul>
-
-            <h2>Seguridad</h2>
-            <p>Implementamos múltiples medidas de seguridad para proteger sus datos:</p>
-            <ul>
-                <li><strong>Cifrado HTTPS:</strong> Todas las comunicaciones entre su navegador y nuestros servidores están cifradas</li>
-                <li><strong>Autenticación segura:</strong> Inicio de sesión con Google a través de Supabase; no almacenamos contraseñas</li>
-                <li><strong>Recopilación mínima de datos:</strong> Solo recopilamos datos esenciales para la prestación del servicio</li>
-                <li><strong>Servicios de terceros seguros:</strong> Uso de servicios reputados (Supabase, OpenAI, Stripe) con sólidas prácticas de seguridad</li>
-                <li><strong>Actualizaciones de seguridad regulares:</strong> Nuestros sistemas se actualizan y monitorean regularmente</li>
-                <li><strong>Controles de acceso:</strong> El acceso a la base de datos está estrictamente controlado y registrado</li>
-            </ul>
-            <p>ReplyMate cumple con la Política de Datos de Usuario de Google Chrome Web Store. No vendemos datos de usuarios, no los utilizamos para publicidad ni los transferimos a terceros excepto cuando sea necesario para proporcionar el servicio (como Supabase para autenticación y almacenamiento, OpenAI para generación de respuestas y Stripe para procesamiento de pagos).</p>
-
-            <h2>Sus derechos</h2>
-            <p>Tiene los siguientes derechos con respecto a sus datos:</p>
-            <ul>
-                <li><strong>Acceso:</strong> Ver todos los datos que tenemos sobre usted a través de la configuración de la extensión</li>
-                <li><strong>Corrección:</strong> Actualizar sus preferencias de usuario e información de cuenta</li>
-                <li><strong>Portabilidad:</strong> Solicitar una copia de sus datos en un formato legible por máquina</li>
-                <li><strong>Eliminación:</strong> Solicitar la eliminación de su cuenta y todos los datos asociados. Los usuarios pueden solicitar la eliminación de su cuenta y datos asociados contactando a replymate.support@gmail.com. Al recibir una solicitud válida, eliminaremos los datos de nuestros sistemas en un plazo razonable.</li>
-                <li><strong>Restricción:</strong> Oponerse o restringir el procesamiento de sus datos</li>
-                <li><strong>Queja:</strong> Presentar una queja ante las autoridades de protección de datos si es necesario</li>
-            </ul>
-
-            <h2>Privacidad de menores</h2>
-            <p>ReplyMate no está destinado a menores de 13 años. No recopilamos conscientemente información personal de menores de 13 años. Si nos enteramos de que hemos recopilado información de un menor de 13 años, eliminaremos inmediatamente esta información.</p>
-
-            <h2>Cambios en esta Política de Privacidad</h2>
-            <p>Podemos actualizar esta Política de Privacidad de vez en cuando para reflejar cambios en nuestras prácticas, tecnología o requisitos legales. Haremos lo siguiente:</p>
-            <ul>
-                <li>Publicar cualquier cambio en esta página</li>
-                <li>Actualizar la fecha de "Última actualización" en la parte superior</li>
-                <li>Notificar a los usuarios sobre cambios significativos a través de la extensión</li>
-            </ul>
-            <p>El uso continuado de ReplyMate después de cualquier cambio constituye la aceptación de la política actualizada.</p>
-
-            <h2>Contacto</h2>
-            <p>Si tiene preguntas sobre esta Política de Privacidad o desea ejercer sus derechos sobre sus datos, contáctenos:</p>
-            
-            <div class="contact-info">
-                <p><strong>Correo electrónico:</strong> replymate.support@gmail.com</p>
-                <p><strong>Soporte de la extensión:</strong> A través de la extensión de Chrome o nuestro sitio web</p>
-                <p><strong>Tiempo de respuesta:</strong> Normalmente respondemos en un plazo de 7 días hábiles</p>
+    <!-- Korean -->
+    <div id="ko" class="language-content">
+        <section class="hero">
+            <span class="hero-badge">Chrome 확장 프로그램</span>
+            <h1>몇 분이 아닌 몇 초 만에 답장 작성</h1>
+            <p class="tagline">ReplyMate는 Gmail 내에서 AI로 스마트 답장을 생성합니다. 복사·붙여넣기 없이 클릭 한 번으로 전송하세요.</p>
+            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Chrome에 추가 — 무료</a>
+            <div class="mockup">
+                <div class="mockup-bar">
+                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-email">
+                        <div class="from">회의 후속 조치</div>
+                        <div class="preview">오늘 통화 감사합니다. 요약본 첨부해 드립니다...</div>
+                    </div>
+                    <div class="mockup-reply">
+                        <span>AI Reply</span> — 즉시 답장 생성
+                    </div>
+                </div>
             </div>
-
-            <div class="last-updated">
-                <p>Esta Política de Privacidad es efectiva a partir del 14 de marzo de 2026.</p>
+        </section>
+        <section class="features">
+            <h2 class="section-title">더 빠른 답장을 위한 모든 것</h2>
+            <p class="section-subtitle">품질을 유지하면서 시간을 절약하고 싶은 Gmail 사용자를 위해 제작되었습니다.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>즉시 생성</h3>
+                    <p>몇 초 만에 AI 답장을 받으세요. 대기 없이, 탭 전환 없이.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎚️</div>
+                    <h3>톤과 길이 맞춤</h3>
+                    <p>전문적, 친근, 정중 중 선택. 짧게 또는 상세하게—당신이 결정합니다.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3>맥락 추가</h3>
+                    <p>AI가 알아야 할 추가 정보를 입력하세요. 당신만의 답장.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Gmail에서 작동</h3>
+                    <p>복사·붙여넣기 불필요. 읽는 곳에서 바로 답장. 완벽한 통합.</p>
+                </div>
             </div>
-        </div>
+        </section>
+        <section class="how-it-works">
+            <h2 class="section-title">사용 방법</h2>
+            <p class="section-subtitle">스마트 답장을 위한 네 가지 간단한 단계.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>설치</h3>
+                    <p>Chrome 웹 스토어에서 ReplyMate 추가</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Gmail 열기</h3>
+                    <p>기존 Gmail 받은편지함에서 사용</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>AI Reply 클릭</h3>
+                    <p>클릭 한 번으로 답장 생성</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>전송</h3>
+                    <p>검토 후 필요시 수정하고 전송</p>
+                </div>
+            </div>
+        </section>
+        <section class="trust">
+            <h2>개인정보 보호</h2>
+            <p>ReplyMate는 인증을 위해 Google 로그인을 사용합니다. 이메일 내용은 답장 생성에만 사용되며 저장되거나 제3자와 공유되지 않습니다.</p>
+        </section>
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="privacy.html">개인정보 처리방침</a>
+                <a href="mailto:replymate.support@gmail.com">문의</a>
+            </div>
+            <span class="footer-contact">replymate.support@gmail.com</span>
+        </footer>
+    </div>
+
+    <!-- Japanese -->
+    <div id="ja" class="language-content">
+        <section class="hero">
+            <span class="hero-badge">Chrome拡張機能</span>
+            <h1>数分ではなく数秒で返信を作成</h1>
+            <p class="tagline">ReplyMateはGmail内でAIがスマートな返信を生成します。コピペ不要、クリックするだけで送信。</p>
+            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Chromeに追加 — 無料</a>
+            <div class="mockup">
+                <div class="mockup-bar">
+                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-email">
+                        <div class="from">ミーティングのフォローアップ</div>
+                        <div class="preview">本日のお電話ありがとうございます。要約を添付いたします...</div>
+                    </div>
+                    <div class="mockup-reply">
+                        <span>AI Reply</span> — 即座に返信を生成
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="features">
+            <h2 class="section-title">より速い返信に必要なすべて</h2>
+            <p class="section-subtitle">品質を保ちながら時間を節約したいGmailユーザーのために。</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>即座に生成</h3>
+                    <p>数秒でAI返信を取得。待ち時間なし、タブ切り替えなし。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎚️</div>
+                    <h3>トーンと長さをカスタマイズ</h3>
+                    <p>プロフェッショナル、フレンドリー、丁寧から選択。短くも長くも—あなた次第。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3>コンテキストを追加</h3>
+                    <p>AIが知るべき追加情報を入力。あなたの返信、あなたのスタイル。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Gmailで動作</h3>
+                    <p>コピペ不要。読んだ場所で返信。シームレスな統合。</p>
+                </div>
+            </div>
+        </section>
+        <section class="how-it-works">
+            <h2 class="section-title">使い方</h2>
+            <p class="section-subtitle">スマートな返信への4つの簡単なステップ。</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>インストール</h3>
+                    <p>ChromeウェブストアからReplyMateを追加</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Gmailを開く</h3>
+                    <p>既存のGmail受信トレイで使用</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>AI Replyをクリック</h3>
+                    <p>ワンクリックで返信を生成</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>送信</h3>
+                    <p>確認し、必要に応じて編集して送信</p>
+                </div>
+            </div>
+        </section>
+        <section class="trust">
+            <h2>プライバシーを大切に</h2>
+            <p>ReplyMateは認証にGoogleサインインを使用します。メール内容は返信の生成にのみ使用され、保存や第三者との共有は一切行いません。</p>
+        </section>
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="privacy.html">プライバシーポリシー</a>
+                <a href="mailto:replymate.support@gmail.com">お問い合わせ</a>
+            </div>
+            <span class="footer-contact">replymate.support@gmail.com</span>
+        </footer>
+    </div>
+
+    <!-- Spanish -->
+    <div id="es" class="language-content">
+        <section class="hero">
+            <span class="hero-badge">Extensión de Chrome</span>
+            <h1>Escribe respuestas en segundos, no minutos</h1>
+            <p class="tagline">ReplyMate usa IA para generar respuestas inteligentes directamente en Gmail. Sin copiar ni pegar—solo haz clic y envía.</p>
+            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Añadir a Chrome — Es gratis</a>
+            <div class="mockup">
+                <div class="mockup-bar">
+                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-email">
+                        <div class="from">Seguimiento de reunión</div>
+                        <div class="preview">Gracias por la llamada de hoy. Adjunto el resumen...</div>
+                    </div>
+                    <div class="mockup-reply">
+                        <span>AI Reply</span> — Genera tu respuesta al instante
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="features">
+            <h2 class="section-title">Todo lo que necesitas para responder más rápido</h2>
+            <p class="section-subtitle">Diseñado para usuarios de Gmail que quieren ahorrar tiempo sin sacrificar calidad.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Generación instantánea</h3>
+                    <p>Obtén respuestas con IA en segundos. Sin esperas, sin cambiar de pestaña.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎚️</div>
+                    <h3>Personaliza tono y longitud</h3>
+                    <p>Elige profesional, amigable o educado. Corto o detallado—tú decides.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3>Añade contexto</h3>
+                    <p>Incluye información extra que la IA debe conocer. Tu respuesta, a tu manera.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Funciona en Gmail</h3>
+                    <p>Sin copiar y pegar. Responde donde lees. Integración perfecta.</p>
+                </div>
+            </div>
+        </section>
+        <section class="how-it-works">
+            <h2 class="section-title">Cómo funciona</h2>
+            <p class="section-subtitle">Cuatro pasos simples para respuestas más inteligentes.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Instalar</h3>
+                    <p>Añade ReplyMate desde Chrome Web Store</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Abrir Gmail</h3>
+                    <p>Úsalo en tu bandeja de Gmail existente</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Haz clic en AI Reply</h3>
+                    <p>Un clic para generar tu respuesta</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Enviar</h3>
+                    <p>Revisa, edita si es necesario y envía</p>
+                </div>
+            </div>
+        </section>
+        <section class="trust">
+            <h2>Tu privacidad importa</h2>
+            <p>ReplyMate utiliza el inicio de sesión de Google para la autenticación. El contenido del correo se procesa solo para generar respuestas y nunca se almacena ni se comparte con terceros.</p>
+        </section>
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="privacy.html">Política de privacidad</a>
+                <a href="mailto:replymate.support@gmail.com">Contacto</a>
+            </div>
+            <span class="footer-contact">replymate.support@gmail.com</span>
+        </footer>
     </div>
 
     <script>
-        function switchLanguage(lang) {
-            const contents = document.querySelectorAll('.language-content');
-            contents.forEach(content => content.classList.remove('active'));
-            const buttons = document.querySelectorAll('.language-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            document.getElementById(lang).classList.add('active');
-            event.target.classList.add('active');
-            const titles = { 'en': 'ReplyMate Privacy Policy', 'ko': 'ReplyMate 개인정보 처리방침', 'ja': 'ReplyMateプライバシーポリシー', 'es': 'Política de Privacidad de ReplyMate' };
-            const langs = { 'en': 'en', 'ko': 'ko', 'ja': 'ja', 'es': 'es' };
-            document.title = titles[lang];
-            document.documentElement.lang = langs[lang];
-        }
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.language-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(lang).classList.add('active');
+                document.documentElement.lang = lang === 'en' ? 'en' : lang === 'ko' ? 'ko' : lang === 'ja' ? 'ja' : 'es';
+            });
+        });
     </script>
 </body>
 </html>

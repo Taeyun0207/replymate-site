@@ -6,6 +6,7 @@
     <title>ReplyMate - Plans & Pricing</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../images/icon32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/icon16.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -239,6 +240,57 @@
         .plan-cta.free:hover {
             background: #e2e8f0;
         }
+        .plan-cta.loading {
+            pointer-events: none;
+            opacity: 0.85;
+            position: relative;
+        }
+        .plan-cta.loading::after {
+            content: "";
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-left: 8px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: replymate-spin 0.6s linear infinite;
+            vertical-align: middle;
+        }
+        .plan-cta.cancel-plan {
+            background: #fff !important;
+            color: #64748b !important;
+            border: 2px solid #e2e8f0;
+            box-shadow: none;
+        }
+        .plan-cta.cancel-plan:hover {
+            background: #fef2f2 !important;
+            border-color: #fecaca;
+            color: #dc2626 !important;
+        }
+        .plan-cta.error-state {
+            background: #fef2f2 !important;
+            color: #dc2626 !important;
+        }
+        .plan-error-msg {
+            font-size: 0.85rem;
+            color: #dc2626;
+            margin-top: 8px;
+            text-align: center;
+        }
+        @keyframes replymate-spin {
+            to { transform: rotate(360deg); }
+        }
+        .purchase-success-banner {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
         /* Billing toggle */
         .billing-option {
@@ -388,7 +440,7 @@
                         <div class="billing-save">Save $3.98 per year</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta primary">Upgrade to Pro</a>
+                <a href="#" class="plan-cta primary" data-replymate-plan="pro" data-replymate-billing="annual">Upgrade to Pro</a>
             </div>
 
             <div class="plan-card featured">
@@ -420,7 +472,7 @@
                         <div class="billing-save">Save $9.98 per year</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta secondary">Upgrade to Pro+</a>
+                <a href="#" class="plan-cta secondary" data-replymate-plan="pro_plus" data-replymate-billing="annual">Upgrade to Pro+</a>
             </div>
         </div>
     </section>
@@ -478,7 +530,7 @@
                         <div class="billing-save">연 $3.98 절약</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta primary">Pro 업그레이드</a>
+                <a href="#" class="plan-cta primary" data-replymate-plan="pro" data-replymate-billing="annual">Pro 업그레이드</a>
             </div>
             <div class="plan-card featured">
                 <span class="featured-badge">가장 인기</span>
@@ -509,7 +561,7 @@
                         <div class="billing-save">연 $9.98 절약</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta secondary">Pro+ 업그레이드</a>
+                <a href="#" class="plan-cta secondary" data-replymate-plan="pro_plus" data-replymate-billing="annual">Pro+ 업그레이드</a>
             </div>
         </div>
     </section>
@@ -566,7 +618,7 @@
                         <div class="billing-save">年間$3.98お得</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta primary">Proにアップグレード</a>
+                <a href="#" class="plan-cta primary" data-replymate-plan="pro" data-replymate-billing="annual">Proにアップグレード</a>
             </div>
             <div class="plan-card featured">
                 <span class="featured-badge">最も人気</span>
@@ -597,7 +649,7 @@
                         <div class="billing-save">年間$9.98お得</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta secondary">Pro+にアップグレード</a>
+                <a href="#" class="plan-cta secondary" data-replymate-plan="pro_plus" data-replymate-billing="annual">Pro+にアップグレード</a>
             </div>
         </div>
     </section>
@@ -654,7 +706,7 @@
                         <div class="billing-save">Ahorra $3.98 al año</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta primary">Actualizar a Pro</a>
+                <a href="#" class="plan-cta primary" data-replymate-plan="pro" data-replymate-billing="annual">Actualizar a Pro</a>
             </div>
             <div class="plan-card featured">
                 <span class="featured-badge">Más popular</span>
@@ -685,7 +737,7 @@
                         <div class="billing-save">Ahorra $9.98 al año</div>
                     </label>
                 </div>
-                <a href="#" class="plan-cta secondary">Actualizar a Pro+</a>
+                <a href="#" class="plan-cta secondary" data-replymate-plan="pro_plus" data-replymate-billing="annual">Actualizar a Pro+</a>
             </div>
         </div>
     </section>
@@ -694,6 +746,20 @@
     </footer>
     </div>
 
+    <script>
+        window.REPLYMATE_BACKEND = "https://replymate-backend-bot8.onrender.com";
+        window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
+        window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
+        window.REPLYMATE_LABELS = {
+            cancel: { en: "Cancel subscription", ko: "구독 취소", ja: "サブスクリプションを解約", es: "Cancelar suscripción" },
+            cancelConfirm: { en: "Cancel your subscription? You'll keep access until the end of your billing period.", ko: "구독을 취소하시겠습니까? 결제 기간 종료일까지 이용 가능합니다.", ja: "サブスクリプションを解約しますか？請求期間の終了までご利用いただけます。", es: "¿Cancelar tu suscripción? Mantendrás el acceso hasta el final del período de facturación." },
+            cancelSuccess: { en: "Subscription cancelled. You'll keep access until {date}.", ko: "구독이 취소되었습니다. {date}까지 이용 가능합니다.", ja: "解約しました。{date}までご利用いただけます。", es: "Suscripción cancelada. Mantendrás el acceso hasta el {date}." },
+            loading: { en: "Loading...", ko: "로딩 중...", ja: "読み込み 중...", es: "Cargando..." },
+            tryAgain: { en: "Try again", ko: "다시 시도", ja: "再試行", es: "Reintentar" },
+            purchaseSuccess: { en: "Thank you! Your plan has been upgraded.", ko: "감사합니다! 플랜이 업그레이드되었습니다.", ja: "ありがとうございます！プランがアップグレードされました。", es: "¡Gracias! Tu plan ha sido actualizado." }
+        };
+    </script>
+    <script src="upgrade-page-checkout.js"></script>
     <script>
         const navLabels = {
             en: { cta: 'Add to Chrome' },
@@ -733,6 +799,8 @@
                 } else {
                     priceEl.innerHTML = type === 'annual' ? '$4.16<span>/month</span>' : '$4.99<span>/month</span>';
                 }
+                const cta = container.querySelector('.plan-cta.primary, .plan-cta.secondary');
+                if (cta) cta.setAttribute('data-replymate-billing', type);
             });
         });
     </script>

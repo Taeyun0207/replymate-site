@@ -303,8 +303,9 @@
     return (names[plan] && names[plan][getLang()]) || names[plan]?.en || plan;
   }
 
-  function applyCurrentPlanCardMarker(currentPlan) {
-    document.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
+  function applyCurrentPlanCardMarker(currentPlan, scope) {
+    const root = scope || document;
+    root.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
       const type = card.getAttribute("data-replymate-plan-type");
       const isCurrent = type === currentPlan;
       card.classList.toggle("current-plan", isCurrent);
@@ -335,10 +336,11 @@
     });
   }
 
-  function applyCurrentBillingMarker(currentPlan, billingInterval) {
+  function applyCurrentBillingMarker(currentPlan, billingInterval, scope) {
     if (!currentPlan || currentPlan === "free" || !billingInterval) return;
     const label = (LABELS.currentBillingBadge && LABELS.currentBillingBadge[getLang()]) || LABELS.currentBillingBadge?.en || "Current";
-    document.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
+    const root = scope || document;
+    root.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
       const type = card.getAttribute("data-replymate-plan-type");
       if (type !== currentPlan) {
         card.querySelectorAll(".billing-option.current-plan-billing").forEach((o) => {
@@ -363,8 +365,9 @@
     });
   }
 
-  function applyCurrentPlanDisplay(currentPlan) {
-    const badges = document.querySelectorAll(".current-plan-badge");
+  function applyCurrentPlanDisplay(currentPlan, scope) {
+    const root = scope || document;
+    const badges = root.querySelectorAll(".current-plan-badge");
     badges.forEach((badge) => {
       const lang = badge.getAttribute("data-lang") || "en";
       if (!currentPlan) {
@@ -381,8 +384,9 @@
     });
   }
 
-  function applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, currentPlan) {
-    const elements = document.querySelectorAll(".active-until");
+  function applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, currentPlan, scope) {
+    const root = scope || document;
+    const elements = root.querySelectorAll(".active-until");
     elements.forEach((el) => {
       if (!currentPeriodEnd || !currentPlan || currentPlan === "free") {
         el.classList.add("hidden");
@@ -411,12 +415,13 @@
     if (plan) applyCurrentPlanDisplay(plan);
   }
 
-  function applyCancelUI(currentPlan, cancelAtPeriodEnd) {
+  function applyCancelUI(currentPlan, cancelAtPeriodEnd, scope) {
     if (!currentPlan || currentPlan === "free") return;
 
     const isKeepMode = !!cancelAtPeriodEnd;
     const label = isKeepMode ? (t("keepSubscription") || "Keep subscription") : (t("cancel") || "Cancel subscription");
-    document.querySelectorAll("[data-replymate-plan]").forEach((btn) => {
+    const root = scope || document;
+    root.querySelectorAll("[data-replymate-plan]").forEach((btn) => {
       const plan = btn.getAttribute("data-replymate-plan");
       if (plan !== currentPlan) return;
 
@@ -598,18 +603,22 @@
       document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (!document.querySelector(".language-content.active")) {
+          var activeSection = document.querySelector(".language-content.active");
+          if (!activeSection) {
             document.getElementById("en")?.classList.add("active");
           }
+          // Apply to all sections so the visible one is correct regardless of timing
           applyCancelUI(plan, cancelAtPeriodEnd);
           applyCurrentPlanDisplay(plan);
           applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
           applyCurrentPlanCardMarker(plan);
           applyCurrentBillingMarker(plan, billingInterval);
           updateBillingChangeButton();
-          if (!document.querySelector(".language-content.active")) {
-            document.getElementById("en")?.classList.add("active");
-          }
+          // Ensure active section stays visible after subscription UI
+          var ensure = document.querySelector(".language-content.active");
+          if (!ensure) document.getElementById("en")?.classList.add("active");
+          ensure = document.querySelector(".language-content.active");
+          if (ensure) ensure.style.setProperty("display", "block", "important");
         });
       });
     })();

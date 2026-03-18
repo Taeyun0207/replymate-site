@@ -101,6 +101,14 @@ The upgrade page uses these on Pro/Pro+ plan cards:
 <button data-replymate-cancel>Cancel subscription</button>
 ```
 
+**Switch plan (portal):** With `REPLYMATE_SWITCH_VIA_PORTAL = true`, add a button that opens the portal so the user picks their plan:
+
+```html
+<button data-replymate-switch data-replymate-plan="pro" data-replymate-billing="annual">Switch to Pro Annual</button>
+```
+
+The `data-replymate-plan` and `data-replymate-billing` are ignored when using the portal; the user chooses in Stripe. Programmatic: `window.replymateSwitchPlan(plan, billing)`.
+
 ### Success banner (optional)
 
 After checkout (regular upgrade or Switch monthly↔annual), the page shows a success message. You can either:
@@ -185,6 +193,10 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 - Ensure your backend implements `POST /billing/keep-subscription` to reactivate a cancelled subscription (set Stripe `cancel_at_period_end` to false).
 - The endpoint should return 200 with optional JSON; empty response is supported.
 - If your backend uses a different path (e.g. `reactivate-subscription`), set `window.REPLYMATE_KEEP_SUBSCRIPTION_PATH = "reactivate-subscription"` before loading the checkout script. The frontend will also try `reactivate-subscription` and `undo-cancel` if `keep-subscription` returns 404.
+
+### Switch button updates wrong plan in database
+
+If the Switch button forces a plan before the user chooses in the portal, ensure `REPLYMATE_SWITCH_VIA_PORTAL = true`. With the portal flow, the frontend opens the Stripe Customer Portal **without** passing plan/billing; the user picks in the portal and the DB is updated from the `customer.subscription.updated` webhook. Without the portal, the frontend calls `create-checkout-session` with `subscriptionChange: true` and the button's plan, which updates the subscription before the user reaches the portal.
 
 ### Switch button doesn't redirect
 

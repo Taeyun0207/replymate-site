@@ -22,7 +22,10 @@
  * 4. Cancel button (shown automatically for Pro/Pro+ users, or add standalone):
  *    <button data-replymate-cancel>Cancel subscription</button>
  *
- * 5. Success banner (optional): Add #replymate-success-banner or [data-replymate-success-banner]
+ * 5. Switch button (with REPLYMATE_SWITCH_VIA_PORTAL = true, opens portal; user picks plan):
+ *    <button data-replymate-switch data-replymate-plan="pro" data-replymate-billing="annual">Switch to Pro Annual</button>
+ *
+ * 6. Success banner (optional): Add #replymate-success-banner or [data-replymate-success-banner]
  *    to show a custom success message after checkout. If absent, a banner is created in .pricing.
  *    Globals set on success: window.REPLYMATE_CHECKOUT_SUCCESS, window.REPLYMATE_CHECKOUT_SESSION_ID
  *
@@ -197,6 +200,18 @@
     } else {
       throw new Error(data.error || data.message || "No checkout URL received");
     }
+  }
+
+  /**
+   * Switch plan/billing: uses portal when REPLYMATE_SWITCH_VIA_PORTAL !== false (user picks in portal),
+   * otherwise uses create-checkout-session with subscriptionChange (backend forces plan/billing).
+   * For portal: pass no plan/billing so the user chooses in the portal; DB updates from webhook.
+   */
+  async function switchPlan(plan, billing) {
+    if (SWITCH_VIA_PORTAL) {
+      return createPortalSession();
+    }
+    return createCheckout(plan || "pro", billing || "annual", { subscriptionChange: true });
   }
 
   /** Opens Stripe Customer Portal for managing subscription (change billing, payment method, etc.). */
@@ -626,6 +641,9 @@
     // Standalone cancel buttons
     const standaloneCancelBtns = document.querySelectorAll("[data-replymate-cancel]:not([data-replymate-plan])");
 
+    // Standalone switch buttons: [data-replymate-switch] opens portal (user picks plan in Stripe)
+    const switchBtns = document.querySelectorAll("[data-replymate-switch]");
+
     const params = new URLSearchParams(location.search);
     const justPurchased = params.get("success") === "1" || params.get("switch") === "1" || params.get("session_id");
     checkSuccessAndShowBanner();
@@ -693,21 +711,17 @@
           if (btn.getAttribute("data-replymate-switch-billing") === "true") {
             setButtonLoading(btn, true);
             try {
-              if (SWITCH_VIA_PORTAL) {
-                const result = await createPortalSession();
-                if (result === null) {
-                  setButtonLoading(btn, false);
-                  const toast = document.createElement("div");
-                  toast.className = "billing-prompt-toast";
-                  toast.textContent = "⚠️ " + (t("signInFirst") || "Please sign in first.");
-                  document.body.appendChild(toast);
-                  setTimeout(() => toast.remove(), 3000);
-                }
-              } else {
-                const card = btn.closest(".plan-card");
-                const selectedOpt = card && card.querySelector(".billing-option input:checked");
-                const targetBilling = selectedOpt ? selectedOpt.closest(".billing-option").getAttribute("data-type") : "annual";
-                await createCheckout(plan, targetBilling, { subscriptionChange: true });
+              const card = btn.closest(".plan-card");
+              const selectedOpt = card && card.querySelector(".billing-option input:checked");
+              const targetBilling = selectedOpt ? selectedOpt.closest(".billing-option").getAttribute("data-type") : "annual";
+              const result = await switchPlan(plan, targetBilling);
+              if (result === null) {
+                setButtonLoading(btn, false);
+                const toast = document.createElement("div");
+                toast.className = "billing-prompt-toast";
+                toast.textContent = "⚠️ " + (t("signInFirst") || "Please sign in first.");
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
               }
             } catch (err) {
               console.error("[ReplyMate Upgrade]", err);
@@ -780,6 +794,31 @@
         await handleCancelClick(btn);
       });
     });
+
+    // Click handlers for [data-replymate-switch] – opens portal, user picks plan (no plan forced)
+    switchBtns.forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const plan = btn.getAttribute("data-replymate-plan") || "pro";
+        const billing = btn.getAttribute("data-replymate-billing") || "annual";
+        setButtonLoading(btn, true);
+        try {
+          const result = await switchPlan(plan, billing);
+          if (result === null) {
+            setButtonLoading(btn, false);
+            const toast = document.createElement("div");
+            toast.className = "billing-prompt-toast";
+            toast.textContent = "⚠️ " + (t("signInFirst") || "Please sign in first.");
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+          }
+        } catch (err) {
+          console.error("[ReplyMate Upgrade]", err);
+          const msg = err && err.message ? err.message : "Something went wrong. Please try again.";
+          setButtonError(btn, msg);
+        }
+      });
+    });
   }
 
   if (document.readyState === "loading") {
@@ -789,6 +828,7 @@
   }
 
   window.replymateUpdateBillingButton = updateBillingChangeButton;
+  window.replymateSwitchPlan = switchPlan;
 
   const langObserver = new MutationObserver(() => {
     updateCancelLabels();

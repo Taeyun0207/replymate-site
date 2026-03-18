@@ -528,7 +528,6 @@
       btn.addEventListener("click", async (e) => {
         e.preventDefault();
         const plan = btn.getAttribute("data-replymate-plan");
-        const billing = btn.getAttribute("data-replymate-billing") || "annual";
         if (!plan || !["pro", "pro_plus"].includes(plan)) return;
 
         if (btn.getAttribute("data-replymate-cancel") === "true") {
@@ -554,8 +553,8 @@
 
         // Check that user has selected Monthly or Annual (billing option)
         const card = btn.closest(".plan-card");
-        const hasBillingSelection = card && card.querySelector(".billing-option.selected");
-        if (!hasBillingSelection) {
+        const selectedOption = card && card.querySelector(".billing-option input:checked");
+        if (!selectedOption) {
           const msg = t("chooseBillingFirst") || "Please choose Monthly or Annual first.";
           const toast = document.createElement("div");
           toast.className = "billing-prompt-toast";
@@ -564,6 +563,7 @@
           setTimeout(() => toast.remove(), 3000);
           return;
         }
+        const billing = selectedOption.closest(".billing-option").getAttribute("data-type") || "annual";
 
         if (btn.classList.contains("error-state")) {
           clearButtonError(btn);

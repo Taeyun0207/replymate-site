@@ -30,6 +30,8 @@ BILLING_CANCEL_URL=https://replymateai.app/upgrade/
 3. Select events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
 4. Copy the **Signing secret** → set as `STRIPE_WEBHOOK_SECRET` in Render env
 
+**Portal sync:** When users change/cancel/reactivate in the Stripe Customer Portal, Stripe sends `customer.subscription.updated` or `customer.subscription.deleted`. Your webhook must update the user's plan in your DB so `/billing/me` returns the correct data. The frontend refetches when the user returns from the portal.
+
 ---
 
 ## 3. Supabase Auth – Redirect URLs (required)
@@ -95,7 +97,7 @@ The upgrade page uses these on Pro/Pro+ plan cards:
 - **Pro+ Annual:** `data-replymate-plan="pro_plus"` `data-replymate-billing="annual"`
 - **Pro+ Monthly:** `data-replymate-plan="pro_plus"` `data-replymate-billing="monthly"`
 
-**Manage subscription:** A "Manage subscription" button appears below the plan cards when the user has Pro or Pro+. It opens the Stripe Customer Portal (change billing, payment method, cancel).
+**Manage subscription:** A "Manage subscription" button appears below the plan cards for all users (free, Pro, Pro+). It opens the Stripe Customer Portal. For portal changes (cancel, reactivate, switch plan) to sync with your system, your backend must handle Stripe webhooks (`customer.subscription.updated`, `customer.subscription.deleted`) and update the user's plan in your DB. The frontend refetches subscription status when returning from the portal and when the tab gains focus.
 
 **Cancel subscription:** Shown automatically for Pro/Pro+ users. Or add a standalone button:
 
@@ -179,9 +181,10 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 - Remove `http://localhost:*` from Supabase Redirect URLs, or
 - Add your production URL and always test from production
 
-### Subscription data not updating after purchase
+### Subscription data not updating after purchase or portal changes
 
-- The page refetches subscription status at 1.5s, 3.5s, and 6s after a purchase. Ensure your webhook handles `checkout.session.completed` and `customer.subscription.updated` and updates the user's plan in your DB.
+- The page refetches subscription status at 1.5s, 3.5s, 6s, 10s after a purchase or when returning from the Stripe Customer Portal. It also refetches when the tab gains focus (`visibilitychange`).
+- Ensure your webhook handles `checkout.session.completed`, `customer.subscription.updated`, and `customer.subscription.deleted` and updates the user's plan in your DB.
 - `/billing/me` must return the updated `plan`, `billingInterval`, and `currentPeriodEnd` from your DB (not cached).
 - Manually refresh: `window.replymateRefreshSubscription()` in the console.
 

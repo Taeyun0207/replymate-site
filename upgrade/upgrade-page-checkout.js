@@ -219,13 +219,17 @@
     const token = await getAccessToken();
     if (!token) return null;
 
+    const params = new URLSearchParams(location.search);
+    params.set("from_portal", "1");
+    const returnUrl = location.origin + location.pathname + "?" + params.toString() + (location.hash || "");
+
     const res = await fetch(`${BACKEND}/billing/create-portal-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({ returnUrl: window.location.href })
+      body: JSON.stringify({ returnUrl })
     });
 
     const data = await res.json().catch(() => ({}));
@@ -472,16 +476,12 @@
     });
   }
 
-  /** Show/hide portal button and apply labels. Apply to all sections so it works regardless of active language. */
+  /** Show portal button for all users (free, pro, pro+). Apply to all sections. */
   function applyPortalButton(currentPlan) {
     document.querySelectorAll("[data-replymate-portal]").forEach((el) => {
-      if (currentPlan && currentPlan !== "free") {
-        el.style.setProperty("display", "inline-block", "important");
-        el.style.visibility = "visible";
-        el.textContent = t("manageSubscription") || "Manage subscription";
-      } else {
-        el.style.setProperty("display", "none", "important");
-      }
+      el.style.setProperty("display", "inline-block", "important");
+      el.style.visibility = "visible";
+      el.textContent = t("manageSubscription") || "Manage subscription";
     });
   }
 
@@ -678,12 +678,20 @@
 
     const params = new URLSearchParams(location.search);
     const justPurchased = params.get("success") === "1" || params.get("switch") === "1" || params.get("session_id");
+    const fromPortal = params.get("from_portal") === "1";
     checkSuccessAndShowBanner();
+
+    if (fromPortal && history.replaceState) {
+      params.delete("from_portal");
+      const clean = params.toString() ? "?" + params.toString() : location.pathname;
+      history.replaceState(null, "", clean + (location.hash || ""));
+    }
 
     // Fetch subscription status, apply Cancel/Keep UI, show current plan, mark current plan card
     const skipSubscriptionUI = /[?&]debug=2/.test(location.search);
 
     function applySubscriptionUI(status) {
+      applyPortalButton(status?.plan || "free");
       if (!status) return;
       const { plan, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } = status;
       document.body.setAttribute("data-replymate-plan", plan);
@@ -704,29 +712,33 @@
       applyCurrentPlanCardMarker(plan, activeSection);
       applyCurrentBillingMarker(plan, billingInterval, activeSection);
       updateBillingChangeButton();
-      applyPortalButton(plan);
     }
 
     (async () => {
       if (skipSubscriptionUI) return;
       let status = await getSubscriptionStatus();
-      if (!status) return;
       applySubscriptionUI(status);
       // Defer to next frame, then again after 400ms (OAuth redirect can leave DOM in flux)
       requestAnimationFrame(() => {
         requestAnimationFrame(() => applySubscriptionUI(status));
         setTimeout(() => applySubscriptionUI(status), 400);
       });
-      // After purchase: refetch subscription to pick up webhook updates (Stripe may not have synced yet)
-      if (justPurchased) {
-        [1500, 3500, 6000].forEach((ms) => {
+      const needsRefetch = justPurchased || fromPortal;
+      if (needsRefetch) {
+        [1500, 3500, 6000, 10000].forEach((ms) => {
           setTimeout(async () => {
             const fresh = await getSubscriptionStatus();
-            if (fresh) applySubscriptionUI(fresh);
+            applySubscriptionUI(fresh);
           }, ms);
         });
       }
     })();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && !skipSubscriptionUI) {
+        getSubscriptionStatus().then((s) => applySubscriptionUI(s));
+      }
+    });
 
     window.replymateRefreshSubscription = async function () {
       const s = await getSubscriptionStatus();
@@ -943,7 +955,7 @@
     applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, scope);
     if (plan && plan !== "free") applyCancelUI(plan, cancelAtPeriodEnd, scope);
     applyDowngradeBlock(plan);
-    applyPortalButton(plan);
+    applyPortalButton(plan || "free");
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

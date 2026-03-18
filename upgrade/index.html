@@ -71,6 +71,29 @@
             transition: color 0.2s;
         }
         .header-links a:hover { color: #7c3aed; }
+        .btn-signin {
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-signin:hover {
+            background: #e2e8f0;
+            color: #1a1a2e;
+        }
+        .btn-signin.signed-in {
+            background: transparent;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .btn-signin.signed-in:hover {
+            color: #7c3aed;
+        }
         .cta-header {
             background: #7c3aed;
             color: white !important;
@@ -331,7 +354,6 @@
 
         /* Billing toggle */
         .billing-option {
-            position: relative;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             padding: 16px;
@@ -346,23 +368,6 @@
             border-color: #7c3aed;
             background: #faf5ff;
             box-shadow: 0 2px 8px rgba(124, 58, 237, 0.12);
-        }
-        .billing-option.current-billing {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.06);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
-        }
-        .billing-option.current-billing::after {
-            content: attr(data-current-label);
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.15);
-            padding: 2px 8px;
-            border-radius: 100px;
         }
         .billing-option {
             display: flex;
@@ -410,13 +415,6 @@
             font-weight: 500;
             margin-top: 4px;
         }
-        .billing-options-prompt {
-            animation: billing-prompt-pulse 0.6s ease;
-        }
-        @keyframes billing-prompt-pulse {
-            0%, 100% { outline: none; }
-            50% { outline: 2px solid #7c3aed; outline-offset: 4px; border-radius: 10px; }
-        }
         .billing-prompt-toast {
             position: fixed;
             bottom: 24px;
@@ -459,6 +457,7 @@
             ReplyMate
         </a>
         <div class="header-links">
+            <button class="btn-signin" id="auth-btn" style="display:none">Sign in</button>
             <button class="lang-btn active" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
@@ -867,6 +866,7 @@
             if (labels) document.querySelectorAll('.nav-cta').forEach(e => { e.textContent = labels.cta; });
             document.documentElement.lang = lang;
             if (history.replaceState) history.replaceState(null, '', '?lang=' + lang);
+            if (window.replymateUpdateAuthLabels) window.replymateUpdateAuthLabels();
         }
         const params = new URLSearchParams(location.search);
         const langParam = params.get('lang');
@@ -892,6 +892,48 @@
                 if (cta) cta.setAttribute('data-replymate-billing', type);
             });
         });
+
+        (function initAuth() {
+            const url = window.REPLYMATE_SUPABASE_URL;
+            const anon = window.REPLYMATE_SUPABASE_ANON;
+            if (!url || !anon || !window.supabase) return;
+            const supabase = window.supabase.createClient(url, anon);
+            const authBtn = document.getElementById('auth-btn');
+            if (!authBtn) return;
+            const authLabels = { signIn: { en: 'Sign in', ko: '로그인', ja: 'ログイン', es: 'Iniciar sesión' }, signOut: { en: 'Sign out', ko: '로그아웃', ja: 'ログアウト', es: 'Cerrar sesión' } };
+            function getAuthLabel(key) {
+                const lang = document.documentElement.lang || 'en';
+                return (authLabels[key] && authLabels[key][lang]) || authLabels[key]?.en || key;
+            }
+            function updateAuthUI(session) {
+                authBtn.style.display = 'inline-block';
+                if (session?.user) {
+                    authBtn.textContent = getAuthLabel('signOut');
+                    authBtn.classList.add('signed-in');
+                } else {
+                    authBtn.textContent = getAuthLabel('signIn');
+                    authBtn.classList.remove('signed-in');
+                }
+            }
+            supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            supabase.auth.onAuthStateChange((_, session) => updateAuthUI(session));
+            authBtn.addEventListener('click', async () => {
+                const session = (await supabase.auth.getSession()).data.session;
+                if (session) {
+                    await supabase.auth.signOut();
+                    return;
+                }
+                const base = window.REPLYMATE_UPGRADE_URL || (window.location.origin + window.location.pathname);
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: base }
+                });
+                if (error) console.error('[ReplyMate Auth]', error);
+            });
+            window.replymateUpdateAuthLabels = () => {
+                supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            };
+        })();
     </script>
 </body>
 </html>

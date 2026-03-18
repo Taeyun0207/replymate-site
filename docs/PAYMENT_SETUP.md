@@ -1,6 +1,6 @@
 # ReplyMate Payment Setup Guide
 
-This guide explains how to enable payments on your upgrade page (https://taeyun0207.github.io/replymate-site/upgrade/index.html).
+This guide explains how to enable payments on your upgrade page (https://replymateai.app/upgrade/index.html).
 
 ---
 
@@ -17,8 +17,8 @@ Your backend `.env` should have:
 Example:
 
 ```
-BILLING_SUCCESS_URL=https://taeyun0207.github.io/replymate-site/upgrade/?success=1
-BILLING_CANCEL_URL=https://taeyun0207.github.io/replymate-site/upgrade/
+BILLING_SUCCESS_URL=https://replymateai.app/upgrade/?success=1
+BILLING_CANCEL_URL=https://replymateai.app/upgrade/
 ```
 
 ---
@@ -37,16 +37,16 @@ BILLING_CANCEL_URL=https://taeyun0207.github.io/replymate-site/upgrade/
 **If you get redirected to localhost after Google sign-in, fix this in Supabase:**
 
 1. Go to **Supabase Dashboard** → **Authentication** → **URL Configuration**
-2. Set **Site URL** to `https://taeyun0207.github.io` (or `https://taeyun0207.github.io/replymate-site/upgrade/index.html`)
+2. Set **Site URL** to `https://replymateai.app` (or `https://replymateai.app/upgrade/index.html`)
 3. Under **Redirect URLs**, add:
-   - `https://taeyun0207.github.io/replymate-site/upgrade/index.html`
-   - `https://taeyun0207.github.io/replymate-site/` (homepage login)
-   - `https://taeyun0207.github.io/replymate-site/**`
+   - `https://replymateai.app/upgrade/index.html`
+   - `https://replymateai.app/` (homepage login)
+   - `https://replymateai.app/**`
 4. **Remove** `http://localhost:3000` and any other localhost URLs from Redirect URLs
 
 **Site URL** is the fallback when Supabase rejects the redirect. If it's set to localhost, you'll land on localhost after sign-in. Set it to production.
 
-**Homepage login:** Users can sign in on the homepage first; the session is shared with the upgrade page (same origin). Ensure `https://taeyun0207.github.io/replymate-site/` is in Redirect URLs.
+**Homepage login:** Users can sign in on the homepage first; the session is shared with the upgrade page (same origin). Ensure `https://replymateai.app/` is in Redirect URLs.
 
 ---
 
@@ -59,8 +59,7 @@ The upgrade page needs Google Sign-In (same Supabase project as the extension).
 3. Under **Authorized redirect URIs**, add:
    - `https://cmmoirdihefyswerkkay.supabase.co/auth/v1/callback` (if not already there)
 4. Under **Authorized JavaScript origins**, add:
-   - `https://taeyun0207.github.io`
-   - `https://taeyun0207.github.io/replymate-site`
+   - `https://replymateai.app`
 
 ---
 
@@ -146,7 +145,7 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 ### Redirects to localhost instead of Stripe
 
 - **Supabase:** Ensure production URLs are in Redirect URLs; remove or deprioritize localhost
-- **Testing:** Use the live site (https://taeyun0207.github.io/...) instead of localhost
+- **Testing:** Use the live site (https://replymateai.app/...) instead of localhost
 
 ### "localhost refused to connect" after Google sign-in
 
@@ -216,7 +215,7 @@ The homepage and upgrade page share the same Supabase session via `storageKey: "
 
 **Extension popup sync:** To share auth with the Chrome extension popup:
 
-1. **Content script** on `*://taeyun0207.github.io/replymate-site/*` (and localhost for dev)
+1. **Content script** on `*://replymateai.app/*` (and localhost for dev)
 2. On load: read session from `localStorage.getItem("replymate-auth")` (or Supabase’s actual key, e.g. `sb-*-auth-token`) and send to background via `chrome.runtime.sendMessage`
 3. Background stores in `chrome.storage.sync`
 4. Popup reads from `chrome.storage.sync` and initializes Supabase with that session

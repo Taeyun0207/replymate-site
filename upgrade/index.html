@@ -545,7 +545,7 @@
                 <div class="plan-desc">AI-powered email replies</div>
                 <ul class="plan-features">
                     <li>25 AI replies per month</li>
-                    <li>15 translations per day</li>
+                    <li>10 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
                 </ul>
@@ -558,7 +558,7 @@
                 <div class="plan-desc">For everyday email</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">100 AI replies per month</li>
-                    <li class="feature-highlight">Unlimited translations</li>
+                    <li class="feature-highlight">30 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
                     <li>Priority support</li>
@@ -638,7 +638,7 @@
                 <div class="plan-desc">AI 이메일 답장</div>
                 <ul class="plan-features">
                     <li>월 25회 AI 답장</li>
-                    <li>일 15회 번역</li>
+                    <li>일 10회 번역</li>
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                 </ul>
@@ -650,7 +650,7 @@
                 <div class="plan-desc">일상 이메일에 적합</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">월 100회 AI 답장</li>
-                    <li class="feature-highlight">무제한 번역</li>
+                    <li class="feature-highlight">일 30회 번역</li>
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                     <li>우선 지원</li>
@@ -728,7 +728,7 @@
                 <div class="plan-desc">AIメール返信</div>
                 <ul class="plan-features">
                     <li>月25回のAI返信</li>
-                    <li>1日15回の翻訳</li>
+                    <li>1日10回の翻訳</li>
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
                 </ul>
@@ -740,7 +740,7 @@
                 <div class="plan-desc">日常のメールに最適</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">月100回のAI返信</li>
-                    <li class="feature-highlight">翻訳無制限</li>
+                    <li class="feature-highlight">1日30回の翻訳</li>
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
                     <li>優先サポート</li>
@@ -818,7 +818,7 @@
                 <div class="plan-desc">Respuestas de email con IA</div>
                 <ul class="plan-features">
                     <li>25 respuestas IA al mes</li>
-                    <li>15 traducciones al día</li>
+                    <li>10 traducciones al día</li>
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
                 </ul>
@@ -830,7 +830,7 @@
                 <div class="plan-desc">Para el día a día</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">100 respuestas IA al mes</li>
-                    <li class="feature-highlight">Traducciones ilimitadas</li>
+                    <li class="feature-highlight">30 traducciones al día</li>
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
                     <li>Soporte prioritario</li>
@@ -896,7 +896,7 @@
         window.REPLYMATE_BACKEND = "https://replymate-backend-bot8.onrender.com";
         window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
-        window.REPLYMATE_UPGRADE_URL = "https://taeyun0207.github.io/replymate-site/upgrade/index.html";
+        window.REPLYMATE_UPGRADE_URL = "https://replymateai.app/upgrade/index.html";
         window.REPLYMATE_LABELS = {
             cancel: { en: "Cancel subscription", ko: "구독 취소", ja: "サブスクを解約", es: "Cancelar suscripción" },
             cancelConfirm: { en: "Cancel your subscription? You'll keep access until the end of your billing period.", ko: "구독을 취소하시겠습니까? 결제 기간까지는 계속 이용하실 수 있습니다.", ja: "サブスクを解約しますか？お支払い期間の終了までご利用いただけます。", es: "¿Cancelar la suscripción? Seguirás teniendo acceso hasta el final del período de facturación." },
@@ -941,6 +941,7 @@
             document.querySelectorAll('.language-content').forEach(c => c.classList.remove('active'));
             const el = document.getElementById(lang);
             if (el) el.classList.add('active');
+            else document.getElementById('en')?.classList.add('active');
             const labels = navLabels[lang];
             if (labels) document.querySelectorAll('.nav-cta').forEach(e => { e.textContent = labels.cta; });
             document.documentElement.lang = lang;
@@ -953,6 +954,7 @@
         const params = new URLSearchParams(location.search);
         const langParam = params.get('lang');
         if (['en','ko','ja','es'].includes(langParam)) setLang(langParam);
+        else if (!document.querySelector('.language-content.active')) document.getElementById('en')?.classList.add('active');
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => setLang(btn.dataset.lang));
         });
@@ -1004,7 +1006,12 @@
                     authBtn.classList.remove('signed-in');
                 }
             }
-            supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            supabase.auth.getSession().then(({ data: { session } }) => {
+                updateAuthUI(session);
+                if (location.hash && /access_token|refresh_token/.test(location.hash) && history.replaceState) {
+                    history.replaceState(null, '', location.pathname + location.search);
+                }
+            });
             supabase.auth.onAuthStateChange((_, session) => updateAuthUI(session));
             authBtn.addEventListener('click', async () => {
                 const session = (await supabase.auth.getSession()).data.session;

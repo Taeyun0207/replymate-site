@@ -5,11 +5,11 @@ If you see this error after signing in with Google, **Supabase is redirecting to
 ## Fix in Supabase Dashboard
 
 1. Go to **Supabase Dashboard** → **Authentication** → **URL Configuration**
-2. **Site URL**: Set to `https://taeyun0207.github.io` (or your main domain)
+2. **Site URL**: Set to `https://replymateai.app` (or your main domain)
    - If it's `http://localhost:xxxx`, change it to production
 3. **Redirect URLs**: Add these (one per line):
-   - `https://taeyun0207.github.io/replymate-site/upgrade/index.html`
-   - `https://taeyun0207.github.io/replymate-site/**`
+   - `https://replymateai.app/upgrade/index.html`
+   - `https://replymateai.app/**`
 4. **Remove** any `http://localhost:*` entries from Redirect URLs if you're not testing locally
 5. Click **Save**
 

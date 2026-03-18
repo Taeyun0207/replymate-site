@@ -107,7 +107,17 @@
       if (["free", "pro", "pro_plus"].includes(plan)) planVal = plan;
       else if (plan === "proplus") planVal = "pro_plus";
       const cancelAtPeriodEnd = !!(data.cancelAtPeriodEnd ?? data.cancel_at_period_end ?? data.subscription?.cancel_at_period_end);
-      const raw = (data.billingInterval ?? data.billing_interval ?? data.interval ?? data.subscription?.interval ?? "").toLowerCase();
+      let raw = (
+        data.billingInterval ?? data.billing_interval ?? data.interval ??
+        data.subscription?.interval ?? data.subscription?.plan?.interval ??
+        data.subscription?.items?.data?.[0]?.price?.recurring?.interval ??
+        ""
+      ).toLowerCase();
+      if (!raw) {
+        const priceId = (data.subscription?.items?.data?.[0]?.price?.id ?? data.priceId ?? "").toLowerCase();
+        if (priceId.includes("monthly") || priceId.includes("month")) raw = "monthly";
+        else if (priceId.includes("annual") || priceId.includes("yearly") || priceId.includes("year")) raw = "annual";
+      }
       let billingInterval = null;
       if (["month", "monthly"].includes(raw)) billingInterval = "monthly";
       else if (["year", "annual", "yearly"].includes(raw)) billingInterval = "annual";
@@ -124,7 +134,7 @@
       const msg = t("signInFirst") || "Please sign in first to upgrade.";
       const toast = document.createElement("div");
       toast.className = "billing-prompt-toast";
-      toast.textContent = msg;
+      toast.textContent = "⚠️ " + msg;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
       return false;
@@ -361,7 +371,7 @@
       const msg = t("signInFirstCancel") || "Please sign in first to manage your subscription.";
       const toast = document.createElement("div");
       toast.className = "billing-prompt-toast";
-      toast.textContent = msg;
+      toast.textContent = "⚠️ " + msg;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
       return;
@@ -385,7 +395,7 @@
       const msg = t("signInFirstCancel") || "Please sign in first to manage your subscription.";
       const toast = document.createElement("div");
       toast.className = "billing-prompt-toast";
-      toast.textContent = msg;
+      toast.textContent = "⚠️ " + msg;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
       return;
@@ -471,7 +481,7 @@
           const msg = t("signInFirst") || "Please sign in first to upgrade.";
           const toast = document.createElement("div");
           toast.className = "billing-prompt-toast";
-          toast.textContent = msg;
+          toast.textContent = "⚠️ " + msg;
           document.body.appendChild(toast);
           setTimeout(() => toast.remove(), 3000);
           return;

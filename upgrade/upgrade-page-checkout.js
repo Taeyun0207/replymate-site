@@ -589,15 +589,16 @@
       const status = await getSubscriptionStatus();
       if (!status) return;
       const { plan, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } = status;
+      document.body.setAttribute("data-replymate-plan", plan);
+      document.body.setAttribute("data-replymate-billing", billingInterval || "");
+      document.body.setAttribute("data-replymate-period-end", currentPeriodEnd || "");
+      document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
       applyCancelUI(plan, cancelAtPeriodEnd);
       applyCurrentPlanDisplay(plan);
       applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
       applyCurrentPlanCardMarker(plan);
       applyCurrentBillingMarker(plan, billingInterval);
-      document.body.setAttribute("data-replymate-plan", plan);
-      document.body.setAttribute("data-replymate-billing", billingInterval || "");
-      document.body.setAttribute("data-replymate-period-end", currentPeriodEnd || "");
-      document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
+      updateBillingChangeButton();
     })();
 
     // Click handlers for upgrade buttons (which may become cancel buttons)

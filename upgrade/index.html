@@ -903,6 +903,9 @@
         window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_UPGRADE_URL = "https://replymateai.app/upgrade/index.html";
+        if (window.supabase && window.REPLYMATE_SUPABASE_URL && window.REPLYMATE_SUPABASE_ANON) {
+            window.replymateSupabase = window.supabase.createClient(window.REPLYMATE_SUPABASE_URL, window.REPLYMATE_SUPABASE_ANON, { auth: { storageKey: "replymate-auth" } });
+        }
         window.REPLYMATE_LABELS = {
             cancel: { en: "Cancel subscription", ko: "구독 취소", ja: "サブスクを解約", es: "Cancelar suscripción" },
             cancelConfirm: { en: "Cancel your subscription? You'll keep access until the end of your billing period.", ko: "구독을 취소하시겠습니까? 결제 기간까지는 계속 이용하실 수 있습니다.", ja: "サブスクを解約しますか？お支払い期間の終了までご利用いただけます。", es: "¿Cancelar la suscripción? Seguirás teniendo acceso hasta el final del período de facturación." },
@@ -992,11 +995,9 @@
             const url = window.REPLYMATE_SUPABASE_URL;
             const anon = window.REPLYMATE_SUPABASE_ANON;
             if (!url || !anon || !window.supabase) return;
-            const supabase = window.replymateSupabase || window.supabase.createClient(url, anon, {
-                auth: { storageKey: "replymate-auth" }
-            });
+            const supabase = window.replymateSupabase || (url && anon && window.supabase ? window.supabase.createClient(url, anon, { auth: { storageKey: "replymate-auth" } }) : null);
             const authBtn = document.getElementById('auth-btn');
-            if (!authBtn) return;
+            if (!authBtn || !supabase) return;
             const authLabels = { signIn: { en: 'Sign in', ko: '로그인', ja: 'ログイン', es: 'Iniciar sesión' }, signOut: { en: 'Sign out', ko: '로그아웃', ja: 'ログアウト', es: 'Cerrar sesión' } };
             function getAuthLabel(key) {
                 const lang = document.documentElement.lang || 'en';

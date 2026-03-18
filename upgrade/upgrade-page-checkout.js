@@ -356,18 +356,26 @@
     });
   }
 
-  function applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd) {
+  function applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, currentPlan) {
     const elements = document.querySelectorAll(".active-until");
     elements.forEach((el) => {
-      if (!cancelAtPeriodEnd || !currentPeriodEnd) {
+      if (!currentPeriodEnd || !currentPlan || currentPlan === "free") {
         el.classList.add("hidden");
         el.textContent = "";
         return;
       }
       const lang = el.getAttribute("data-lang") || "en";
       const formatted = formatEndDate(currentPeriodEnd);
-      const template = (LABELS.activeUntil && LABELS.activeUntil[lang]) || LABELS.activeUntil?.en || "Active until {date}";
-      el.textContent = template.replace("{date}", formatted);
+      let text;
+      if (cancelAtPeriodEnd) {
+        const cancelled = (LABELS.cancelledPrefix && LABELS.cancelledPrefix[lang]) || LABELS.cancelledPrefix?.en || "Cancelled.";
+        const activeUntil = (LABELS.activeUntil && LABELS.activeUntil[lang]) || LABELS.activeUntil?.en || "Active until {date}";
+        text = cancelled + " " + activeUntil.replace("{date}", formatted);
+      } else {
+        const template = (LABELS.renewsOn && LABELS.renewsOn[lang]) || LABELS.renewsOn?.en || "Renews on {date}";
+        text = template.replace("{date}", formatted);
+      }
+      el.textContent = text;
       el.classList.remove("hidden");
     });
   }
@@ -528,7 +536,7 @@
       const { plan, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } = status;
       applyCancelUI(plan, cancelAtPeriodEnd);
       applyCurrentPlanDisplay(plan);
-      applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd);
+      applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
       applyCurrentPlanCardMarker(plan);
       applyCurrentBillingMarker(plan, billingInterval);
       document.body.setAttribute("data-replymate-plan", plan);
@@ -537,7 +545,7 @@
       document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
     })();
 
-    // Plan card click: show pink border when user clicks a different plan (not their current)
+    // Plan card click: show purple border when user clicks a different plan (not their current)
     document.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
       card.addEventListener("click", (e) => {
         if (e.target.closest("a, button, .billing-option, input")) return;
@@ -641,7 +649,7 @@
     const currentPeriodEnd = document.body.getAttribute("data-replymate-period-end") || null;
     if (plan) applyCurrentPlanCardMarker(plan);
     if (plan && billing) applyCurrentBillingMarker(plan, billing);
-    applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd);
+    applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

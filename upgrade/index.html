@@ -201,12 +201,12 @@
             background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, #fff 20%);
         }
         .plan-card.plan-considering {
-            border: 2px solid #f9a8d4;
-            background: #fdf2f8;
-            box-shadow: 0 4px 20px rgba(244, 114, 182, 0.2);
+            border: 2px solid #a78bfa;
+            background: #f5f3ff;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
         }
         .plan-card.plan-considering:hover {
-            border-color: #f472b6;
+            border-color: #8b5cf6;
         }
         .plan-card.current-plan .current-plan-badge-card,
         .plan-card.current-plan .featured-badge.current-plan-badge-card {
@@ -391,13 +391,13 @@
         .billing-option.selected {
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
-        .plan-card.current-plan .billing-option.selected {
+        .plan-card.current-plan .billing-option.selected.current-plan-billing {
             border-color: #10b981;
             background: rgba(16, 185, 129, 0.06);
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
         }
-        .plan-card.current-plan .billing-option.selected::after {
-            content: attr(data-current-label);
+        .plan-card.current-plan .billing-option.selected.current-plan-billing::after {
+            content: attr(data-current-plan-label);
             position: absolute;
             top: 8px;
             right: 12px;
@@ -408,10 +408,11 @@
             padding: 2px 8px;
             border-radius: 100px;
         }
+        .plan-card.current-plan .billing-option.selected:not(.current-plan-billing),
         .plan-card:not(.current-plan) .billing-option.selected {
-            border-color: #f9a8d4;
-            background: #fdf2f8;
-            box-shadow: 0 2px 8px rgba(244, 114, 182, 0.2);
+            border-color: #a78bfa;
+            background: #f5f3ff;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
         }
         .billing-option.current-plan-billing {
             border-color: #10b981;
@@ -912,7 +913,9 @@
             chooseBillingFirst: { en: "Please choose Monthly or Annual first.", ko: "먼저 월간 또는 연간을 선택해 주세요.", ja: "月額または年額を選択してください。", es: "Elige Mensual o Anual primero." },
             signInFirst: { en: "Please sign in first to upgrade.", ko: "업그레이드하려면 먼저 로그인해 주세요.", ja: "アップグレードするにはログインしてください。", es: "Inicia sesión primero para actualizar." },
             signInFirstCancel: { en: "Please sign in first to manage your subscription.", ko: "구독 관리를 위해 먼저 로그인해 주세요.", ja: "サブスク管理にはログインしてください。", es: "Inicia sesión para gestionar tu suscripción." },
-            activeUntil: { en: "Active until {date}", ko: "{date}까지 이용 가능", ja: "{date}까지ご利用可能", es: "Activo hasta el {date}" },
+            activeUntil: { en: "Active until {date}", ko: "{date}까지 이용 가능", ja: "{date}までご利用可能", es: "Activo hasta el {date}" },
+            cancelledPrefix: { en: "Cancelled.", ko: "취소됨.", ja: "解約済み.", es: "Cancelado." },
+            renewsOn: { en: "Renews on {date}", ko: "{date}에 갱신", ja: "{date}に更新", es: "Renueva el {date}" },
             keepUnavailable: { en: "Keep subscription is not available. Contact support.", ko: "구독 유지 기능을 사용할 수 없습니다. 고객센터에 문의하세요.", ja: "継続機能は利用できません。サポートにお問い合わせください。", es: "Mantener suscripción no está disponible. Contacta a soporte." }
         };
     </script>

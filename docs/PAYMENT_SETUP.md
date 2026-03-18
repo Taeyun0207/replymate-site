@@ -134,7 +134,7 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/billing/create-checkout-session` | POST | Creates Stripe checkout, returns `checkoutUrl` |
-| `/billing/me` | GET | Returns `plan`, `cancelAtPeriodEnd`, **`billingInterval`** (`monthly`/`annual`), and **`currentPeriodEnd`** (ISO date) — `currentPeriodEnd` is shown as "Active until [date]" when subscription is cancelled |
+| `/billing/me` | GET | Returns `plan`, `cancelAtPeriodEnd`, **`billingInterval`** (`monthly`/`annual`), and **`currentPeriodEnd`** (ISO date) — shown as "Renews on [date]" when active, or "Cancelled. Active until [date]" when cancelled |
 | `/billing/cancel-subscription` | POST | Schedules cancel at period end, returns `currentPeriodEnd` |
 | `/billing/keep-subscription` | POST | Reactivates subscription (removes cancel-at-period-end) |
 

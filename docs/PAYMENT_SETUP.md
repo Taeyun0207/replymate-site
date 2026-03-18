@@ -123,7 +123,7 @@ Globals set on success (for optional use, e.g. fetching Stripe session details):
 
 **Switch (monthly↔annual):** User selects different billing on current plan → backend updates subscription → returns with `?success=1&switch=1` (no `session_id`)
 
-Both flows trigger the success banner.
+Both flows trigger the success banner. The page refetches subscription status at 1.5s, 3.5s, and 6s after a purchase to pick up webhook updates (Stripe may not have synced immediately). Call `window.replymateRefreshSubscription()` to manually refresh.
 
 **Cancel subscription:** Calls `POST /billing/cancel-subscription`. Schedules cancellation at period end; user keeps access until then. The button then changes to **Keep subscription**; clicking it calls `POST /billing/keep-subscription` to reactivate.
 
@@ -168,6 +168,12 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 
 - Remove `http://localhost:*` from Supabase Redirect URLs, or
 - Add your production URL and always test from production
+
+### Subscription data not updating after purchase
+
+- The page refetches subscription status at 1.5s, 3.5s, and 6s after a purchase. Ensure your webhook handles `checkout.session.completed` and `customer.subscription.updated` and updates the user's plan in your DB.
+- `/billing/me` must return the updated `plan`, `billingInterval`, and `currentPeriodEnd` from your DB (not cached).
+- Manually refresh: `window.replymateRefreshSubscription()` in the console.
 
 ### Monthly/Annual option has no green border
 

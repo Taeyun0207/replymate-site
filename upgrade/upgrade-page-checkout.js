@@ -626,43 +626,61 @@
     // Standalone cancel buttons
     const standaloneCancelBtns = document.querySelectorAll("[data-replymate-cancel]:not([data-replymate-plan])");
 
+    const params = new URLSearchParams(location.search);
+    const justPurchased = params.get("success") === "1" || params.get("switch") === "1" || params.get("session_id");
     checkSuccessAndShowBanner();
 
     // Fetch subscription status, apply Cancel/Keep UI, show current plan, mark current plan card
     const skipSubscriptionUI = /[?&]debug=2/.test(location.search);
-    (async () => {
-      if (skipSubscriptionUI) return;
-      const status = await getSubscriptionStatus();
+
+    function applySubscriptionUI(status) {
       if (!status) return;
       const { plan, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } = status;
       document.body.setAttribute("data-replymate-plan", plan);
       document.body.setAttribute("data-replymate-billing", billingInterval || "");
       document.body.setAttribute("data-replymate-period-end", currentPeriodEnd || "");
       document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
-      // Defer subscription UI so page renders first (fixes blank page after OAuth redirect)
-      function runSubscriptionUI() {
-        var activeSection = document.querySelector(".language-content.active");
-        if (!activeSection) {
-          document.getElementById("en")?.classList.add("active");
-          activeSection = document.querySelector(".language-content.active");
-        }
-        if (!activeSection) return;
-        // Ensure active section stays visible (guard against race with auth/hash)
-        activeSection.style.setProperty("display", "block", "important");
-        // Apply only to active section to avoid layout issues from modifying hidden sections
-        applyCancelUI(plan, cancelAtPeriodEnd, activeSection);
-        applyCurrentPlanDisplay(plan, activeSection);
-        applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, activeSection);
-        applyCurrentPlanCardMarker(plan, activeSection);
-        applyCurrentBillingMarker(plan, billingInterval, activeSection);
-        updateBillingChangeButton();
+      var activeSection = document.querySelector(".language-content.active");
+      if (!activeSection) {
+        document.getElementById("en")?.classList.add("active");
+        activeSection = document.querySelector(".language-content.active");
       }
+      if (!activeSection) return;
+      activeSection.style.setProperty("display", "block", "important");
+      applyCancelUI(plan, cancelAtPeriodEnd, activeSection);
+      applyCurrentPlanDisplay(plan, activeSection);
+      applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, activeSection);
+      applyCurrentPlanCardMarker(plan, activeSection);
+      applyCurrentBillingMarker(plan, billingInterval, activeSection);
+      updateBillingChangeButton();
+    }
+
+    (async () => {
+      if (skipSubscriptionUI) return;
+      let status = await getSubscriptionStatus();
+      if (!status) return;
+      applySubscriptionUI(status);
       // Defer to next frame, then again after 400ms (OAuth redirect can leave DOM in flux)
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => runSubscriptionUI());
-        setTimeout(runSubscriptionUI, 400);
+        requestAnimationFrame(() => applySubscriptionUI(status));
+        setTimeout(() => applySubscriptionUI(status), 400);
       });
+      // After purchase: refetch subscription to pick up webhook updates (Stripe may not have synced yet)
+      if (justPurchased) {
+        [1500, 3500, 6000].forEach((ms) => {
+          setTimeout(async () => {
+            const fresh = await getSubscriptionStatus();
+            if (fresh) applySubscriptionUI(fresh);
+          }, ms);
+        });
+      }
     })();
+
+    window.replymateRefreshSubscription = async function () {
+      const s = await getSubscriptionStatus();
+      if (s) applySubscriptionUI(s);
+      return s;
+    };
 
     // Click handlers for upgrade buttons (which may become cancel buttons)
     upgradeBtns.forEach((btn) => {

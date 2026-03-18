@@ -992,7 +992,7 @@
             const url = window.REPLYMATE_SUPABASE_URL;
             const anon = window.REPLYMATE_SUPABASE_ANON;
             if (!url || !anon || !window.supabase) return;
-            const supabase = window.supabase.createClient(url, anon, {
+            const supabase = window.replymateSupabase || window.supabase.createClient(url, anon, {
                 auth: { storageKey: "replymate-auth" }
             });
             const authBtn = document.getElementById('auth-btn');

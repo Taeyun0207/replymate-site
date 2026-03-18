@@ -54,6 +54,7 @@
     console.warn("[ReplyMate Upgrade] Supabase not loaded. Add: <script src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'></script>");
     return;
   }
+  window.replymateSupabase = supabase;
 
   function getLang() {
     const lang = document.documentElement.lang || "en";

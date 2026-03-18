@@ -441,6 +441,18 @@
           return;
         }
 
+        // Check sign-in first (before billing selection)
+        const token = await getAccessToken();
+        if (!token) {
+          const msg = t("signInFirst") || "Please sign in first to upgrade.";
+          const toast = document.createElement("div");
+          toast.className = "billing-prompt-toast";
+          toast.textContent = msg;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 3000);
+          return;
+        }
+
         // Require billing selection before checkout
         const card = btn.closest(".plan-card");
         const billingOptions = card?.querySelector(".billing-options");

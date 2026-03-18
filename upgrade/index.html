@@ -356,6 +356,7 @@
 
         /* Billing toggle */
         .billing-option {
+            position: relative;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             padding: 16px;
@@ -367,9 +368,21 @@
             border-color: #cbd5e1;
         }
         .billing-option.selected {
-            border-color: #7c3aed;
-            background: #faf5ff;
-            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.12);
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.06);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+        }
+        .billing-option.selected::after {
+            content: attr(data-current-label);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 2px 8px;
+            border-radius: 100px;
         }
         .billing-option {
             display: flex;
@@ -859,6 +872,11 @@
             ja: { cta: 'Chromeに追加' },
             es: { cta: 'Añadir a Chrome' }
         };
+        const currentBillingLabels = { en: 'Current', ko: '현재', ja: '現在', es: 'Actual' };
+        function getCurrentBillingLabel() {
+            const lang = document.documentElement.lang || 'en';
+            return currentBillingLabels[lang] || currentBillingLabels.en;
+        }
         function setLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.lang === lang);
@@ -871,6 +889,9 @@
             document.documentElement.lang = lang;
             if (history.replaceState) history.replaceState(null, '', '?lang=' + lang);
             if (window.replymateUpdateAuthLabels) window.replymateUpdateAuthLabels();
+            document.querySelectorAll('.billing-option.selected').forEach(o => {
+                o.setAttribute('data-current-label', getCurrentBillingLabel());
+            });
         }
         const params = new URLSearchParams(location.search);
         const langParam = params.get('lang');
@@ -883,8 +904,12 @@
                 const plan = this.dataset.plan;
                 const type = this.dataset.type;
                 const container = this.closest('.plan-card');
-                container.querySelectorAll('.billing-option').forEach(o => o.classList.remove('selected'));
+                container.querySelectorAll('.billing-option').forEach(o => {
+                    o.classList.remove('selected');
+                    o.removeAttribute('data-current-label');
+                });
                 this.classList.add('selected');
+                this.setAttribute('data-current-label', getCurrentBillingLabel());
                 this.querySelector('input').checked = true;
                 const priceEl = container.querySelector('.plan-price');
                 if (plan === 'pro') {
@@ -925,6 +950,7 @@
                 const session = (await supabase.auth.getSession()).data.session;
                 if (session) {
                     await supabase.auth.signOut();
+                    location.reload();
                     return;
                 }
                 const base = window.REPLYMATE_UPGRADE_URL || (window.location.origin + window.location.pathname);

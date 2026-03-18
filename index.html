@@ -812,6 +812,7 @@
                 const session = (await supabase.auth.getSession()).data.session;
                 if (session) {
                     await supabase.auth.signOut();
+                    location.reload();
                     return;
                 }
                 const isLocalhost = /localhost|127\.0\.0\.1/i.test(window.location.hostname);

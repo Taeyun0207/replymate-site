@@ -113,8 +113,10 @@
         planVal = "pro";
       }
       const cancelAtPeriodEnd = !!(data.cancelAtPeriodEnd ?? data.cancel_at_period_end ?? data.subscription?.cancel_at_period_end);
+      const currentPeriodEnd = data.currentPeriodEnd ?? data.current_period_end ?? data.subscription?.current_period_end ?? data.subscription?.currentPeriodEnd ?? null;
       let raw = (
-        data.billingInterval ?? data.billing_interval ?? data.interval ??
+        data.billingInterval ?? data.billing_interval ?? data.user?.billingInterval ?? data.user?.billing_interval ??
+        data.interval ??
         data.subscription?.interval ?? data.subscription?.billing_interval ?? data.subscription?.billingInterval ??
         data.subscription?.plan?.interval ??
         data.subscription?.items?.data?.[0]?.price?.recurring?.interval ??
@@ -141,7 +143,7 @@
       let billingInterval = null;
       if (["month", "monthly"].includes(raw)) billingInterval = "monthly";
       else if (["year", "annual", "yearly"].includes(raw)) billingInterval = "annual";
-      return planVal ? { plan: planVal, cancelAtPeriodEnd, billingInterval } : null;
+      return planVal ? { plan: planVal, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } : null;
     } catch {
       return null;
     }
@@ -202,8 +204,19 @@
       body: JSON.stringify({})
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to keep subscription");
+    let data = {};
+    const text = await res.text();
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch {
+        if (!res.ok) throw new Error(text || "Failed to keep subscription");
+      }
+    }
+    if (!res.ok) {
+      const msg = data.error || data.message || (res.status === 404 ? "Keep subscription endpoint not found. Please ensure your backend implements POST /billing/keep-subscription." : "Failed to keep subscription");
+      throw new Error(msg);
+    }
     return data;
   }
 
@@ -230,9 +243,15 @@
   }
 
   function formatEndDate(isoDate) {
-    if (!isoDate) return "";
+    if (isoDate == null || isoDate === "") return "";
     try {
-      const d = new Date(isoDate);
+      let d;
+      if (typeof isoDate === "number") {
+        d = isoDate < 1e12 ? new Date(isoDate * 1000) : new Date(isoDate);
+      } else {
+        d = new Date(isoDate);
+      }
+      if (isNaN(d.getTime())) return "";
       return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
     } catch {
       return String(isoDate);
@@ -313,6 +332,22 @@
       const template = (LABELS.currentPlan && LABELS.currentPlan[lang]) || LABELS.currentPlan?.en || "Your current plan: {plan}";
       badge.textContent = template.replace("{plan}", planName);
       badge.classList.remove("hidden");
+    });
+  }
+
+  function applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd) {
+    const elements = document.querySelectorAll(".active-until");
+    elements.forEach((el) => {
+      if (!cancelAtPeriodEnd || !currentPeriodEnd) {
+        el.classList.add("hidden");
+        el.textContent = "";
+        return;
+      }
+      const lang = el.getAttribute("data-lang") || "en";
+      const formatted = formatEndDate(currentPeriodEnd);
+      const template = (LABELS.activeUntil && LABELS.activeUntil[lang]) || LABELS.activeUntil?.en || "Active until {date}";
+      el.textContent = template.replace("{date}", formatted);
+      el.classList.remove("hidden");
     });
   }
 
@@ -469,13 +504,16 @@
     (async () => {
       const status = await getSubscriptionStatus();
       if (!status) return;
-      const { plan, cancelAtPeriodEnd, billingInterval } = status;
+      const { plan, cancelAtPeriodEnd, billingInterval, currentPeriodEnd } = status;
       applyCancelUI(plan, cancelAtPeriodEnd);
       applyCurrentPlanDisplay(plan);
+      applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd);
       applyCurrentPlanCardMarker(plan);
       applyCurrentBillingMarker(plan, billingInterval);
       document.body.setAttribute("data-replymate-plan", plan);
       document.body.setAttribute("data-replymate-billing", billingInterval || "");
+      document.body.setAttribute("data-replymate-period-end", currentPeriodEnd || "");
+      document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
     })();
 
     // Click handlers for upgrade buttons (which may become cancel buttons)
@@ -550,8 +588,11 @@
     updateCurrentPlanDisplay();
     const plan = document.body.getAttribute("data-replymate-plan");
     const billing = document.body.getAttribute("data-replymate-billing");
+    const cancelAtPeriodEnd = document.body.getAttribute("data-replymate-cancel-at-period-end") === "true";
+    const currentPeriodEnd = document.body.getAttribute("data-replymate-period-end") || null;
     if (plan) applyCurrentPlanCardMarker(plan);
     if (plan && billing) applyCurrentBillingMarker(plan, billing);
+    applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd);
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

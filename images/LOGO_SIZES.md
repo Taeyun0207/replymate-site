@@ -2,14 +2,14 @@
 
 Add these image files to this folder:
 
-## Header logo
-- **File:** `logo.png`
-- **Size:** 32×32 px (or 64×64 for retina — will display at 32px)
+## Header logo (displayed at 40×40 px)
+- **File:** `icon32.png` — 32×32 px (fallback for 1x displays)
+- **File:** `icon64.png` — 64×64 px (for retina/2x — sharper when downscaled to 40px)
 - **Format:** PNG with transparency
 
-## Favicon (browser tab)
-- **File:** `favicon-32.png` — 32×32 px
-- **File:** `favicon-16.png` — 16×16 px
-- **Format:** PNG
+> **Quality tip:** The header uses `srcset` so retina displays load `icon64.png`. Add a 64×64 (or 80×80) version of your logo for crisp rendering at 40px.
 
-> **Note:** 20×20 is too small for a header logo (blurry on retina). Use 32×32 minimum. For favicon only, 20×20 could work but 32×32 is standard.
+## Favicon (browser tab)
+- **File:** `icon32.png` — 32×32 px
+- **File:** `icon16.png` — 16×16 px
+- **Format:** PNG

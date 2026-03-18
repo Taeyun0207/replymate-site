@@ -152,7 +152,7 @@
     }
   }
 
-  async function createCheckout(plan, billingType) {
+  async function createCheckout(plan, billingType, options) {
     const billing = billingType || "annual";
     const token = await getAccessToken();
     if (!token) {
@@ -165,6 +165,12 @@
       return false;
     }
 
+    const body = {
+      targetPlan: plan,
+      billingType: billingType || "annual"
+    };
+    if (options && options.subscriptionChange) body.subscriptionChange = true;
+
     let data;
     try {
       const res = await fetch(`${BACKEND}/billing/create-checkout-session`, {
@@ -173,10 +179,7 @@
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({
-          targetPlan: plan,
-          billingType: billingType || "annual"
-        })
+        body: JSON.stringify(body)
       });
       data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || data.message || "Checkout failed");
@@ -610,9 +613,12 @@
 
         if (btn.getAttribute("data-replymate-cancel") === "true") {
           if (btn.getAttribute("data-replymate-switch-billing") === "true") {
+            const card = btn.closest(".plan-card");
+            const selectedOpt = card && card.querySelector(".billing-option input:checked");
+            const targetBilling = selectedOpt ? selectedOpt.closest(".billing-option").getAttribute("data-type") : "annual";
             setButtonLoading(btn, true);
             try {
-              await createPortalSession();
+              await createCheckout(plan, targetBilling, { subscriptionChange: true });
             } catch (err) {
               console.error("[ReplyMate Upgrade]", err);
               const msg = err && err.message ? err.message : "Something went wrong. Please try again.";

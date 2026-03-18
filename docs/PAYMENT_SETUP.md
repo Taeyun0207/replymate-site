@@ -133,7 +133,7 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/billing/create-checkout-session` | POST | Creates Stripe checkout, returns `checkoutUrl` |
+| `/billing/create-checkout-session` | POST | Creates Stripe checkout, returns `checkoutUrl`. Body: `{ targetPlan, billingType }`. For Switch billing: `{ subscriptionChange: true }` — backend should update existing subscription to new price. |
 | `/billing/me` | GET | Returns `plan`, `cancelAtPeriodEnd`, **`billingInterval`** (`monthly`/`annual`), and **`currentPeriodEnd`** (ISO date) — shown as "Renews on [date]" when active, or "Cancelled. Active until [date]" when cancelled |
 | `/billing/cancel-subscription` | POST | Schedules cancel at period end, returns `currentPeriodEnd` |
 | `/billing/keep-subscription` | POST | Reactivates subscription (removes cancel-at-period-end) |
@@ -166,9 +166,47 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 
 ### Changing Monthly ↔ Annual within the same plan
 
-When a user on Pro Monthly selects Pro Annual (or vice versa) in their current plan card, the button changes to **"Switch to Annual"** or **"Switch to Monthly"**. Clicking it opens the **Stripe Customer Portal**, where they can change their billing interval.
+When a user on Pro Monthly selects Pro Annual (or vice versa) in their current plan card, the button changes to **"Switch to Annual"** or **"Switch to Monthly"**. Clicking it sends `POST /billing/create-checkout-session` with `{ targetPlan, billingType, subscriptionChange: true }`.
 
-**Backend:** Implement `POST /billing/create-portal-session` that creates a Stripe Billing Portal session and returns `{ url }`. Use [Stripe's Customer Portal API](https://stripe.com/docs/customer-management/creating-portal-session). The `return_url` should be the upgrade page URL.
+**Backend implementation (recommended):** When `subscriptionChange: true`, update the existing subscription via Stripe API instead of creating a new checkout:
+
+1. **Authenticate** the user (JWT from `Authorization` header).
+2. **Find the subscription** – look up the user's Stripe customer ID (from your DB or Stripe), then list subscriptions:
+   ```js
+   const subscriptions = await stripe.subscriptions.list({ customer: stripeCustomerId, status: 'active' });
+   const sub = subscriptions.data[0];
+   const itemId = sub.items.data[0].id;
+   ```
+3. **Map to new price ID** – from `targetPlan` + `billingType`:
+   - Pro + monthly → `STRIPE_PRICE_PRO_MONTHLY`
+   - Pro + annual → `STRIPE_PRICE_PRO_ANNUAL`
+   - Pro+ + monthly → `STRIPE_PRICE_PRO_PLUS_MONTHLY`
+   - Pro+ + annual → `STRIPE_PRICE_PRO_PLUS_ANNUAL`
+4. **Update the subscription**:
+   ```js
+   await stripe.subscriptions.update(sub.id, {
+     items: [{ id: itemId, price: newPriceId }],
+     proration_behavior: 'always_invoice'  // charge proration immediately
+   });
+   ```
+5. **Return success URL** – frontend expects `checkoutUrl` to redirect:
+   ```js
+   return res.json({ checkoutUrl: process.env.BILLING_SUCCESS_URL + '?success=1&switch=1' });
+   ```
+
+Stripe will charge the prorated amount to the card on file. If payment fails, the subscription may go to `past_due`; your webhook should handle `customer.subscription.updated`.
+
+**Alternative: Stripe Customer Portal** – If you prefer a Stripe-hosted page where users change billing themselves, implement `POST /billing/create-portal-session`:
+
+```js
+const session = await stripe.billingPortal.sessions.create({
+  customer: stripeCustomerId,
+  return_url: req.body.returnUrl || process.env.BILLING_SUCCESS_URL
+});
+return res.json({ url: session.url });
+```
+
+Then configure the frontend to call this endpoint for Switch (instead of create-checkout-session).
 
 ---
 

@@ -6,6 +6,7 @@
     <title>ReplyMate - AI Reply Generator for Gmail</title>
     <link rel="icon" type="image/png" sizes="32x32" href="images/icon32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icon16.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -91,6 +92,29 @@
             transition: color 0.2s;
         }
         .header-upgrade:hover {
+            color: #7c3aed;
+        }
+        .btn-signin {
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-signin:hover {
+            background: #e2e8f0;
+            color: #1a1a2e;
+        }
+        .btn-signin.signed-in {
+            background: transparent;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .btn-signin.signed-in:hover {
             color: #7c3aed;
         }
 
@@ -351,6 +375,7 @@
         </a>
         <div class="header-right">
             <a href="upgrade/index.html" class="header-upgrade" id="header-upgrade">Upgrade</a>
+            <button class="btn-signin" id="auth-btn" style="display:none">Sign in</button>
             <button class="lang-btn active" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
@@ -712,7 +737,13 @@
     </div>
 
     <script>
+        window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
+        window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
+        window.REPLYMATE_BASE_URL = "https://taeyun0207.github.io/replymate-site/";
+    </script>
+    <script>
         const upgradeLabels = { en: 'Upgrade', ko: '업그레이드', ja: 'アップグレード', es: 'Actualizar' };
+        const authLabels = { signIn: { en: 'Sign in', ko: '로그인', ja: 'ログイン', es: 'Iniciar sesión' }, signOut: { en: 'Sign out', ko: '로그아웃', ja: 'ログアウト', es: 'Cerrar sesión' } };
         const params = new URLSearchParams(location.search);
         const initLang = params.get('lang');
         if (['en','ko','ja','es'].includes(initLang)) {
@@ -739,8 +770,59 @@
                     upgradeEl.href = lang === 'en' ? 'upgrade/index.html' : 'upgrade/index.html?lang=' + lang;
                 }
                 document.documentElement.lang = lang === 'en' ? 'en' : lang === 'ko' ? 'ko' : lang === 'ja' ? 'ja' : 'es';
+                if (window.replymateUpdateAuthLabels) window.replymateUpdateAuthLabels();
             });
         });
+
+        (function initAuth() {
+            const url = window.REPLYMATE_SUPABASE_URL;
+            const anon = window.REPLYMATE_SUPABASE_ANON;
+            if (!url || !anon || !window.supabase) return;
+            const supabase = window.supabase.createClient(url, anon);
+            const authBtn = document.getElementById('auth-btn');
+            const lang = document.documentElement.lang || 'en';
+
+            function getAuthLabel(key) {
+                return (authLabels[key] && authLabels[key][lang]) || authLabels[key]?.en || key;
+            }
+
+            function updateAuthUI(session) {
+                authBtn.style.display = 'inline-block';
+                if (session?.user) {
+                    authBtn.textContent = getAuthLabel('signOut');
+                    authBtn.classList.add('signed-in');
+                } else {
+                    authBtn.textContent = getAuthLabel('signIn');
+                    authBtn.classList.remove('signed-in');
+                }
+            }
+
+            supabase.auth.getSession().then(({ data: { session } }) => {
+                updateAuthUI(session);
+            });
+            supabase.auth.onAuthStateChange((_, session) => {
+                updateAuthUI(session);
+            });
+
+            window.replymateUpdateAuthLabels = () => {
+                supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            };
+
+            authBtn.addEventListener('click', async () => {
+                const session = (await supabase.auth.getSession()).data.session;
+                if (session) {
+                    await supabase.auth.signOut();
+                    return;
+                }
+                const isLocalhost = /localhost|127\.0\.0\.1/i.test(window.location.hostname);
+                const base = isLocalhost ? (window.location.origin + '/') : (window.REPLYMATE_BASE_URL || window.location.origin + '/');
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: base }
+                });
+                if (error) console.error('[ReplyMate Auth]', error);
+            });
+        })();
     </script>
 </body>
 </html>

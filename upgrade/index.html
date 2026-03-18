@@ -160,8 +160,9 @@
             position: relative;
         }
         .plan-card.current-plan {
-            border-color: #10b981;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+            border: 3px solid #10b981;
+            box-shadow: 0 4px 24px rgba(16, 185, 129, 0.25);
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, #fff 20%);
         }
         .plan-card.current-plan .current-plan-badge-card,
         .plan-card.current-plan .featured-badge.current-plan-badge-card {
@@ -171,10 +172,11 @@
             transform: translateX(-50%);
             background: #10b981 !important;
             color: white !important;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 16px;
             border-radius: 100px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
         }
         .plan-card.featured .featured-badge {
             position: absolute;
@@ -329,6 +331,7 @@
 
         /* Billing toggle */
         .billing-option {
+            position: relative;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             padding: 16px;
@@ -343,6 +346,23 @@
             border-color: #7c3aed;
             background: #faf5ff;
             box-shadow: 0 2px 8px rgba(124, 58, 237, 0.12);
+        }
+        .billing-option.current-billing {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.06);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+        }
+        .billing-option.current-billing::after {
+            content: attr(data-current-label);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 2px 8px;
+            border-radius: 100px;
         }
         .billing-option {
             display: flex;
@@ -389,6 +409,32 @@
             color: #059669;
             font-weight: 500;
             margin-top: 4px;
+        }
+        .billing-options-prompt {
+            animation: billing-prompt-pulse 0.6s ease;
+        }
+        @keyframes billing-prompt-pulse {
+            0%, 100% { outline: none; }
+            50% { outline: 2px solid #7c3aed; outline-offset: 4px; border-radius: 10px; }
+        }
+        .billing-prompt-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: toast-fade 0.3s ease;
+        }
+        @keyframes toast-fade {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         .footer {
@@ -797,7 +843,9 @@
             planNames: { free: { en: "Standard", ko: "Standard", ja: "Standard", es: "Standard" }, pro: { en: "Pro", ko: "Pro", ja: "Pro", es: "Pro" }, pro_plus: { en: "Pro+", ko: "Pro+", ja: "Pro+", es: "Pro+" } },
             keepSubscription: { en: "Keep subscription", ko: "구독 유지", ja: "継続する", es: "Mantener suscripción" },
             keepSuccess: { en: "Subscription continued.", ko: "구독이 유지되었습니다.", ja: "継続しました。", es: "Suscripción mantenida." },
-            currentPlanBadge: { en: "Current Plan", ko: "현재 플랜", ja: "現在のプラン", es: "Plan actual" }
+            currentPlanBadge: { en: "Current Plan", ko: "현재 플랜", ja: "現在のプラン", es: "Plan actual" },
+            currentBillingBadge: { en: "Current", ko: "현재", ja: "現在", es: "Actual" },
+            chooseBillingFirst: { en: "Please choose a plan first.", ko: "먼저 플랜을 선택해 주세요.", ja: "プランを選択してください。", es: "Elige un plan primero." }
         };
     </script>
     <script src="upgrade-page-checkout.js"></script>

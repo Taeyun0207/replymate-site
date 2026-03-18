@@ -40,10 +40,13 @@ BILLING_CANCEL_URL=https://taeyun0207.github.io/replymate-site/upgrade/
 2. Set **Site URL** to `https://taeyun0207.github.io` (or `https://taeyun0207.github.io/replymate-site/upgrade/index.html`)
 3. Under **Redirect URLs**, add:
    - `https://taeyun0207.github.io/replymate-site/upgrade/index.html`
+   - `https://taeyun0207.github.io/replymate-site/` (homepage login)
    - `https://taeyun0207.github.io/replymate-site/**`
 4. **Remove** `http://localhost:3000` and any other localhost URLs from Redirect URLs
 
 **Site URL** is the fallback when Supabase rejects the redirect. If it's set to localhost, you'll land on localhost after sign-in. Set it to production.
+
+**Homepage login:** Users can sign in on the homepage first; the session is shared with the upgrade page (same origin). Ensure `https://taeyun0207.github.io/replymate-site/` is in Redirect URLs.
 
 ---
 
@@ -131,7 +134,7 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/billing/create-checkout-session` | POST | Creates Stripe checkout, returns `checkoutUrl` |
-| `/billing/me` | GET | Returns current plan (`free`, `pro`, `pro_plus`) and `cancelAtPeriodEnd` |
+| `/billing/me` | GET | Returns `plan`, `cancelAtPeriodEnd`, and optionally `billingInterval` (`monthly`/`annual`) or `interval` (`month`/`year`) to highlight the current billing option |
 | `/billing/cancel-subscription` | POST | Schedules cancel at period end, returns `currentPeriodEnd` |
 | `/billing/keep-subscription` | POST | Reactivates subscription (removes cancel-at-period-end) |
 

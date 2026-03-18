@@ -91,7 +91,7 @@
     if (error) throw error;
   }
 
-  /** Fetches subscription status. Returns { plan, cancelAtPeriodEnd } or null. */
+  /** Fetches subscription status. Returns { plan, cancelAtPeriodEnd, billingInterval } or null. */
   async function getSubscriptionStatus() {
     const token = await getAccessToken();
     if (!token) return null;
@@ -107,7 +107,11 @@
       if (["free", "pro", "pro_plus"].includes(plan)) planVal = plan;
       else if (plan === "proplus") planVal = "pro_plus";
       const cancelAtPeriodEnd = !!(data.cancelAtPeriodEnd ?? data.cancel_at_period_end ?? data.subscription?.cancel_at_period_end);
-      return planVal ? { plan: planVal, cancelAtPeriodEnd } : null;
+      const raw = (data.billingInterval ?? data.billing_interval ?? data.interval ?? data.subscription?.interval ?? "").toLowerCase();
+      let billingInterval = null;
+      if (["month", "monthly"].includes(raw)) billingInterval = "monthly";
+      else if (["year", "annual", "yearly"].includes(raw)) billingInterval = "annual";
+      return planVal ? { plan: planVal, cancelAtPeriodEnd, billingInterval } : null;
     } catch {
       return null;
     }
@@ -246,6 +250,27 @@
         const badge = card.querySelector(".current-plan-badge-card:not(.featured-badge)");
         if (badge) badge.remove();
       }
+    });
+  }
+
+  function applyCurrentBillingMarker(currentPlan, billingInterval) {
+    if (!currentPlan || currentPlan === "free" || !billingInterval) return;
+    const label = (LABELS.currentBillingBadge && LABELS.currentBillingBadge[getLang()]) || LABELS.currentBillingBadge?.en || "Current";
+    document.querySelectorAll(".plan-card[data-replymate-plan-type]").forEach((card) => {
+      const type = card.getAttribute("data-replymate-plan-type");
+      if (type !== currentPlan) {
+        card.querySelectorAll(".billing-option.current-billing").forEach((o) => {
+          o.classList.remove("current-billing");
+          o.removeAttribute("data-current-label");
+        });
+        return;
+      }
+      card.querySelectorAll(".billing-option").forEach((opt) => {
+        const optType = opt.getAttribute("data-type");
+        const isCurrent = optType === billingInterval;
+        opt.classList.toggle("current-billing", isCurrent);
+        opt.setAttribute("data-current-label", isCurrent ? label : "");
+      });
     });
   }
 
@@ -446,10 +471,13 @@
     (async () => {
       const status = await getSubscriptionStatus();
       if (!status) return;
-      const { plan, cancelAtPeriodEnd } = status;
+      const { plan, cancelAtPeriodEnd, billingInterval } = status;
       applyCancelUI(plan, cancelAtPeriodEnd);
       applyCurrentPlanDisplay(plan);
       applyCurrentPlanCardMarker(plan);
+      applyCurrentBillingMarker(plan, billingInterval);
+      document.body.setAttribute("data-replymate-plan", plan);
+      document.body.setAttribute("data-replymate-billing", billingInterval || "");
     })();
 
     // Click handlers for upgrade buttons (which may become cancel buttons)
@@ -459,6 +487,25 @@
         const plan = btn.getAttribute("data-replymate-plan");
         const billing = btn.getAttribute("data-replymate-billing") || "annual";
         if (!plan || !["pro", "pro_plus"].includes(plan)) return;
+
+        // Require billing selection before checkout
+        const card = btn.closest(".plan-card");
+        const billingOptions = card?.querySelector(".billing-options");
+        if (billingOptions) {
+          const selected = billingOptions.querySelector(".billing-option.selected");
+          if (!selected) {
+            const msg = t("chooseBillingFirst") || "Please choose a plan first.";
+            billingOptions.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            billingOptions.classList.add("billing-options-prompt");
+            setTimeout(() => billingOptions.classList.remove("billing-options-prompt"), 1500);
+            const toast = document.createElement("div");
+            toast.className = "billing-prompt-toast";
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+            return;
+          }
+        }
 
         if (btn.getAttribute("data-replymate-cancel") === "true") {
           if (btn.getAttribute("data-replymate-keep") === "true") {
@@ -506,11 +553,10 @@
   const langObserver = new MutationObserver(() => {
     updateCancelLabels();
     updateCurrentPlanDisplay();
-    const badge = document.querySelector(".current-plan-badge[data-current-plan]");
-    if (badge) {
-      const plan = badge.getAttribute("data-current-plan");
-      if (plan) applyCurrentPlanCardMarker(plan);
-    }
+    const plan = document.body.getAttribute("data-replymate-plan");
+    const billing = document.body.getAttribute("data-replymate-billing");
+    if (plan) applyCurrentPlanCardMarker(plan);
+    if (plan && billing) applyCurrentBillingMarker(plan, billing);
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

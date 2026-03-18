@@ -313,6 +313,13 @@
         const isCurrent = optType === billingInterval;
         opt.classList.toggle("current-plan-billing", isCurrent);
         opt.setAttribute("data-current-plan-label", isCurrent ? label : "");
+        if (isCurrent) {
+          opt.classList.add("selected");
+          const input = opt.querySelector("input");
+          if (input) input.checked = true;
+          const cta = card.querySelector(".plan-cta.primary, .plan-cta.secondary");
+          if (cta) cta.setAttribute("data-replymate-billing", optType);
+        }
       });
     });
   }
@@ -537,6 +544,19 @@
         const token = await getAccessToken();
         if (!token) {
           const msg = t("signInFirst") || "Please sign in first to upgrade.";
+          const toast = document.createElement("div");
+          toast.className = "billing-prompt-toast";
+          toast.textContent = "⚠️ " + msg;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 3000);
+          return;
+        }
+
+        // Check that user has selected Monthly or Annual (billing option)
+        const card = btn.closest(".plan-card");
+        const hasBillingSelection = card && card.querySelector(".billing-option.selected");
+        if (!hasBillingSelection) {
+          const msg = t("chooseBillingFirst") || "Please choose Monthly or Annual first.";
           const toast = document.createElement("div");
           toast.className = "billing-prompt-toast";
           toast.textContent = "⚠️ " + msg;

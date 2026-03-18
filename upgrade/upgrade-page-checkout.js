@@ -612,6 +612,11 @@
   }
 
   function init() {
+    // Ensure active section is set before any subscription UI (OAuth redirect can leave it unset)
+    if (!document.querySelector(".language-content.active")) {
+      document.getElementById("en")?.classList.add("active");
+    }
+
     const upgradeBtns = document.querySelectorAll("[data-replymate-plan]");
     upgradeBtns.forEach((btn) => {
       btn.setAttribute("data-replymate-original-text", btn.textContent);
@@ -633,25 +638,28 @@
       document.body.setAttribute("data-replymate-billing", billingInterval || "");
       document.body.setAttribute("data-replymate-period-end", currentPeriodEnd || "");
       document.body.setAttribute("data-replymate-cancel-at-period-end", cancelAtPeriodEnd ? "true" : "false");
+      // Defer subscription UI so page renders first (fixes blank page after OAuth redirect)
+      function runSubscriptionUI() {
+        var activeSection = document.querySelector(".language-content.active");
+        if (!activeSection) {
+          document.getElementById("en")?.classList.add("active");
+          activeSection = document.querySelector(".language-content.active");
+        }
+        if (!activeSection) return;
+        // Ensure active section stays visible (guard against race with auth/hash)
+        activeSection.style.setProperty("display", "block", "important");
+        // Apply only to active section to avoid layout issues from modifying hidden sections
+        applyCancelUI(plan, cancelAtPeriodEnd, activeSection);
+        applyCurrentPlanDisplay(plan, activeSection);
+        applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, activeSection);
+        applyCurrentPlanCardMarker(plan, activeSection);
+        applyCurrentBillingMarker(plan, billingInterval, activeSection);
+        updateBillingChangeButton();
+      }
+      // Defer to next frame, then again after 400ms (OAuth redirect can leave DOM in flux)
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          var activeSection = document.querySelector(".language-content.active");
-          if (!activeSection) {
-            document.getElementById("en")?.classList.add("active");
-          }
-          // Apply to all sections so the visible one is correct regardless of timing
-          applyCancelUI(plan, cancelAtPeriodEnd);
-          applyCurrentPlanDisplay(plan);
-          applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
-          applyCurrentPlanCardMarker(plan);
-          applyCurrentBillingMarker(plan, billingInterval);
-          updateBillingChangeButton();
-          // Ensure active section stays visible after subscription UI
-          var ensure = document.querySelector(".language-content.active");
-          if (!ensure) document.getElementById("en")?.classList.add("active");
-          ensure = document.querySelector(".language-content.active");
-          if (ensure) ensure.style.setProperty("display", "block", "important");
-        });
+        requestAnimationFrame(() => runSubscriptionUI());
+        setTimeout(runSubscriptionUI, 400);
       });
     })();
 
@@ -759,9 +767,12 @@
     const billing = document.body.getAttribute("data-replymate-billing");
     const cancelAtPeriodEnd = document.body.getAttribute("data-replymate-cancel-at-period-end") === "true";
     const currentPeriodEnd = document.body.getAttribute("data-replymate-period-end") || null;
-    if (plan) applyCurrentPlanCardMarker(plan);
-    if (plan && billing) applyCurrentBillingMarker(plan, billing);
-    applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan);
+    const activeSection = document.querySelector(".language-content.active");
+    const scope = activeSection || document;
+    if (plan) applyCurrentPlanCardMarker(plan, scope);
+    if (plan && billing) applyCurrentBillingMarker(plan, billing, scope);
+    applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, scope);
+    if (plan && plan !== "free") applyCancelUI(plan, cancelAtPeriodEnd, scope);
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 })();

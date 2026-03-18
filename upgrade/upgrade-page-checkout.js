@@ -117,8 +117,6 @@
     }
   }
 
-  const PENDING_CHECKOUT_KEY = "replymate_pending_checkout";
-
   async function createCheckout(plan, billingType) {
     const billing = billingType || "annual";
     const token = await getAccessToken();
@@ -337,6 +335,16 @@
   }
 
   async function handleKeepClick(btn) {
+    const token = await getAccessToken();
+    if (!token) {
+      const msg = t("signInFirstCancel") || "Please sign in first to manage your subscription.";
+      const toast = document.createElement("div");
+      toast.className = "billing-prompt-toast";
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+      return;
+    }
     setButtonLoading(btn, true);
     try {
       await keepSubscription();
@@ -351,14 +359,19 @@
   }
 
   async function handleCancelClick(btn) {
-    const confirmMsg = t("cancelConfirm") || "Cancel your subscription? You'll keep access until the end of your billing period.";
-    if (!confirm(confirmMsg)) return;
-
     const token = await getAccessToken();
     if (!token) {
-      await signInWithGoogle();
+      const msg = t("signInFirstCancel") || "Please sign in first to manage your subscription.";
+      const toast = document.createElement("div");
+      toast.className = "billing-prompt-toast";
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
       return;
     }
+
+    const confirmMsg = t("cancelConfirm") || "Cancel your subscription? You'll keep access until the end of your billing period.";
+    if (!confirm(confirmMsg)) return;
 
     setButtonLoading(btn, true);
     try {
@@ -400,47 +413,6 @@
         section.insertBefore(banner, section.firstChild);
       });
     }
-
-    // Auto-redirect to Stripe after returning from Google sign-in
-    (async () => {
-      const params = new URLSearchParams(location.search);
-      if (params.has("success") || params.has("session_id")) return;
-      let plan = params.get("replymate_plan");
-      let billing = params.get("replymate_billing") || "annual";
-      if (!plan) {
-        const pending = sessionStorage.getItem(PENDING_CHECKOUT_KEY);
-        if (!pending) return;
-        try {
-          const p = JSON.parse(pending);
-          plan = p.plan;
-          billing = p.billing || "annual";
-        } catch {
-          return;
-        }
-      }
-      if (!plan || !["pro", "pro_plus"].includes(plan)) return;
-      try {
-        let token = await getAccessToken();
-        for (let i = 0; !token && i < 6; i++) {
-          await new Promise((r) => setTimeout(r, 500));
-          token = await getAccessToken();
-        }
-        if (token) {
-          sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
-          if (params.has("replymate_plan")) {
-            history.replaceState(null, "", location.pathname + (location.hash || ""));
-          }
-          await createCheckout(plan, billing);
-        } else {
-          sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
-          console.error("[ReplyMate Upgrade] No session after sign-in. Check Supabase Redirect URLs.");
-        }
-      } catch (e) {
-        sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
-        console.error("[ReplyMate Upgrade] Pending checkout failed", e);
-        alert("Sign-in completed but something went wrong. Please try clicking Upgrade again.");
-      }
-    })();
 
     // Fetch subscription status, apply Cancel/Keep UI, show current plan, mark current plan card
     (async () => {

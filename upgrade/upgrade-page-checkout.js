@@ -460,22 +460,6 @@
     updateBillingChangeButton();
   }
 
-  /** When user is Pro+, block Pro card upgrade (downgrade) – show "Manage subscription" and open portal instead. Apply to all sections. */
-  function applyDowngradeBlock(currentPlan) {
-    if (currentPlan !== "pro_plus") return;
-    const manageLabel = t("manageSubscription") || "Manage subscription";
-    document.querySelectorAll(".plan-card[data-replymate-plan-type=pro] [data-replymate-plan=pro]").forEach((btn) => {
-      btn.textContent = manageLabel;
-      btn.setAttribute("data-replymate-portal-only", "true");
-      btn.removeAttribute("data-replymate-cancel");
-      btn.removeAttribute("data-replymate-switch-billing");
-      btn.classList.remove("cancel-plan", "primary", "secondary");
-      btn.classList.add("secondary");
-      btn.href = "#";
-      btn.style.pointerEvents = "auto";
-    });
-  }
-
   /** Show portal button for all users (free, pro, pro+). Apply to all sections. */
   function applyPortalButton(currentPlan) {
     document.querySelectorAll("[data-replymate-portal]").forEach((el) => {
@@ -706,7 +690,6 @@
       if (!activeSection) return;
       activeSection.style.setProperty("display", "block", "important");
       applyCancelUI(plan, cancelAtPeriodEnd, activeSection);
-      applyDowngradeBlock(plan);
       applyCurrentPlanDisplay(plan, activeSection);
       applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, activeSection);
       applyCurrentPlanCardMarker(plan, activeSection);
@@ -752,26 +735,6 @@
         e.preventDefault();
         const plan = btn.getAttribute("data-replymate-plan");
         if (!plan || !["pro", "pro_plus"].includes(plan)) return;
-
-        // Pro+ user on Pro card: open portal (block downgrade checkout)
-        if (btn.getAttribute("data-replymate-portal-only") === "true") {
-          setButtonLoading(btn, true);
-          try {
-            const result = await createPortalSession();
-            if (result === null) {
-              setButtonLoading(btn, false);
-              const toast = document.createElement("div");
-              toast.className = "billing-prompt-toast";
-              toast.textContent = "⚠️ " + (t("signInFirst") || "Please sign in first.");
-              document.body.appendChild(toast);
-              setTimeout(() => toast.remove(), 3000);
-            }
-          } catch (err) {
-            console.error("[ReplyMate Upgrade]", err);
-            setButtonError(btn, err?.message || "Something went wrong.");
-          }
-          return;
-        }
 
         if (btn.getAttribute("data-replymate-cancel") === "true") {
           if (btn.getAttribute("data-replymate-switch-billing") === "true") {
@@ -954,7 +917,6 @@
     if (plan && billing) applyCurrentBillingMarker(plan, billing, scope);
     applyActiveUntilDisplay(cancelAtPeriodEnd, currentPeriodEnd, plan, scope);
     if (plan && plan !== "free") applyCancelUI(plan, cancelAtPeriodEnd, scope);
-    applyDowngradeBlock(plan);
     applyPortalButton(plan || "free");
   });
   langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });

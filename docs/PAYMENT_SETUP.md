@@ -255,10 +255,6 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 - The endpoint should return 200 with optional JSON; empty response is supported.
 - If your backend uses a different path (e.g. `reactivate-subscription`), set `window.REPLYMATE_KEEP_SUBSCRIPTION_PATH = "reactivate-subscription"` before loading the checkout script. The frontend will also try `reactivate-subscription` and `undo-cancel` if `keep-subscription` returns 404.
 
-### Pro+ users and Pro plan (downgrade)
-
-Pro+ users cannot buy/redirect to Pro Monthly or Pro Annual from the plan cards. The Pro card's button shows "Manage subscription" and opens the Stripe Customer Portal instead. Downgrades are handled in the portal.
-
 ### Switch button updates wrong plan in database
 
 If the Switch button forces a plan before the user chooses in the portal, ensure `REPLYMATE_SWITCH_VIA_PORTAL = true`. With the portal flow, the frontend opens the Stripe Customer Portal **without** passing plan/billing; the user picks in the portal and the DB is updated from the `customer.subscription.updated` webhook. Without the portal, the frontend calls `create-checkout-session` with `subscriptionChange: true` and the button's plan, which updates the subscription before the user reaches the portal.

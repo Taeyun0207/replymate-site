@@ -11,7 +11,6 @@ If you see this error after signing in with Google, **Supabase is redirecting to
    - `https://replymateai.app/pricing/index.html`
    - `https://replymateai.app/pricing/`
    - `https://replymateai.app/**`
-   - (Optional legacy) `https://replymateai.app/upgrade/` if you keep a redirect from old links
 4. **Remove** any `http://localhost:*` entries from Redirect URLs if you're not testing locally
 5. Click **Save**
 

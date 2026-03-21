@@ -1,3 +1,0 @@
-# Netlify: old /upgrade URLs → /pricing (301)
-/upgrade    /pricing/   301
-/upgrade/*  /pricing/:splat  301

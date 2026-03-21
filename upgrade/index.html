@@ -109,6 +109,13 @@
             transition: background 0.2s;
         }
         .cta-header:hover { background: #6d28d9; }
+        .cta-header.cta-coming-soon {
+            display: inline-block;
+            cursor: default;
+            user-select: none;
+        }
+        .cta-header.cta-coming-soon:hover { background: #7c3aed; }
+        a[data-replymate-store] { text-decoration: none; }
 
         .hero {
             padding: 48px 24px 24px;
@@ -404,6 +411,13 @@
         .plan-cta.free:hover {
             background: #e2e8f0;
         }
+        .plan-cta.free.cta-coming-soon {
+            cursor: default;
+            user-select: none;
+        }
+        .plan-cta.free.cta-coming-soon:hover {
+            background: #f1f5f9;
+        }
         .plan-cta.loading {
             pointer-events: none;
             opacity: 0.85;
@@ -642,7 +656,7 @@
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
             <button class="lang-btn" data-lang="es">ES</button>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="cta-header nav-cta">Add to Browser</a>
+            <a href="#" class="cta-header nav-cta cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
         </div>
     </header>
 
@@ -668,7 +682,7 @@
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Get started</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
             </div>
 
             <div class="plan-card" data-replymate-plan-type="pro">
@@ -772,7 +786,7 @@
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">시작하기</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4월 출시 예정</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name">Pro</div>
@@ -873,7 +887,7 @@
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">始める</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4月公開予定</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name">Pro</div>
@@ -974,7 +988,7 @@
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
                 </ul>
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="plan-cta free">Comenzar</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Disponible en abril</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name">Pro</div>
@@ -1071,6 +1085,12 @@
         window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_UPGRADE_URL = "https://replymateai.app/upgrade/";
+        /** Set live: true when published. Edge → edgeAddonsUrl; Chrome & others → Chrome Web Store. */
+        window.REPLYMATE_STORE = {
+            live: false,
+            chromeWebStoreUrl: "https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo",
+            edgeAddonsUrl: ""
+        };
         if (window.supabase && window.REPLYMATE_SUPABASE_URL && window.REPLYMATE_SUPABASE_ANON) {
             window.replymateSupabase = window.supabase.createClient(window.REPLYMATE_SUPABASE_URL, window.REPLYMATE_SUPABASE_ANON, { auth: { storageKey: "replymate-auth" } });
         }
@@ -1099,13 +1119,14 @@
             manageSubscription: { en: "Manage subscription", ko: "구독 관리", ja: "サブスクリプション管理", es: "Gestionar suscripción" }
         };
     </script>
+    <script src="../js/replymate-store.js"></script>
     <script src="upgrade-page-checkout.js"></script>
     <script>
         const navLabels = {
-            en: { cta: 'Add to Browser' },
-            ko: { cta: '브라우저에 추가' },
-            ja: { cta: 'ブラウザに追加' },
-            es: { cta: 'Añadir al navegador' }
+            en: { cta: 'Coming in April' },
+            ko: { cta: '4월 출시 예정' },
+            ja: { cta: '4月公開予定' },
+            es: { cta: 'Disponible en abril' }
         };
         const currentBillingLabels = { en: 'Current', ko: '현재', ja: '現在', es: 'Actual' };
         function getCurrentBillingLabel() {

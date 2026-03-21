@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script>(function(){var p=location.pathname;if(/\/index\.html$/i.test(p)){var clean=p.replace(/\/index\.html$/i,'/')||'/';history.replaceState(null,'',location.origin+clean+location.search+location.hash);}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ReplyMate helps you write replies faster in Gmail and Outlook—save hours every week. Add the free browser extension and draft right in your inbox.">
+    <meta name="description" content="ReplyMate helps you write replies faster in Gmail and Outlook—save hours every week. Browser extension coming in April.">
     <title>ReplyMate — AI replies in Gmail &amp; Outlook</title>
     <link rel="icon" type="image/png" sizes="64x64" href="images/icon64.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/icon32.png">
@@ -144,6 +144,25 @@
         }
         .cta-header:hover {
             background: #6d28d9;
+        }
+        .cta-header.cta-coming-soon,
+        .hero-cta.cta-coming-soon {
+            cursor: default;
+            user-select: none;
+        }
+        .cta-header.cta-coming-soon {
+            display: inline-block;
+        }
+        .cta-header.cta-coming-soon:hover {
+            background: #7c3aed;
+        }
+        .hero-cta.cta-coming-soon:hover {
+            background: #7c3aed;
+            transform: none;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+        }
+        a[data-replymate-store] {
+            text-decoration: none;
         }
         .header-upgrade {
             color: #64748b;
@@ -583,7 +602,7 @@
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
             <button class="lang-btn" data-lang="es">ES</button>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="cta-header">Add to Browser</a>
+            <a href="#" class="cta-header cta-coming-soon" id="header-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
         </div>
     </header>
 
@@ -604,8 +623,8 @@
                 </p>
             </div>
             <div class="hero-cta-wrap">
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Try it for free</a>
-                <p class="hero-cta-note">Ready in under a minute · No credit card to try</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
+                <p class="hero-cta-note">Browser extension — launching in April</p>
             </div>
             <div class="demo-video-section">
                 <p class="demo-video-label">See it in action</p>
@@ -689,8 +708,8 @@
         </section>
         <section class="cta-banner">
             <h2>Spend less time staring at an empty reply</h2>
-            <p>Add ReplyMate and draft your next email where you already work—in Gmail or Outlook.</p>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Try it for free</a>
+            <p>ReplyMate is coming in April—draft your next email right in Gmail or Outlook.</p>
+            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
         </section>
         <footer class="footer">
             <div class="footer-links">
@@ -719,8 +738,8 @@
                 </p>
             </div>
             <div class="hero-cta-wrap">
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">무료로 써보기</a>
-                <p class="hero-cta-note">1분이면 준비 · 카드 없이 시작</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">4월 출시 예정</a>
+                <p class="hero-cta-note">브라우저 확장 — 4월 출시 예정</p>
             </div>
             <div class="demo-video-section">
                 <p class="demo-video-label">실제 화면 보기</p>
@@ -805,8 +824,8 @@
         </section>
         <section class="cta-banner">
             <h2>빈 칸만 보다가 시간 쓰지 마세요</h2>
-            <p>지금 쓰는 Gmail·Outlook에서 ReplyMate로 다음 답장 초안을 만들어 보세요.</p>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">무료로 써보기</a>
+            <p>ReplyMate는 4월에 만나요—Gmail·Outlook에서 바로 답장 초안을 만드세요.</p>
+            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">4월 출시 예정</a>
         </section>
         <footer class="footer">
             <div class="footer-links">
@@ -835,8 +854,8 @@
                 </p>
             </div>
             <div class="hero-cta-wrap">
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">無料で試す</a>
-                <p class="hero-cta-note">すぐ使える · カード不要で試せます</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">4月公開予定</a>
+                <p class="hero-cta-note">ブラウザ拡張機能 — 4月公開予定</p>
             </div>
             <div class="demo-video-section">
                 <p class="demo-video-label">動作を見る</p>
@@ -921,8 +940,8 @@
         </section>
         <section class="cta-banner">
             <h2>空の返信欄で止まる時間を減らす</h2>
-            <p>いつものGmail・Outlookで、次の返信のたたき台をすぐに。</p>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">無料で試す</a>
+            <p>ReplyMateは4月に公開予定—Gmail・Outlookでその場で下書きを。</p>
+            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">4月公開予定</a>
         </section>
         <footer class="footer">
             <div class="footer-links">
@@ -951,8 +970,8 @@
                 </p>
             </div>
             <div class="hero-cta-wrap">
-                <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Pruébalo gratis</a>
-                <p class="hero-cta-note">Listo en minutos · Pruébalo sin tarjeta</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Disponible en abril</a>
+                <p class="hero-cta-note">Extensión de navegador — disponible en abril</p>
             </div>
             <div class="demo-video-section">
                 <p class="demo-video-label">Ver en acción</p>
@@ -1037,8 +1056,8 @@
         </section>
         <section class="cta-banner">
             <h2>Menos tiempo mirando la pantalla en blanco</h2>
-            <p>Añade ReplyMate y redacta el siguiente correo donde ya trabajas—en Gmail o Outlook.</p>
-            <a href="https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer" class="hero-cta">Pruébalo gratis</a>
+            <p>ReplyMate llega en abril—redacta tu próximo correo en Gmail o Outlook.</p>
+            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Disponible en abril</a>
         </section>
         <footer class="footer">
             <div class="footer-links">
@@ -1055,9 +1074,17 @@
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_BASE_URL = "https://replymateai.app/";
         window.REPLYMATE_BACKEND = "https://replymate-backend-bot8.onrender.com";
+        /** Set live: true when published. Edge users get edgeAddonsUrl; others get Chrome Web Store. */
+        window.REPLYMATE_STORE = {
+            live: false,
+            chromeWebStoreUrl: "https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo",
+            edgeAddonsUrl: ""
+        };
     </script>
+    <script src="js/replymate-store.js"></script>
     <script>
         const upgradeLabels = { en: 'Upgrade', ko: '업그레이드', ja: 'アップグレード', es: 'Actualizar' };
+        const comingSoonLabels = { en: 'Coming in April', ko: '4월 출시 예정', ja: '4月公開予定', es: 'Disponible en abril' };
         const authLabels = { signIn: { en: 'Sign in', ko: '로그인', ja: 'ログイン', es: 'Iniciar sesión' }, signOut: { en: 'Sign out', ko: '로그아웃', ja: 'ログアウト', es: 'Cerrar sesión' } };
         const planPillLabels = {
             plan: { en: 'Plan', ko: '플랜', ja: 'プラン', es: 'Plan' },
@@ -1072,11 +1099,13 @@
             const href = getUpgradeHref(lang);
             const upgradeEl = document.getElementById('header-upgrade');
             const pill = document.getElementById('header-plan-pill');
+            const comingSoonEl = document.getElementById('header-coming-soon');
             if (upgradeEl) {
                 upgradeEl.textContent = upgradeLabels[lang] || 'Upgrade';
                 upgradeEl.href = href;
             }
             if (pill) pill.href = href;
+            if (comingSoonEl) comingSoonEl.textContent = comingSoonLabels[lang] || comingSoonLabels.en;
         }
         const params = new URLSearchParams(location.search);
         const initLang = params.get('lang');

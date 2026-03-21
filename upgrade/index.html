@@ -311,6 +311,17 @@
             color: #1a1a2e;
             margin-bottom: 8px;
         }
+        .plan-name-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .plan-name-with-icon .plan-name-icon-svg {
+            flex-shrink: 0;
+            display: block;
+            filter: drop-shadow(0 1px 1px rgba(245, 158, 11, 0.35));
+        }
         .plan-price-row {
             display: flex;
             align-items: center;
@@ -674,11 +685,11 @@
         <div class="pricing-grid">
             <div class="plan-card" data-replymate-plan-type="free">
                 <div class="plan-name">Free</div>
-                <div class="plan-desc">Try ReplyMate for free</div>
+                <div class="plan-desc">Best for getting started</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
                     <li>25 AI replies per month</li>
-                    <li>15 translations per day</li>
+                    <li>10 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
                 </ul>
@@ -686,14 +697,14 @@
             </div>
 
             <div class="plan-card" data-replymate-plan-type="pro">
-                <div class="plan-name">Pro</div>
-                <div class="plan-desc">Write better emails, faster</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="plan-desc">Best for casual users</div>
                 <div class="plan-price-row"><span class="plan-price-original">$2.99</span><div class="plan-price pro-price">$1.99<span>/month</span></div></div>
                 <div class="discount-reason">Early adopter price · Limited-time offer</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">4x AI replies + 3x translations</li>
                     <li class="feature-highlight">100 AI replies per month</li>
-                    <li class="feature-highlight">50 translations per day</li>
+                    <li class="feature-highlight">30 translations per day</li>
                     <li class="feature-highlight">Premium themes & customization</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
@@ -721,12 +732,12 @@
 
             <div class="plan-card featured" data-replymate-plan-type="pro_plus">
                 <span class="featured-badge">Most Popular</span>
-                <div class="plan-name">Pro+</div>
-                <div class="plan-desc">Unlock full power of ReplyMate</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro+</span><svg class="plan-name-icon-svg plan-name-icon-crown" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg></div>
+                <div class="plan-desc">Best for daily users</div>
                 <div class="plan-price-row"><span class="plan-price-original">$6.99</span><div class="plan-price proplus-price">$4.99<span>/month</span></div></div>
                 <div class="discount-reason">Early adopter price · Limited-time offer</div>
                 <ul class="plan-features">
-                    <li class="feature-highlight">10x replies + unlimited translation</li>
+                    <li class="feature-highlight">10x replies + unlimited translations</li>
                     <li class="feature-highlight">1,000 AI replies per month</li>
                     <li class="feature-highlight">Unlimited translations</li>
                     <li class="feature-highlight">Premium themes & customization</li>
@@ -778,25 +789,25 @@
         <div class="pricing-grid">
             <div class="plan-card" data-replymate-plan-type="free">
                 <div class="plan-name">무료</div>
-                <div class="plan-desc">ReplyMate 체험에 적합</div>
+                <div class="plan-desc">처음 시작하기에 적합</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
                     <li>월 25회 AI 답장</li>
-                    <li>일 15회 번역</li>
+                    <li>일 10회 번역</li>
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4월 출시 예정</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
-                <div class="plan-name">Pro</div>
-                <div class="plan-desc">일상 이메일 사용자에게 적합</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="plan-desc">가볍게 쓰는 분에게 적합</div>
                 <div class="plan-price-row"><span class="plan-price-original">$2.99</span><div class="plan-price pro-price">$1.99<span>/월</span></div></div>
                 <div class="discount-reason">얼리어답터 특가 · 한정 기간 할인</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">AI 답장 4배 · 번역 3배</li>
                     <li class="feature-highlight">월 100회 AI 답장</li>
-                    <li class="feature-highlight">일 50회 번역</li>
+                    <li class="feature-highlight">일 30회 번역</li>
                     <li class="feature-highlight">프리미엄 테마 · 맞춤 색상</li>
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
@@ -823,8 +834,8 @@
             </div>
             <div class="plan-card featured" data-replymate-plan-type="pro_plus">
                 <span class="featured-badge">가장 인기</span>
-                <div class="plan-name">Pro+</div>
-                <div class="plan-desc">많은 이메일과 무제한 번역에 적합</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro+</span><svg class="plan-name-icon-svg plan-name-icon-crown" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg></div>
+                <div class="plan-desc">매일 이메일을 많이 쓰는 분에게 적합</div>
                 <div class="plan-price-row"><span class="plan-price-original">$6.99</span><div class="plan-price proplus-price">$4.99<span>/월</span></div></div>
                 <div class="discount-reason">얼리어답터 특가 · 한정 기간 할인</div>
                 <ul class="plan-features">
@@ -879,25 +890,25 @@
         <div class="pricing-grid">
             <div class="plan-card" data-replymate-plan-type="free">
                 <div class="plan-name">無料</div>
-                <div class="plan-desc">ReplyMateを試すのに最適</div>
+                <div class="plan-desc">はじめるのに最適</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
                     <li>月25回のAI返信</li>
-                    <li>1日15回の翻訳</li>
+                    <li>1日10回の翻訳</li>
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4月公開予定</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
-                <div class="plan-name">Pro</div>
-                <div class="plan-desc">日常のメールに最適</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="plan-desc">カジュアルな利用に最適</div>
                 <div class="plan-price-row"><span class="plan-price-original">$2.99</span><div class="plan-price pro-price">$1.99<span>/月</span></div></div>
                 <div class="discount-reason">先行者特別価格 · 期間限定</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">AI返信4倍 · 翻訳3倍</li>
                     <li class="feature-highlight">月100回のAI返信</li>
-                    <li class="feature-highlight">1日50回の翻訳</li>
+                    <li class="feature-highlight">1日30回の翻訳</li>
                     <li class="feature-highlight">プレミアムテーマ・カスタマイズ</li>
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
@@ -924,12 +935,12 @@
             </div>
             <div class="plan-card featured" data-replymate-plan-type="pro_plus">
                 <span class="featured-badge">最も人気</span>
-                <div class="plan-name">Pro+</div>
-                <div class="plan-desc">メール多め・翻訳無制限に最適</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro+</span><svg class="plan-name-icon-svg plan-name-icon-crown" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg></div>
+                <div class="plan-desc">毎日メールをする人に最適</div>
                 <div class="plan-price-row"><span class="plan-price-original">$6.99</span><div class="plan-price proplus-price">$4.99<span>/月</span></div></div>
                 <div class="discount-reason">先行者特別価格 · 期間限定</div>
                 <ul class="plan-features">
-                    <li class="feature-highlight">AI返信10倍 · 翻訳無制限</li>
+                    <li class="feature-highlight">無料比10倍のAI返信 · 翻訳無制限</li>
                     <li class="feature-highlight">月1,000回のAI返信</li>
                     <li class="feature-highlight">翻訳無制限</li>
                     <li class="feature-highlight">プレミアムテーマ・カスタマイズ</li>
@@ -980,25 +991,25 @@
         <div class="pricing-grid">
             <div class="plan-card" data-replymate-plan-type="free">
                 <div class="plan-name">Gratis</div>
-                <div class="plan-desc">Ideal para probar ReplyMate</div>
+                <div class="plan-desc">Ideal para empezar</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
                     <li>25 respuestas IA al mes</li>
-                    <li>15 traducciones al día</li>
+                    <li>10 traducciones al día</li>
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Disponible en abril</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
-                <div class="plan-name">Pro</div>
-                <div class="plan-desc">Ideal para uso diario de email</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+                <div class="plan-desc">Ideal para uso casual</div>
                 <div class="plan-price-row"><span class="plan-price-original">$2.99</span><div class="plan-price pro-price">$1.99<span>/mes</span></div></div>
                 <div class="discount-reason">Precio de lanzamiento · Oferta por tiempo limitado</div>
                 <ul class="plan-features">
                     <li class="feature-highlight">4x respuestas IA + 3x traducciones</li>
                     <li class="feature-highlight">100 respuestas IA al mes</li>
-                    <li class="feature-highlight">50 traducciones al día</li>
+                    <li class="feature-highlight">30 traducciones al día</li>
                     <li class="feature-highlight">Temas premium y personalización</li>
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
@@ -1025,12 +1036,12 @@
             </div>
             <div class="plan-card featured" data-replymate-plan-type="pro_plus">
                 <span class="featured-badge">Más popular</span>
-                <div class="plan-name">Pro+</div>
-                <div class="plan-desc">Ideal para mucho email y traducción ilimitada</div>
+                <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro+</span><svg class="plan-name-icon-svg plan-name-icon-crown" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/></svg></div>
+                <div class="plan-desc">Ideal para uso diario</div>
                 <div class="plan-price-row"><span class="plan-price-original">$6.99</span><div class="plan-price proplus-price">$4.99<span>/mes</span></div></div>
                 <div class="discount-reason">Precio de lanzamiento · Oferta por tiempo limitado</div>
                 <ul class="plan-features">
-                    <li class="feature-highlight">10x respuestas + traducción ilimitada</li>
+                    <li class="feature-highlight">10x respuestas IA + traducción ilimitada</li>
                     <li class="feature-highlight">1,000 respuestas IA al mes</li>
                     <li class="feature-highlight">Traducciones ilimitadas</li>
                     <li class="feature-highlight">Temas premium y personalización</li>

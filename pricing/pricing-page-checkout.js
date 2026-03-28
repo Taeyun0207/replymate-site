@@ -121,7 +121,15 @@
       } else if (plan.includes("pro")) {
         planVal = "pro";
       }
-      const cancelAtPeriodEnd = !!(data.cancelAtPeriodEnd ?? data.cancel_at_period_end ?? data.subscription?.cancel_at_period_end);
+      const cancelAtPeriodEnd = !!(
+        data.cancelAtPeriodEnd ??
+        data.cancel_at_period_end ??
+        data.user?.cancelAtPeriodEnd ??
+        data.user?.cancel_at_period_end ??
+        data.subscription?.cancel_at_period_end ??
+        data.subscriptionCancelAtPeriodEnd ??
+        data.cancel_scheduled
+      );
       const currentPeriodEnd = data.currentPeriodEnd ?? data.current_period_end ?? data.subscription?.current_period_end ?? data.subscription?.currentPeriodEnd ?? null;
       let raw = (
         data.billingInterval ?? data.billing_interval ?? data.user?.billingInterval ?? data.user?.billing_interval ??

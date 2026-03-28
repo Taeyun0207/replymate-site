@@ -460,12 +460,19 @@
     updateBillingChangeButton();
   }
 
-  /** Show portal button for all users (free, pro, pro+). Apply to all sections. */
+  /** Show portal only for paid plans (nothing to manage on Free). */
   function applyPortalButton(currentPlan) {
+    const plan = (currentPlan || "free").toLowerCase();
+    const show = plan === "pro" || plan === "pro_plus";
     document.querySelectorAll("[data-replymate-portal]").forEach((el) => {
-      el.style.setProperty("display", "inline-block", "important");
-      el.style.visibility = "visible";
-      el.textContent = t("manageSubscription") || "Manage subscription";
+      if (show) {
+        el.style.setProperty("display", "inline-block", "important");
+        el.style.visibility = "visible";
+        el.textContent = t("manageSubscription") || "Manage subscription";
+      } else {
+        el.style.setProperty("display", "none", "important");
+        el.style.visibility = "hidden";
+      }
     });
   }
 
@@ -657,7 +664,7 @@
     // Standalone switch buttons: [data-replymate-switch] opens portal (user picks plan in Stripe)
     const switchBtns = document.querySelectorAll("[data-replymate-switch]");
 
-    // Portal button: [data-replymate-portal] – shown below plan cards when user has paid plan
+    // Portal button: [data-replymate-portal] – shown only for Pro / Pro+ (hidden for Free)
     const portalBtns = document.querySelectorAll("[data-replymate-portal]");
 
     const params = new URLSearchParams(location.search);

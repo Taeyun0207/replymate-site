@@ -214,6 +214,41 @@ Replace `YOUR_EXTENSION_ID` with your published extension ID (from Chrome Web St
 | `/billing/cancel-subscription` | POST | Schedules cancel at period end, returns `currentPeriodEnd` |
 | `/billing/keep-subscription` | POST | Reactivates subscription (removes cancel-at-period-end) |
 | `/billing/create-portal-session` | POST | Creates Stripe Customer Portal session for managing subscription (change monthly↔annual, payment method, cancel). Body: `{ returnUrl }`. Returns `{ url }`. |
+| `/billing/sync-subscription` | POST | **Optional.** After portal changes, re-fetch the user’s Stripe subscription and update your DB (`cancel_at_period_end`, `period_end`, plan). Called from the pricing page when `window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL === true`. |
+
+---
+
+## Customer Portal cancel — DB / pricing page not updating
+
+If canceling in **Stripe Customer Portal** does not update Postgres and the site still shows **“Renews on …”**, the pricing page is only reading **`GET /billing/me`**. That stays wrong until your **DB** has `cancelAtPeriodEnd` (and period end) set.
+
+### 1. Fix webhooks (proper fix)
+
+On **`customer.subscription.updated`**, when `subscription.status === "active"` and **`cancel_at_period_end === true`**, you must persist that flag (and `current_period_end`) on the user — same as after your own `cancel-subscription` API. If you only handle **`customer.subscription.deleted`**, scheduled cancels while the subscription is still **active** will never update the row.
+
+Verify in **Stripe Dashboard → Developers → Webhooks** that events are **delivered** (200) for your test/live endpoint. Wrong **signing secret**, **test vs live** mismatch, or a **different** Render URL than the one Stripe calls are common causes.
+
+### 2. Optional: `POST /billing/sync-subscription` (belt-and-suspenders)
+
+If webhooks are delayed or flaky, implement an authenticated endpoint that:
+
+1. Loads the user’s `stripe_subscription_id` (or customer + active subscription).
+2. `await stripe.subscriptions.retrieve(subscriptionId)`.
+3. Writes `cancel_at_period_end`, `current_period_end`, plan/billing into your DB (same mapping as the webhook).
+
+Then on the pricing page set:
+
+```html
+<script>
+  window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL = true;
+</script>
+```
+
+The script calls this **when the user returns** from the portal (`from_portal=1`) and again on later refetch timers. Path override: `window.REPLYMATE_BILLING_SYNC_PATH = "billing/your-path"`.
+
+### 3. Disable cancel in the portal (last resort)
+
+You can turn off **Cancel subscriptions** in **Stripe → Billing → Customer portal** so the only cancel path is your pricing page (`POST /billing/cancel-subscription`), which you know updates the DB. Users lose self-serve cancel in Stripe until webhooks (or sync) are fixed.
 
 ---
 

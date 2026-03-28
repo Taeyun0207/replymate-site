@@ -772,7 +772,7 @@
                 <div class="plan-desc">Try ReplyMate for free</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
-                    <li>25 replies per month</li>
+                    <li>25I w replies per month</li>
                     <li>10 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
@@ -1188,6 +1188,8 @@
         window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_UPGRADE_URL = "https://replymateai.app/pricing/";
+        /** After Customer Portal: POST /billing/sync-subscription pulls Stripe → DB. Set true once backend implements it (see docs/PAYMENT_SETUP.md). */
+        window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL = false;
         /** Set live: true when published. Edge → edgeAddonsUrl; Chrome & others → Chrome Web Store. */
         window.REPLYMATE_STORE = {
             live: false,

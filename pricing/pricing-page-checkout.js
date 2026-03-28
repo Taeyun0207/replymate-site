@@ -32,6 +32,9 @@
  * Backend endpoints:
  * - GET /billing/me → { plan: "free"|"pro"|"pro_plus" }
  * - POST /billing/cancel-subscription → Schedules cancel at period end, returns { currentPeriodEnd, cancelAtPeriodEnd }
+ *
+ * Optional (Customer Portal → DB lag): set window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL = true and implement
+ * POST /billing/sync-subscription — backend retrieves Stripe subscription and updates DB (see docs/PAYMENT_SETUP.md).
  */
 
 (function () {
@@ -44,6 +47,34 @@
   const SUPABASE_ANON = window.REPLYMATE_SUPABASE_ANON;
   const LABELS = window.REPLYMATE_LABELS || {};
   const PRODUCTION_UPGRADE_URL = window.REPLYMATE_UPGRADE_URL || "https://replymateai.app/pricing/";
+
+  /**
+   * Optional: after Customer Portal, ask backend to pull latest subscription from Stripe into DB.
+   * Enable with window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL = true (see pricing/index.html).
+   */
+  async function syncSubscriptionFromStripe() {
+    if (window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL !== true) return false;
+    const path = (window.REPLYMATE_BILLING_SYNC_PATH || "billing/sync-subscription").replace(/^\//, "");
+    const token = await getAccessToken();
+    if (!token) return false;
+    try {
+      const res = await fetch(`${BACKEND}/${path}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({})
+      });
+      if (!res.ok && res.status !== 404) {
+        console.warn("[ReplyMate Billing] POST /" + path + " returned", res.status);
+      }
+      return res.ok;
+    } catch (e) {
+      console.warn("[ReplyMate Billing] sync-subscription request failed", e);
+      return false;
+    }
+  }
 
   if (!SUPABASE_URL || !SUPABASE_ANON) {
     console.warn("[ReplyMate Upgrade] Missing REPLYMATE_SUPABASE_URL or REPLYMATE_SUPABASE_ANON");
@@ -714,6 +745,9 @@
 
     (async () => {
       if (skipSubscriptionUI) return;
+      if (fromPortal) {
+        await syncSubscriptionFromStripe();
+      }
       let status = await getSubscriptionStatus();
       applySubscriptionUI(status);
       // Defer to next frame, then again after 400ms (OAuth redirect can leave DOM in flux)
@@ -723,8 +757,14 @@
       });
       const needsRefetch = justPurchased || fromPortal;
       if (needsRefetch) {
-        [1500, 3500, 6000, 10000].forEach((ms) => {
+        const delays = fromPortal
+          ? [1500, 3500, 6000, 10000, 15000, 25000, 40000]
+          : [1500, 3500, 6000, 10000];
+        delays.forEach((ms) => {
           setTimeout(async () => {
+            if (fromPortal && ms >= 15000) {
+              await syncSubscriptionFromStripe();
+            }
             const fresh = await getSubscriptionStatus();
             applySubscriptionUI(fresh);
           }, ms);

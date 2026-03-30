@@ -751,7 +751,7 @@
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
             <button class="lang-btn" data-lang="es">ES</button>
-            <a href="#" class="cta-header nav-cta cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
+            <a href="#" class="cta-header nav-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
         </div>
     </header>
 
@@ -772,12 +772,12 @@
                 <div class="plan-desc">Try ReplyMate for free</div>
                 <div class="plan-price">$0</div>
                 <ul class="plan-features">
-                    <li>25I w replies per month</li>
+                    <li>25 AI replies per month</li>
                     <li>10 translations per day</li>
                     <li>All tone options</li>
                     <li>Works in Gmail & Outlook</li>
                 </ul>
-                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Coming in April</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Try it free</a>
             </div>
 
             <div class="plan-card" data-replymate-plan-type="pro">
@@ -883,7 +883,7 @@
                     <li>다양한 말투 선택</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                 </ul>
-                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4월 출시 예정</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">무료로 시작하기</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
@@ -986,7 +986,7 @@
                     <li>トーン選択</li>
                     <li>GmailおよびOutlookで利用</li>
                 </ul>
-                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">4月公開予定</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">無料で試す</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
@@ -1089,7 +1089,7 @@
                     <li>Todos los tonos</li>
                     <li>Funciona en Gmail y Outlook</li>
                 </ul>
-                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Disponible en abril</a>
+                <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Pruébalo gratis</a>
             </div>
             <div class="plan-card" data-replymate-plan-type="pro">
                 <div class="plan-name plan-name-with-icon"><span class="plan-name-text">Pro</span><svg class="plan-name-icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="#f59e0b" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
@@ -1192,8 +1192,8 @@
         window.REPLYMATE_SYNC_BILLING_AFTER_PORTAL = false;
         /** Set live: true when published. Edge → edgeAddonsUrl; Chrome & others → Chrome Web Store. */
         window.REPLYMATE_STORE = {
-            live: false,
-            chromeWebStoreUrl: "https://chromewebstore.google.com/detail/replymate/peiobdhdmdklnkkfbcnmindgpclikkfo",
+            live: true,
+            chromeWebStoreUrl: "https://chromewebstore.google.com/detail/replymate-ai-reply-genera/peiobdhdmdklnkkfbcnmindgpclikkfo",
             edgeAddonsUrl: ""
         };
         if (window.supabase && window.REPLYMATE_SUPABASE_URL && window.REPLYMATE_SUPABASE_ANON) {
@@ -1228,10 +1228,10 @@
     <script src="pricing-page-checkout.js"></script>
     <script>
         const navLabels = {
-            en: { cta: 'Coming in April' },
-            ko: { cta: '4월 출시 예정' },
-            ja: { cta: '4月公開予定' },
-            es: { cta: 'Disponible en abril' }
+            en: { cta: 'Add to browser' },
+            ko: { cta: '브라우저에 추가' },
+            ja: { cta: 'ブラウザに追加' },
+            es: { cta: 'Añadir al navegador' }
         };
         const currentBillingLabels = { en: 'Current', ko: '현재', ja: '現在', es: 'Actual' };
         function getCurrentBillingLabel() {

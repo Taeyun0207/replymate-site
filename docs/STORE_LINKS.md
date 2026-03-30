@@ -15,6 +15,6 @@ The site uses `js/replymate-store.js` with `window.REPLYMATE_STORE` (see `index.
 
 If `edgeAddonsUrl` is empty, everyone gets the Chrome Web Store URL (Edge can still install from the Chrome Web Store when users allow extensions from other stores).
 
-## Pre-launch
+## Pre-launch / toggling off
 
-With **`live: false`**, store links stay disabled (`#` + `preventDefault`) and keep the “Coming in April” styling.
+With **`live: false`**, `[data-replymate-store]` links stay disabled (`#` + `preventDefault`) and keep the `cta-coming-soon` styling until you set **`live: true`** and valid store URLs.

@@ -3,7 +3,7 @@
  *
  * Configure on the page BEFORE this script:
  *   window.REPLYMATE_STORE = {
- *     live: false,  // set true when the extension is published
+ *     live: true,   // false = disabled placeholder links until launch
  *     chromeWebStoreUrl: 'https://chromewebstore.google.com/detail/...',
  *     edgeAddonsUrl: 'https://microsoftedge.microsoft.com/addons/detail/...'  // optional until Edge listing exists
  *   };

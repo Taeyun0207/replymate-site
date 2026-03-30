@@ -270,56 +270,131 @@
             <h1>ReplyMate 개인정보 처리방침</h1>
             <p><strong>최종 업데이트:</strong> 2026년 3월 30일</p>
 
-            <h2>서론</h2>
-            <p>ReplyMate는 <strong>Google Chrome</strong> 및 <strong>Microsoft Edge</strong>용 브라우저 확장 프로그램으로, 웹상의 Gmail 및 Outlook에서 AI 기반 이메일 답장 작성과 번역 기능을 제공합니다. 사용자의 개인정보를 보호하고 데이터 처리 방식을 투명하게 안내합니다.</p>
+            <h2>소개</h2>
+            <p>ReplyMate는 <strong>Google Chrome</strong>과 <strong>Microsoft Edge</strong>용 브라우저 확장 프로그램으로, 웹 Gmail과 Outlook에서 AI로 이메일 답장을 작성하고 번역 기능을 함께 제공합니다. 저희는 사용자의 개인정보를 중요하게 여기며, 데이터를 어떻게 다루는지 알기 쉽게 설명드리고자 합니다.</p>
+            <p>아래에서는 무엇을 수집하는지, 어떻게 사용하는지, 그리고 이용자께 어떤 권리가 있는지 정리했습니다.</p>
 
-            <h2>Google 사용자 데이터 사용</h2>
-            <p>ReplyMate는 AI 답장 및 번역이라는 핵심 기능 제공을 위해서만 Google 사용자 데이터(예: Gmail 본문)를 사용합니다. 광고, 프로파일링, AI 모델 학습에는 사용하지 않으며, 서비스 제공에 필요한 경우(OpenAI, Stripe 등)를 제외하고 제3자에게 판매·이전하지 않습니다.</p>
+            <h2>Google 사용자 데이터의 이용</h2>
+            <p>ReplyMate는 Google 사용자 데이터(예: Gmail 메일 내용)를 AI 답장 및 번역이라는 핵심 기능을 제공하기 위해서만 사용합니다.</p>
+            <p>Google 사용자 데이터는 다음 용도로는 사용하지 않습니다.</p>
+            <ul>
+                <li>광고</li>
+                <li>이용자 프로파일링</li>
+                <li>AI 모델 학습</li>
+            </ul>
+            <p>서비스 제공에 필요한 경우(예: 답장 생성을 위한 OpenAI, 결제 처리를 위한 Stripe)를 제외하고는 Google 사용자 데이터를 제3자에게 판매하거나 이전하지 않습니다.</p>
+            <p>해당 기능을 제공하는 데 필요한 최소한의 데이터만 접근합니다.</p>
 
             <h2>수집하는 정보</h2>
-            <h3>계정 및 자동 수집</h3>
+            <h3>계정 및 자동으로 수집되는 정보</h3>
             <ul>
-                <li><strong>로그인·계정(Supabase Auth + Google):</strong> Google 로그인 시 <strong>Supabase 사용자 ID</strong>, <strong>이메일</strong>, Google이 제공하는 프로필 정보(예: <strong>이름</strong>, 프로필 이미지)를 받습니다.</li>
-                <li><strong>사용 데이터:</strong> AI 답장 수, 현재 청구 기간의 번역 사용량, 구독 플랜 등.</li>
-                <li><strong>구독 정보:</strong> 유료 시 Stripe 고객·구독 ID.</li>
-                <li><strong>기술 데이터:</strong> 브라우저 유형, 확장 버전, 안정성·보안을 위한 제한적 로그.</li>
+                <li><strong>로그인 및 계정(Supabase Auth, Google):</strong> Google로 로그인하시면 <strong>Supabase 사용자 ID</strong>, <strong>이메일 주소</strong>, 그리고 Google이 공유하는 프로필 정보(예: <strong>이름</strong> 또는 프로필 이미지)를 인증 및 계정 표시 목적으로 받습니다. 익명의 브라우저 전용 ID가 아닙니다.</li>
+                <li><strong>이용 데이터:</strong> 생성한 AI 답장 수, 현재 청구 기간의 번역 이용량, 구독 플랜(무료, Pro, Pro+)입니다.</li>
+                <li><strong>구독 정보:</strong> 유료 플랜으로 업그레이드한 경우에 한해 Stripe 고객 ID 및 구독 ID입니다.</li>
+                <li><strong>기술 정보:</strong> 브라우저 종류, 확장 프로그램 버전, 안정성 및 보안을 위해 제한적으로 수집하는 서비스 로그입니다.</li>
             </ul>
-            <h3>사용자 제공·처리 데이터</h3>
+
+            <h3>이용자가 제공하는 정보</h3>
             <ul>
-                <li><strong>이메일 컨텍스트:</strong> 제목, 본문, 발신·수신자 이름 등은 AI 처리를 위해 <span class="highlight">일시 처리</span>되며 <span class="highlight">DB에 저장되지 않습니다</span>.</li>
-                <li><strong>번역 입력:</strong> 번역에 넣은 텍스트는 실시간 처리되며 이메일과 동일하게 DB에 본문으로 저장되지 않습니다.</li>
-                <li><strong>선호 설정:</strong> 톤, 길이, 언어 등(로컬 및 필요 시 계정과 연동).</li>
-                <li><strong>결제:</strong> Stripe가 처리; 카드 전체 번호는 당사 서버에 저장하지 않습니다.</li>
+                <li><strong>이메일 맥락:</strong> 메일 제목, 본문, 발신·수신자 이름, 대화 스레드입니다. AI 답장 및 번역을 위해 <span class="highlight">일시적으로 처리</span>되며, <span class="highlight">당사 데이터베이스에는 저장되지 않습니다</span>.</li>
+                <li><strong>번역 입력:</strong> 번역을 선택한 텍스트는 실시간으로 처리되며, 이메일 본문으로 당사 DB에 저장되지 않습니다.</li>
+                <li><strong>사용자 설정:</strong> 답장 톤(전문적, 친근, 정중), 길이 선호, 언어 설정 등(브라우저에 로컬 저장 및 서비스에 필요 시 계정과 동기화될 수 있음).</li>
+                <li><strong>결제:</strong> 결제는 Stripe에서 처리하며, 당사 서버에는 카드 전체 번호를 저장하지 않습니다.</li>
+            </ul>
+
+            <h2>데이터 이용 목적</h2>
+            <ul>
+                <li><strong>서비스 제공:</strong> AI 이메일 답장과 번역을 생성해 실시간으로 제공합니다.</li>
+                <li><strong>이용량 관리:</strong> 플랜 한도에 맞춰 답장·번역 이용을 집계하고 청구 주기를 관리합니다.</li>
+                <li><strong>고객 지원:</strong> 기술 문제 및 계정 관련 문의를 돕습니다.</li>
+                <li><strong>서비스 개선:</strong> 통계 수준의 이용 패턴을 분석해 ReplyMate 기능을 개선합니다.</li>
+                <li><strong>결제 처리:</strong> Stripe의 안전한 결제 시스템으로 구독을 관리합니다.</li>
             </ul>
 
             <h2>제3자 서비스</h2>
-            <p><strong>Supabase:</strong> 인증(Google 로그인) 및 PostgreSQL 데이터베이스 호스팅. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
-            <p><strong>OpenAI:</strong> 답장·번역 생성. <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAI 개인정보 처리방침</a></p>
-            <p><strong>Stripe:</strong> 결제. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe 개인정보 처리방침</a></p>
+            <h3>Supabase</h3>
+            <p><strong>Supabase</strong>를 인증(Google 로그인 포함)과 애플리케이션 데이터베이스(PostgreSQL) 호스팅에 사용합니다. 본 방침에 설명된 계정 및 이용 데이터는 Supabase의 인프라와 보안 관행에 따라 저장·처리됩니다.</p>
+            <p><strong>Supabase 개인정보:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
 
-            <h2>저장 및 보관</h2>
-            <p>당사 DB는 <strong>Supabase(PostgreSQL)</strong>를 사용합니다. Gmail/Outlook 본문은 저장하지 않습니다. 계정·플랜·사용량·Stripe ID·타임스탬프 등을 보관합니다.</p>
+            <h3>OpenAI</h3>
+            <p>OpenAI API로 이메일 답장과 번역을 생성합니다. 메일 또는 번역 텍스트는 답장·번역 생성을 위해 OpenAI로 전송되며, OpenAI 개인정보 처리방침에 따라 처리됩니다. 이용자 데이터로 당사 자체 AI 모델을 학습시키지 않습니다.</p>
+            <p><strong>OpenAI 개인정보 처리방침:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>안전한 결제 처리를 위해 Stripe를 사용합니다.</p>
+            <ul>
+                <li>결제 정보는 Stripe의 보안 시스템에서 직접 처리됩니다.</li>
+                <li>당사 DB에는 Stripe 고객 ID와 구독 ID만 저장합니다.</li>
+                <li>신용카드 상세 정보는 당사 서버에 저장하지 않습니다.</li>
+                <li>모든 결제 처리는 PCI DSS 기준을 준수합니다.</li>
+            </ul>
+            <p><strong>Stripe 개인정보 처리방침:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>데이터 저장 및 보관</h2>
+            <h3>당사 데이터베이스</h3>
+            <p><strong>호스팅 데이터베이스(Supabase / PostgreSQL)</strong>에는 다음이 저장됩니다.</p>
+            <ul>
+                <li><strong>계정 식별자:</strong> Google 로그인과 연결된 Supabase 사용자 ID</li>
+                <li><strong>플랜 정보:</strong> 현재 구독 플랜 및 청구 주기 일정</li>
+                <li><strong>이용 건수:</strong> 현재 청구 기간의 답장 및 번역 이용량</li>
+                <li><strong>Stripe ID:</strong> 고객 및 구독 식별자(유료 플랜)</li>
+                <li><strong>타임스탬프:</strong> 계정 생성, 최종 수정, 청구 관련 일시</li>
+            </ul>
+
+            <h3>이메일 내용</h3>
+            <p><span class="highlight">Gmail 또는 Outlook 메일 내용은 저장하지 않습니다.</span> 모든 메일 데이터는 실시간으로 처리된 뒤 답장 생성 또는 번역 직후 폐기됩니다. 정상적인 서비스 운영 과정에서 ReplyMate 담당자가 해당 내용에 접근하거나 검토하지 않습니다.</p>
+            <p>ReplyMate는 요청하신 AI 답장과 번역을 만들기 위해서만 Gmail·Outlook 메일 내용을 사용합니다. 광고, 프로파일링, 모델 학습에는 사용하지 않으며, 위에서 밝힌 경우(예: 생성을 위한 OpenAI, 인프라 제공사)를 제외하고 제3자에게 판매하거나 공유하지 않습니다.</p>
+
+            <h3>로컬 저장</h3>
+            <p>확장 프로그램은 브라우저에 다음 정보를 로컬로 저장할 수 있습니다.</p>
+            <ul>
+                <li><strong>사용자 설정:</strong> 언어, 톤, 길이 설정</li>
+                <li><strong>세션·인증 상태:</strong> 로그인 상태로 확장 프로그램을 쓰기 위해 필요한 경우</li>
+                <li><strong>이용량 캐시:</strong> 해당되는 경우 단기간 캐시되는 이용 데이터</li>
+            </ul>
+
+            <h3>보관 기간</h3>
+            <ul>
+                <li><strong>계정 데이터:</strong> 삭제 요청 또는 계정 종료 시까지 보관하며, 법령 또는 결제 기록상 필요한 경우는 예외입니다.</li>
+                <li><strong>한도용 이용 데이터:</strong> 현재 청구 기간 및 관련 집계</li>
+                <li><strong>이메일 내용:</strong> 보관하지 않음(일시 처리만)</li>
+            </ul>
 
             <h2>보안</h2>
-            <p>전송 구간 암호화(HTTPS), 최소 수집, 신뢰할 수 있는 인프라 이용, 접근 통제를 적용합니다. Chrome 웹 스토어 사용자 데이터 정책을 준수합니다.</p>
+            <p>데이터 보호를 위해 다음과 같은 조치를 취합니다.</p>
+            <ul>
+                <li><strong>HTTPS 암호화:</strong> 브라우저와 당사 서버 간 통신은 전송 중 암호화됩니다.</li>
+                <li><strong>최소 수집:</strong> 서비스 운영에 필요한 계정·이용 데이터만 수집합니다(「수집하는 정보」 참고).</li>
+                <li><strong>신뢰할 수 있는 제3자:</strong> Supabase, OpenAI, Stripe 등 업계 표준 관행을 따르는 서비스를 사용합니다.</li>
+                <li><strong>접근 통제:</strong> 데이터베이스 및 백엔드 접근을 제한합니다.</li>
+            </ul>
+            <p>ReplyMate는 Google Chrome 웹 스토어 사용자 데이터 정책을 준수합니다. 사용자 데이터를 판매하거나 광고에 사용하지 않으며, 서비스 제공에 필요한 경우를 제외하고 제3자에게 이전하지 않습니다.</p>
 
-            <h2>권리 및 삭제</h2>
-            <p>법령에 따른 열람·정정·삭제·이동 요청이 있을 수 있습니다. 삭제 요청: <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
+            <h2>이용자의 권리</h2>
+            <p>거주 지역에 따라 데이터 열람, 정정, 삭제,보내기 등의 권리가 있을 수 있습니다. 권리 행사를 원하시면 아래 이메일로 연락해 주세요. 합리적인 기간 내에 답변드리겠습니다.</p>
+            <ul>
+                <li><strong>삭제:</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a>으로 연락 주시면 계정 및 관련 데이터 삭제를 요청하실 수 있습니다. 법령 또는 결제 기록상 보관이 필요한 경우를 제외하고, 합리적인 기간 내 시스템에서 삭제합니다.</li>
+            </ul>
 
-            <h2>어린이</h2>
-            <p>만 13세 미만을 대상으로 하지 않으며, 고의로 수집하지 않습니다.</p>
+            <h2>아동의 개인정보</h2>
+            <p>ReplyMate는 만 13세 미만 아동을 대상으로 하지 않으며, 만 13세 미만 아동의 개인정보를 고의로 수집하지 않습니다. 만 13세 미만 아동의 정보가 수집된 사실을 알게 되면 해당 정보를 삭제합니다.</p>
 
-            <h2>변경</h2>
-            <p>본 방침을 개정할 수 있으며, 이 페이지에 게시하고 최종 업데이트 일자를 갱신합니다.</p>
+            <h2>개인정보 처리방침의 변경</h2>
+            <p>본 방침은 수시로 개정될 수 있습니다. 변경 시 이 페이지에 게시하고 「최종 업데이트」 날짜를 수정합니다. 중요한 변경의 경우 실질적으로 가능한 때 추가 안내를 드릴 수 있습니다.</p>
+            <p>변경 후에도 ReplyMate를 계속 이용하시는 경우, 법에서 허용하는 범위에서 개정된 방침에 동의하신 것으로 볼 수 있습니다.</p>
 
-            <h2>연락처</h2>
+            <h2>문의</h2>
+            <p>개인정보 관련 문의나 권리 행사는 아래로 연락해 주세요.</p>
+
             <div class="contact-info">
                 <p><strong>이메일:</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
-                <p><strong>지원:</strong> Chrome 또는 Edge 확장 프로그램 또는 웹사이트</p>
+                <p><strong>지원:</strong> 확장 프로그램(Chrome 또는 Edge) 또는 당사 웹사이트를 통해 문의</p>
+                <p><strong>응답 시간:</strong> 통상 영업일 기준 7일 이내</p>
             </div>
+
             <div class="last-updated">
                 <p><a href="../index.html">← ReplyMate로 돌아가기</a></p>
-                <p>2026년 3월 30일부터 효력이 있습니다.</p>
+                <p>2026년 3월 30일부터 시행됩니다.</p>
             </div>
         </div>
 
@@ -329,106 +404,261 @@
             <p><strong>最終更新:</strong> 2026年3月30日</p>
 
             <h2>はじめに</h2>
-            <p>ReplyMateは<strong>Google Chrome</strong>および<strong>Microsoft Edge</strong>向けブラウザ拡張機能で、ウェブ上のGmailおよびOutlookでAIによる返信作成と翻訳を提供します。</p>
+            <p>ReplyMateは<strong>Google Chrome</strong>および<strong>Microsoft Edge</strong>向けのブラウザ拡張機能で、ウェブ版のGmailとOutlookでAIを使ったメール返信の作成と翻訳機能を提供します。お客様のプライバシーを大切にし、データの取り扱いについて分かりやすく説明します。</p>
+            <p>本ポリシーでは、どのような情報を収集するか、どのように利用するか、お客様にどのような権利があるかをまとめています。</p>
 
-            <h2>Googleユーザーデータ</h2>
-            <p>AI返信・翻訳の提供に必要な範囲でのみGoogleユーザーデータ（例：Gmail本文）を使用します。広告・プロファイリング・モデル学習には使用せず、サービス提供に必要な場合（OpenAI、Stripe等）を除き第三者に販売・譲渡しません。</p>
+            <h2>Googleユーザーデータの利用</h2>
+            <p>ReplyMateは、Googleユーザーデータ（例：Gmailのメール内容）を、AI返信および翻訳という中核機能の提供に必要な範囲でのみ利用します。</p>
+            <p>Googleユーザーデータを次の目的には利用しません。</p>
+            <ul>
+                <li>広告</li>
+                <li>ユーザーのプロファイリング</li>
+                <li>AIモデルの学習</li>
+            </ul>
+            <p>サービス提供に必要な場合（例：返信生成のためのOpenAI、決済処理のためのStripe）を除き、Googleユーザーデータを第三者に販売したり譲渡したりすることはありません。</p>
+            <p>当該機能を提供するために必要な最小限のデータにのみアクセスします。</p>
 
             <h2>収集する情報</h2>
-            <h3>アカウント・自動収集</h3>
+            <h3>アカウントおよび自動的に収集される情報</h3>
             <ul>
-                <li><strong>サインイン（Supabase Auth + Google）：</strong> <strong>SupabaseユーザーID</strong>、<strong>メール</strong>、Googleが提供するプロフィール（<strong>氏名</strong>・画像等）。</li>
-                <li><strong>利用データ：</strong> AI返信数、請求期間内の翻訳利用量、プラン等。</li>
-                <li><strong>課金：</strong> 有料時はStripeの顧客・サブスクリプションID。</li>
-                <li><strong>技術データ：</strong> ブラウザ種別、拡張バージョン、限定的なログ。</li>
-            </ul>
-            <h3>お客様が提供・処理されるデータ</h3>
-            <ul>
-                <li><strong>メール文脈：</strong> 件名・本文・送受信者名等は<span class="highlight">一時的に処理</span>し、<span class="highlight">当社DBにメール本文として保存しません</span>。</li>
-                <li><strong>翻訳入力：</strong> リアルタイム処理。メールと同様に本文をDBに保存しません。</li>
-                <li><strong>設定：</strong> トーン・長さ・言語等。</li>
-                <li><strong>決済：</strong> Stripeが処理。カード番号全体は当社サーバーに保存しません。</li>
+                <li><strong>サインインおよびアカウント（Supabase Auth、Google）：</strong> Googleでサインインすると、認証およびアカウント表示のため、<strong>SupabaseユーザーID</strong>、<strong>メールアドレス</strong>、Googleが共有するプロフィール情報（例：<strong>氏名</strong>やプロフィール画像）を受け取ります。匿名のブラウザ専用IDではありません。</li>
+                <li><strong>利用データ：</strong> 生成したAI返信の件数、現在の請求期間における翻訳の利用量、サブスクリプションプラン（無料、Pro、Pro+）。</li>
+                <li><strong>サブスクリプション情報：</strong> 有料プランにアップグレードした場合に限り、Stripeの顧客IDおよびサブスクリプションID。</li>
+                <li><strong>技術情報：</strong> ブラウザの種類、拡張機能のバージョン、信頼性およびセキュリティのために限定的に収集するサービスログ。</li>
             </ul>
 
-            <h2>第三者</h2>
-            <p><strong>Supabase：</strong> 認証・PostgreSQL。 <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
-            <p><strong>OpenAI：</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAIプライバシーポリシー</a></p>
-            <p><strong>Stripe：</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripeプライバシーポリシー</a></p>
+            <h3>お客様から提供される情報</h3>
+            <ul>
+                <li><strong>メールの文脈：</strong> メールの件名、本文、送信者・受信者の名前、スレッド。AI返信および翻訳のために<span class="highlight">一時的に処理</span>され、<span class="highlight">当社のデータベースには保存されません</span>。</li>
+                <li><strong>翻訳の入力：</strong> 翻訳対象として選択したテキストはリアルタイムで処理され、メール本文として当社DBに保存されません。</li>
+                <li><strong>ユーザー設定：</strong> 返信のトーン（ビジネス、フレンドリー、丁寧）、長さの好み、言語設定など（ブラウザにローカル保存され、必要に応じてアカウントと同期される場合があります）。</li>
+                <li><strong>お支払い：</strong> 決済はStripeが処理します。カード番号の全体を当社サーバーに保存することはありません。</li>
+            </ul>
 
-            <h2>保存</h2>
-            <p>データベースは<strong>Supabase（PostgreSQL）</strong>。メール本文は保存しません。</p>
+            <h2>データの利用目的</h2>
+            <ul>
+                <li><strong>サービス提供：</strong> AIメール返信と翻訳を生成し、リアルタイムでお届けします。</li>
+                <li><strong>利用量の管理：</strong> プランの上限に照らして返信・翻訳の利用を集計し、請求サイクルを管理します。</li>
+                <li><strong>カスタマーサポート：</strong> 技術的な問題やアカウントに関するお問い合わせに対応します。</li>
+                <li><strong>サービス改善：</strong> 集計された利用傾向を分析し、ReplyMateの機能を改善します。</li>
+                <li><strong>請求処理：</strong> Stripeの安全な決済システムを通じてサブスクリプションを管理します。</li>
+            </ul>
+
+            <h2>第三者サービス</h2>
+            <h3>Supabase</h3>
+            <p><strong>Supabase</strong>を、認証（Googleサインインを含む）およびアプリケーションデータベース（PostgreSQL）のホスティングに利用します。本ポリシーに記載のアカウントおよび利用データは、Supabaseのインフラとセキュリティ慣行の下で保存・処理されます。</p>
+            <p><strong>Supabaseのプライバシー：</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
+
+            <h3>OpenAI</h3>
+            <p>OpenAIのAPIを使用してメール返信と翻訳を生成します。メールまたは翻訳テキストは、返信・翻訳を生成するためにOpenAIに送信され、OpenAIのプライバシーポリシーに従って処理されます。お客様のデータを当社独自のAIモデルの学習には使用しません。</p>
+            <p><strong>OpenAIプライバシーポリシー：</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>安全な決済処理のためにStripeを利用します。</p>
+            <ul>
+                <li>お支払い情報はStripeの安全なシステムで直接処理されます。</li>
+                <li>当社のデータベースにはStripeの顧客IDとサブスクリプションIDのみを保存します。</li>
+                <li>クレジットカードの詳細は当社サーバーに保存しません。</li>
+                <li>すべての決済処理はPCI DSSに準拠します。</li>
+            </ul>
+            <p><strong>Stripeプライバシーポリシー：</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>データの保存と保持</h2>
+            <h3>当社のデータベース</h3>
+            <p><strong>ホスト型データベース（Supabase / PostgreSQL）</strong>には、次の情報が保存されます。</p>
+            <ul>
+                <li><strong>アカウント識別子：</strong> Googleサインインに紐づくSupabaseユーザーID</li>
+                <li><strong>プラン情報：</strong> 現在のサブスクリプションプランおよび請求サイクルの日付</li>
+                <li><strong>利用件数：</strong> 現在の請求期間における返信および翻訳の利用量</li>
+                <li><strong>Stripe ID：</strong> 顧客およびサブスクリプションの識別子（有料プラン）</li>
+                <li><strong>タイムスタンプ：</strong> アカウント作成、最終更新、請求関連の日時</li>
+            </ul>
+
+            <h3>メールの内容</h3>
+            <p><span class="highlight">GmailまたはOutlookのメール本文は保存しません。</span>すべてのメールデータはリアルタイムで処理され、返信生成または翻訳の直後に破棄されます。通常のサービス運営の一環として、ReplyMateの担当者が当該内容にアクセスしたり確認したりすることはありません。</p>
+            <p>ReplyMateは、お客様が求めたAI返信と翻訳を生成する目的に限り、GmailおよびOutlookのメール内容を利用します。広告、プロファイリング、モデル学習には使用せず、上記で述べた場合（例：生成のためのOpenAI、インフラ提供者）を除き、第三者に販売または共有しません。</p>
+
+            <h3>ローカルストレージ</h3>
+            <p>拡張機能は、ブラウザに次の情報をローカルに保存する場合があります。</p>
+            <ul>
+                <li><strong>ユーザー設定：</strong> 言語、トーン、長さの設定</li>
+                <li><strong>セッション／認証状態：</strong> サインイン状態で拡張機能を利用するために必要な場合</li>
+                <li><strong>利用量のキャッシュ：</strong> 該当する場合、短期間キャッシュされる利用データ</li>
+            </ul>
+
+            <h3>保持期間</h3>
+            <ul>
+                <li><strong>アカウントデータ：</strong> 削除のご依頼またはアカウント終了まで保持します。法令または請求記録上の必要性がある場合は例外とします。</li>
+                <li><strong>上限管理用の利用データ：</strong> 現在の請求期間および関連する集計</li>
+                <li><strong>メールの内容：</strong> 保持しません（一時処理のみ）</li>
+            </ul>
 
             <h2>セキュリティ</h2>
-            <p>HTTPS、最小限の収集、信頼できるサービス、適切なアクセス管理。Chrome ウェブストアのユーザーデータポリシーに準拠します。</p>
+            <p>データを保護するため、次のような対策を講じています。</p>
+            <ul>
+                <li><strong>HTTPSによる暗号化：</strong> ブラウザと当社サーバー間の通信は転送中に暗号化されます。</li>
+                <li><strong>限定的な収集：</strong> サービス運営に必要なアカウントおよび利用データのみを収集します（「収集する情報」を参照）。</li>
+                <li><strong>信頼できる第三者：</strong> Supabase、OpenAI、Stripeなど、業界標準の慣行に従うサービスを利用します。</li>
+                <li><strong>アクセス制御：</strong> データベースおよびバックエンドへのアクセスを制限します。</li>
+            </ul>
+            <p>ReplyMateは、Google Chrome ウェブストアのユーザーデータに関するポリシーに準拠します。ユーザーデータを販売したり広告に利用したりせず、サービス提供に必要な場合を除き第三者に譲渡しません。</p>
 
-            <h2>権利・削除</h2>
-            <p>お住まいの地域の法令に基づく権利がある場合があります。削除のご依頼: <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
+            <h2>お客様の権利</h2>
+            <p>お住まいの地域によっては、データの開示、訂正、削除、エクスポートなどの権利がある場合があります。行使をご希望の場合は、下記メールまでご連絡ください。合理的な期間内に対応いたします。</p>
+            <ul>
+                <li><strong>削除：</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a>までご連絡いただくことで、アカウントおよび関連データの削除をご依頼いただけます。法令またはお支払い記録の保存が必要な場合を除き、合理的な期間内にシステムから削除します。</li>
+            </ul>
 
-            <h2>児童</h2>
-            <p>13歳未満を対象とせず、故意に個人情報を収集しません。</p>
+            <h2>お子様のプライバシー</h2>
+            <p>ReplyMateは13歳未満のお子様を対象としていません。13歳未満のお子様から故意に個人情報を収集することはありません。13歳未満のお子様から情報を収集していたことが判明した場合は、当該情報を削除します。</p>
 
-            <h2>変更</h2>
-            <p>本ポリシーを更新する場合、本ページに掲載し、最終更新日を改めます。</p>
+            <h2>本プライバシーポリシーの変更</h2>
+            <p>本ポリシーは随時更新される場合があります。変更時は本ページに掲載し、「最終更新」日を改めます。重要な変更については、実務上可能な範囲で追加の通知を行うことがあります。</p>
+            <p>変更後もReplyMateを引き続きご利用いただくことは、法の許す範囲で更新後のポリシーに同意したものとみなされる場合があります。</p>
 
             <h2>お問い合わせ</h2>
+            <p>プライバシーに関するご質問や権利の行使については、こちらからご連絡ください。</p>
+
             <div class="contact-info">
                 <p><strong>メール:</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
-                <p><strong>サポート:</strong> Chrome または Edge 拡張機能、またはウェブサイト</p>
+                <p><strong>サポート:</strong> 拡張機能（ChromeまたはEdge）または当社ウェブサイトから</p>
+                <p><strong>返信目安:</strong> 通常、営業日ベースで7日以内</p>
             </div>
             <div class="last-updated">
                 <p><a href="../index.html">← ReplyMateに戻る</a></p>
-                <p>2026年3月30日から有効です。</p>
+                <p>2026年3月30日より施行します。</p>
             </div>
         </div>
 
         <!-- Spanish Content -->
         <div id="es" class="language-content">
-            <h1>Política de Privacidad de ReplyMate</h1>
+            <h1>Política de privacidad de ReplyMate</h1>
             <p><strong>Última actualización:</strong> 30 de marzo de 2026</p>
 
             <h2>Introducción</h2>
-            <p>ReplyMate es una extensión de navegador para <strong>Google Chrome</strong> y <strong>Microsoft Edge</strong> que te ayuda a redactar respuestas en Gmail y Outlook en la web con IA, e incluye traducción.</p>
+            <p>ReplyMate es una extensión de navegador para <strong>Google Chrome</strong> y <strong>Microsoft Edge</strong> que te ayuda a redactar respuestas de correo en Gmail y Outlook en la web con inteligencia artificial, e incluye una función de traducción. Nos importa tu privacidad y queremos ser claros sobre cómo tratamos tus datos.</p>
+            <p>Aquí encontrarás lo esencial: qué recopilamos, cómo lo usamos y cuáles son tus derechos.</p>
 
-            <h2>Datos de usuario de Google</h2>
-            <p>Solo usamos datos de usuario de Google (p. ej. contenido de Gmail) para generar respuestas con IA y traducciones. No para publicidad, perfiles ni entrenar modelos. No vendemos ni cedemos esos datos salvo lo necesario para el servicio (OpenAI, Stripe, infraestructura).</p>
+            <h2>Uso de los datos de usuario de Google</h2>
+            <p>ReplyMate solo utiliza los datos de usuario de Google (como el contenido del correo en Gmail) para ofrecer su función principal: generar respuestas con IA y traducciones.</p>
+            <p>No utilizamos los datos de usuario de Google para:</p>
+            <ul>
+                <li>Publicidad</li>
+                <li>Perfiles de usuario</li>
+                <li>Entrenar modelos de IA</li>
+            </ul>
+            <p>No vendemos ni transferimos datos de usuario de Google a terceros salvo cuando sea necesario para prestar el servicio (por ejemplo, OpenAI para generar respuestas y Stripe para el procesamiento de pagos).</p>
+            <p>Solo accedemos al mínimo de datos necesario para ofrecer esta funcionalidad.</p>
 
             <h2>Qué recopilamos</h2>
+            <h3>Cuenta y datos recopilados automáticamente</h3>
             <ul>
-                <li><strong>Cuenta (Supabase Auth + Google):</strong> ID de usuario en Supabase, <strong>correo</strong> y datos de perfil que Google comparte (p. ej. <strong>nombre</strong>, imagen).</li>
-                <li><strong>Uso:</strong> Respuestas IA, uso de traducción en el periodo de facturación, plan.</li>
-                <li><strong>Pagos:</strong> IDs de cliente y suscripción en Stripe (planes de pago).</li>
-                <li><strong>Técnico:</strong> Navegador, versión de la extensión, registros limitados.</li>
+                <li><strong>Inicio de sesión y cuenta (Supabase Auth con Google):</strong> Cuando inicias sesión con Google, recibimos un <strong>ID de usuario de Supabase</strong>, tu <strong>dirección de correo</strong> y los datos de perfil que Google nos comparte (como el <strong>nombre</strong> o la imagen de perfil) para autenticarte y mostrar la cuenta. No se trata de un ID anónimo solo del navegador.</li>
+                <li><strong>Datos de uso:</strong> Número de respuestas con IA que generas, uso de traducción en el periodo de facturación actual y tu plan de suscripción (Gratis, Pro, Pro+).</li>
+                <li><strong>Información de suscripción:</strong> ID de cliente e ID de suscripción en Stripe (solo si pasas a un plan de pago).</li>
+                <li><strong>Datos técnicos:</strong> Tipo de navegador, versión de la extensión y registros del servicio limitados, usados para fiabilidad y seguridad.</li>
             </ul>
-            <p><strong>Contexto del correo:</strong> se <span class="highlight">procesa de forma temporal</span> y <span class="highlight">no almacenamos el contenido del correo en nuestra base de datos</span>. El texto que traduces se procesa en tiempo real de forma análoga.</p>
 
-            <h2>Terceros</h2>
-            <p><strong>Supabase:</strong> autenticación y base de datos PostgreSQL. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></p>
-            <p><strong>OpenAI:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">Política de privacidad de OpenAI</a></p>
-            <p><strong>Stripe:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></p>
+            <h3>Datos que nos proporcionas</h3>
+            <ul>
+                <li><strong>Contexto del correo:</strong> Asunto, contenido del mensaje, nombres de remitente y destinatario, e hilo de la conversación. Estos datos se <span class="highlight">procesan de forma temporal</span> para generar respuestas con IA y traducciones, y <span class="highlight">no se almacenan en nuestra base de datos</span>.</li>
+                <li><strong>Texto para traducir:</strong> El texto que eliges traducir se envía para procesarlo en tiempo real y no se guarda como contenido de correo en nuestra base de datos.</li>
+                <li><strong>Preferencias:</strong> Tono de respuesta (profesional, cordial, educado), preferencias de longitud y configuración de idioma (pueden guardarse localmente en el navegador y/o sincronizarse con tu cuenta según haga falta para el servicio).</li>
+                <li><strong>Pagos:</strong> El pago lo gestiona Stripe; no almacenamos números completos de tarjeta en nuestros servidores.</li>
+            </ul>
 
-            <h2>Almacenamiento</h2>
-            <p>Usamos <strong>Supabase (PostgreSQL)</strong>, no SQLite. No guardamos el contenido de Gmail u Outlook.</p>
+            <h2>Cómo usamos tus datos</h2>
+            <ul>
+                <li><strong>Prestación del servicio:</strong> Para generar respuestas de correo con IA y traducciones y ofrecértelas en tiempo real.</li>
+                <li><strong>Gestión del uso:</strong> Para llevar la cuenta de respuestas y traducciones frente a los límites de tu plan y gestionar los ciclos de facturación.</li>
+                <li><strong>Atención al cliente:</strong> Para ayudarte con incidencias técnicas y la gestión de la cuenta.</li>
+                <li><strong>Mejora del servicio:</strong> Para analizar patrones de uso agregados y mejorar las funciones de ReplyMate.</li>
+                <li><strong>Facturación:</strong> Para gestionar tu suscripción mediante el sistema de pago seguro de Stripe.</li>
+            </ul>
+
+            <h2>Servicios de terceros</h2>
+            <h3>Supabase</h3>
+            <p>Usamos <strong>Supabase</strong> para la autenticación (incluido el inicio de sesión con Google) y para alojar la base de datos de la aplicación (PostgreSQL). Los datos de cuenta y de uso descritos en esta política se almacenan y tratan allí según su infraestructura y prácticas de seguridad.</p>
+            <p><strong>Privacidad de Supabase:</strong> <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a></p>
+
+            <h3>OpenAI</h3>
+            <p>Utilizamos la API de OpenAI para generar respuestas de correo y traducciones. El texto del correo o de la traducción se envía a OpenAI solo para generar esas respuestas o traducciones y se procesa según la política de privacidad de OpenAI. No usamos tus datos para entrenar nuestros propios modelos de IA.</p>
+            <p><strong>Política de privacidad de OpenAI:</strong> <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">https://openai.com/policies/privacy-policy</a></p>
+
+            <h3>Stripe</h3>
+            <p>Usamos Stripe para procesar los pagos de forma segura:</p>
+            <ul>
+                <li>La información de pago la gestionan directamente los sistemas seguros de Stripe.</li>
+                <li>En nuestra base de datos guardamos el ID de cliente y el ID de suscripción de Stripe.</li>
+                <li>Los datos completos de la tarjeta nunca se almacenan en nuestros servidores.</li>
+                <li>Todo el procesamiento de pagos cumple con el estándar PCI DSS.</li>
+            </ul>
+            <p><strong>Política de privacidad de Stripe:</strong> <a href="https://stripe.com/privacy" target="_blank" rel="noopener">https://stripe.com/privacy</a></p>
+
+            <h2>Almacenamiento y conservación de datos</h2>
+            <h3>Nuestra base de datos</h3>
+            <p>Utilizamos una <strong>base de datos alojada (Supabase / PostgreSQL)</strong> que guarda:</p>
+            <ul>
+                <li><strong>Identificador de cuenta:</strong> ID de usuario de Supabase vinculado a tu inicio de sesión con Google</li>
+                <li><strong>Información del plan:</strong> Plan de suscripción actual y fechas del ciclo de facturación</li>
+                <li><strong>Contadores de uso:</strong> Respuestas y uso de traducción en el periodo de facturación actual</li>
+                <li><strong>IDs de Stripe:</strong> Identificadores de cliente y suscripción (planes de pago)</li>
+                <li><strong>Marcas de tiempo:</strong> Creación de la cuenta, última actualización y fechas relacionadas con la facturación</li>
+            </ul>
+
+            <h3>Contenido del correo</h3>
+            <p><span class="highlight">No almacenamos el contenido del correo de Gmail ni de Outlook.</span> Todos los datos del correo se procesan en tiempo real y se descartan en cuanto se ha generado la respuesta o la traducción. Nadie en ReplyMate accede ni revisa ese contenido como parte del funcionamiento normal del servicio.</p>
+            <p>ReplyMate solo usa el contenido del correo en Gmail y Outlook para generar las respuestas con IA y las traducciones que solicitas. Esos datos no se usan para publicidad, perfiles ni para entrenar nuestros modelos, y no se venden ni comparten con terceros salvo lo indicado más arriba (p. ej. OpenAI para la generación, proveedores de infraestructura).</p>
+
+            <h3>Almacenamiento local</h3>
+            <p>La extensión puede guardar datos localmente en tu navegador:</p>
+            <ul>
+                <li><strong>Preferencias:</strong> Idioma, tono y longitud</li>
+                <li><strong>Sesión / estado de autenticación:</strong> Según sea necesario para usar la extensión con la sesión iniciada</li>
+                <li><strong>Caché de uso:</strong> Datos de uso de corta duración cuando corresponda</li>
+            </ul>
+
+            <h3>Periodo de conservación</h3>
+            <ul>
+                <li><strong>Datos de la cuenta:</strong> Se conservan hasta que solicites la eliminación o cierres la cuenta, salvo obligaciones legales o de registros de pago.</li>
+                <li><strong>Uso para límites:</strong> Periodo de facturación actual y contadores relacionados</li>
+                <li><strong>Contenido del correo:</strong> No se conserva (solo procesamiento temporal)</li>
+            </ul>
 
             <h2>Seguridad</h2>
-            <p>HTTPS, recopilación limitada, proveedores reconocidos, controles de acceso. Cumplimos la política de datos de usuario de Chrome Web Store en lo aplicable.</p>
+            <p>Aplicamos varias medidas para proteger tus datos:</p>
+            <ul>
+                <li><strong>Cifrado HTTPS:</strong> La comunicación entre tu navegador y nuestros servidores va cifrada en tránsito.</li>
+                <li><strong>Recopilación limitada:</strong> Solo recopilamos los datos de cuenta y de uso necesarios para el servicio (véase «Qué recopilamos»).</li>
+                <li><strong>Servicios de terceros seguros:</strong> Supabase, OpenAI y Stripe, con prácticas habituales en el sector.</li>
+                <li><strong>Controles de acceso:</strong> El acceso a la base de datos y al backend está restringido.</li>
+            </ul>
+            <p>ReplyMate cumple la política de datos de usuario de Chrome Web Store de Google. No vendemos datos de usuario, no los usamos para publicidad ni los transferimos a terceros salvo cuando sea necesario para prestar el servicio.</p>
 
-            <h2>Derechos y eliminación</h2>
-            <p>Puedes tener derechos según tu región. Eliminación: <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
+            <h2>Tus derechos</h2>
+            <p>Según tu región, puedes tener derecho a acceder, rectificar, eliminar o exportar tus datos. Para ejercerlos, escríbenos al correo que figura abajo. Responderemos en un plazo razonable.</p>
+            <ul>
+                <li><strong>Eliminación:</strong> Puedes solicitar la eliminación de tu cuenta y los datos asociados escribiendo a <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a>. Borraremos los datos de nuestros sistemas en un plazo razonable, salvo requisitos legales o de registros de pago.</li>
+            </ul>
 
-            <h2>Menores</h2>
-            <p>No está dirigido a menores de 13 años.</p>
+            <h2>Privacidad de los menores</h2>
+            <p>ReplyMate no está dirigido a menores de 13 años. No recopilamos a sabiendas datos personales de menores de 13 años. Si tenemos conocimiento de que hemos recopilado información de un menor de 13 años, la eliminaremos.</p>
 
-            <h2>Cambios</h2>
-            <p>Publicaremos cambios aquí y actualizaremos la fecha.</p>
+            <h2>Cambios en esta política de privacidad</h2>
+            <p>Podemos actualizar esta política de privacidad ocasionalmente. Publicaremos los cambios en esta página y actualizaremos la fecha de «Última actualización». En caso de cambios importantes, cuando sea posible daremos un aviso adicional.</p>
+            <p>El uso continuado de ReplyMate tras los cambios implica la aceptación de la política actualizada en la medida en que lo permita la ley.</p>
 
             <h2>Contacto</h2>
+            <p>¿Dudas sobre privacidad o quieres ejercer tus derechos? Escríbenos:</p>
+
             <div class="contact-info">
-                <p><strong>Email:</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
-                <p><strong>Soporte:</strong> Extensión (Chrome o Edge) o sitio web</p>
+                <p><strong>Correo:</strong> <a href="mailto:replymate.support@gmail.com">replymate.support@gmail.com</a></p>
+                <p><strong>Soporte:</strong> A través de la extensión (Chrome o Edge) o de nuestro sitio web</p>
+                <p><strong>Plazo de respuesta:</strong> Normalmente en un plazo de 7 días laborables</p>
             </div>
             <div class="last-updated">
                 <p><a href="../index.html">← Volver a ReplyMate</a></p>
-                <p>Vigente desde el 30 de marzo de 2026.</p>
+                <p>En vigor desde el 30 de marzo de 2026.</p>
             </div>
         </div>
     </div>

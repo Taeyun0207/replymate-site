@@ -11,111 +11,120 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../images/icon32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../images/icon16.png">
     <link rel="apple-touch-icon" sizes="128x128" href="../images/icon128.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        :root {
+            --ink: #1a1a2e;
+            --purple: #7c3aed;
+            --purple-dark: #6d28d9;
+            --text-muted: #64748b;
+            --text-body: #475569;
+        }
         * { box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             color: #1a1a2e;
             margin: 0;
             padding: 0;
             background: #fff;
+            -webkit-font-smoothing: antialiased;
         }
         .header {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding: 14px 32px;
+            background: #fff;
+            border-bottom: 1px solid #ececf0;
         }
+        .header-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; min-width: 0; }
+        .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #1a1a2e;
+            color: #0f172a;
             text-decoration: none;
-            color: inherit;
+            letter-spacing: -0.03em;
         }
-        .logo img { width: 40px; height: 40px; object-fit: contain; }
-        .header-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
+        .logo img { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
         .lang-btn {
             background: none;
             border: none;
-            padding: 6px 12px;
-            min-width: 36px;
-            font-size: 0.9rem;
-            color: #64748b;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        .lang-btn:hover {
-            color: #1a1a2e;
-            background: #f1f5f9;
-        }
-        .lang-btn.active {
-            color: #7c3aed;
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 0.82rem;
             font-weight: 600;
-        }
-        .header-links a {
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-        .header-links a:hover { color: #7c3aed; }
-        .btn-signin {
-            background: #f1f5f9;
-            color: #475569;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            color: #94a3b8;
             cursor: pointer;
-            transition: all 0.2s;
+            border-radius: 8px;
+            transition: all 0.15s;
         }
-        .btn-signin:hover {
-            background: #e2e8f0;
-            color: #1a1a2e;
+        .lang-btn:hover { color: var(--ink); background: #f8fafc; }
+        .lang-btn.active { color: var(--purple); font-weight: 700; background: transparent; }
+        .btn-signin {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.87rem;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.15s;
         }
+        .btn-signin:hover { background: #e5e7eb; border-color: #d1d5db; }
         .btn-signin.signed-in {
             background: transparent;
-            color: #64748b;
-            font-size: 0.85rem;
+            border-color: transparent;
+            color: var(--text-muted);
+            font-size: 0.82rem;
         }
-        .btn-signin.signed-in:hover {
-            color: #7c3aed;
-        }
-        .cta-header {
-            background: #7c3aed;
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 8px;
+        .header-upgrade {
+            font-size: 0.87rem;
             font-weight: 600;
+            color: var(--purple);
             text-decoration: none;
-            transition: background 0.2s;
+            padding: 8px 18px;
+            border-radius: 9px;
+            border: 1px solid var(--purple);
+            background: #fff;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
         }
-        .cta-header:hover { background: #6d28d9; }
+        .header-upgrade:hover { background: rgba(124, 58, 237, 0.08); color: var(--purple-dark); border-color: var(--purple-dark); }
+        .cta-header {
+            background: var(--purple);
+            color: #fff !important;
+            padding: 9px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.87rem;
+            text-decoration: none;
+            transition: background 0.15s;
+            border: none;
+        }
+        .cta-header:hover { background: var(--purple-dark); }
         .cta-header.cta-coming-soon {
             display: inline-block;
             cursor: default;
             user-select: none;
         }
-        .cta-header.cta-coming-soon:hover { background: #7c3aed; }
+        .cta-header.cta-coming-soon:hover { background: var(--purple); }
         a[data-replymate-store] { text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .header { padding: 12px 16px; }
+        }
 
         .hero {
             padding: 48px 24px 24px;
@@ -741,16 +750,19 @@
 </head>
 <body>
     <header class="header">
-        <a href="../index.html" class="logo">
-            <img src="../images/icon128.png" alt="ReplyMate" width="40" height="40">
-            ReplyMate
-        </a>
-        <div class="header-links">
+        <div class="header-left">
+            <a href="../index.html" class="logo">
+                <img src="../images/icon128.png" alt="ReplyMate" width="34" height="34">
+                ReplyMate
+            </a>
+        </div>
+        <div class="header-right">
             <button class="btn-signin" id="auth-btn" style="display:none">Sign in</button>
             <button class="lang-btn active" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ko">한</button>
             <button class="lang-btn" data-lang="ja">日</button>
             <button class="lang-btn" data-lang="es">ES</button>
+            <a href="../index.html" class="header-upgrade" id="header-home-link">Home</a>
             <a href="#" class="cta-header nav-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
         </div>
     </header>
@@ -774,7 +786,7 @@
                 <ul class="plan-features">
                     <li>25 AI replies per month</li>
                     <li>10 translations per day</li>
-                    <li>All tone options</li>
+                    <li>All tones: Professional, Polite, Friendly, Direct</li>
                     <li>Works in Gmail & Outlook</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Try it free</a>
@@ -791,7 +803,7 @@
                     <li class="feature-highlight">100 ReplyMate replies per month</li>
                     <li class="feature-highlight">30 translations per day</li>
                     <li class="feature-highlight">Premium themes & customization</li>
-                    <li>All tone options</li>
+                    <li>All tones: Professional, Polite, Friendly, Direct</li>
                     <li>Works in Gmail & Outlook</li>
                     <li>Priority support</li>
                     <li>Cancel anytime</li>
@@ -827,7 +839,7 @@
                     <li class="feature-highlight">1,000 ReplyMate replies per month</li>
                     <li class="feature-highlight">Unlimited translations</li>
                     <li class="feature-highlight">Premium themes & customization</li>
-                    <li>All tone options</li>
+                    <li>All tones: Professional, Polite, Friendly, Direct</li>
                     <li>Works in Gmail & Outlook</li>
                     <li>Priority support</li>
                     <li>Cancel anytime</li>
@@ -880,7 +892,7 @@
                 <ul class="plan-features">
                     <li>월 25회 ReplyMate 답장</li>
                     <li>일 10회 번역</li>
-                    <li>다양한 말투 선택</li>
+                    <li>말투: 전문적·공손·친근·직설</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">무료로 시작하기</a>
@@ -896,7 +908,7 @@
                     <li class="feature-highlight">월 100회 ReplyMate 답장</li>
                     <li class="feature-highlight">일 30회 번역</li>
                     <li class="feature-highlight">프리미엄 테마 · 맞춤 색상</li>
-                    <li>다양한 말투 선택</li>
+                    <li>말투: 전문적·공손·친근·직설</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                     <li>우선 지원</li>
                     <li>언제든 해지 가능</li>
@@ -931,7 +943,7 @@
                     <li class="feature-highlight">월 1,000회 ReplyMate 답장</li>
                     <li class="feature-highlight">무제한 번역</li>
                     <li class="feature-highlight">프리미엄 테마 · 맞춤 색상</li>
-                    <li>다양한 말투 선택</li>
+                    <li>말투: 전문적·공손·친근·직설</li>
                     <li>Gmail 및 Outlook에서 사용</li>
                     <li>우선 지원</li>
                     <li>언제든 해지 가능</li>
@@ -983,7 +995,7 @@
                 <ul class="plan-features">
                     <li>月25回のReplyMate返信</li>
                     <li>1日10回の翻訳</li>
-                    <li>トーン選択</li>
+                    <li>トーン：プロフェッショナル・丁寧・フレンドリー・ダイレクト</li>
                     <li>GmailおよびOutlookで利用</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">無料で試す</a>
@@ -999,7 +1011,7 @@
                     <li class="feature-highlight">月100回のReplyMate返信</li>
                     <li class="feature-highlight">1日30回の翻訳</li>
                     <li class="feature-highlight">プレミアムテーマ・カスタマイズ</li>
-                    <li>トーン選択</li>
+                    <li>トーン：プロフェッショナル・丁寧・フレンドリー・ダイレクト</li>
                     <li>GmailおよびOutlookで利用</li>
                     <li>優先サポート</li>
                     <li>いつでも解約可能</li>
@@ -1034,7 +1046,7 @@
                     <li class="feature-highlight">月1,000回のReplyMate返信</li>
                     <li class="feature-highlight">翻訳無制限</li>
                     <li class="feature-highlight">プレミアムテーマ・カスタマイズ</li>
-                    <li>トーン選択</li>
+                    <li>トーン：プロフェッショナル・丁寧・フレンドリー・ダイレクト</li>
                     <li>GmailおよびOutlookで利用</li>
                     <li>優先サポート</li>
                     <li>いつでも解約可能</li>
@@ -1086,7 +1098,7 @@
                 <ul class="plan-features">
                     <li>25 respuestas ReplyMate al mes</li>
                     <li>10 traducciones al día</li>
-                    <li>Todos los tonos</li>
+                    <li>Tonos: Profesional, Cortés, Cercano, Directo</li>
                     <li>Funciona en Gmail y Outlook</li>
                 </ul>
                 <a href="#" class="plan-cta free cta-coming-soon" data-replymate-store aria-disabled="true">Pruébalo gratis</a>
@@ -1102,7 +1114,7 @@
                     <li class="feature-highlight">100 respuestas ReplyMate al mes</li>
                     <li class="feature-highlight">30 traducciones al día</li>
                     <li class="feature-highlight">Temas premium y personalización</li>
-                    <li>Todos los tonos</li>
+                    <li>Tonos: Profesional, Cortés, Cercano, Directo</li>
                     <li>Funciona en Gmail y Outlook</li>
                     <li>Soporte prioritario</li>
                     <li>Cancela cuando quieras</li>
@@ -1137,7 +1149,7 @@
                     <li class="feature-highlight">1,000 respuestas ReplyMate al mes</li>
                     <li class="feature-highlight">Traducciones ilimitadas</li>
                     <li class="feature-highlight">Temas premium y personalización</li>
-                    <li>Todos los tonos</li>
+                    <li>Tonos: Profesional, Cortés, Cercano, Directo</li>
                     <li>Funciona en Gmail y Outlook</li>
                     <li>Soporte prioritario</li>
                     <li>Cancela cuando quieras</li>
@@ -1228,10 +1240,10 @@
     <script src="pricing-page-checkout.js"></script>
     <script>
         const navLabels = {
-            en: { cta: 'Add to browser' },
-            ko: { cta: '브라우저에 추가' },
-            ja: { cta: 'ブラウザに追加' },
-            es: { cta: 'Añadir al navegador' }
+            en: { cta: 'Add to browser', home: 'Home' },
+            ko: { cta: '브라우저에 추가', home: '홈' },
+            ja: { cta: 'ブラウザに追加', home: 'ホーム' },
+            es: { cta: 'Añadir al navegador', home: 'Inicio' }
         };
         const currentBillingLabels = { en: 'Current', ko: '현재', ja: '現在', es: 'Actual' };
         function getCurrentBillingLabel() {
@@ -1247,7 +1259,11 @@
             if (el) el.classList.add('active');
             else document.getElementById('en')?.classList.add('active');
             const labels = navLabels[lang];
-            if (labels) document.querySelectorAll('.nav-cta').forEach(e => { e.textContent = labels.cta; });
+            if (labels) {
+                document.querySelectorAll('.nav-cta').forEach(e => { e.textContent = labels.cta; });
+                const homeL = document.getElementById('header-home-link');
+                if (homeL && labels.home) homeL.textContent = labels.home;
+            }
             document.documentElement.lang = lang;
             if (history.replaceState) history.replaceState(null, '', '?lang=' + lang);
             if (window.replymateUpdateAuthLabels) window.replymateUpdateAuthLabels();

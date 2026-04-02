@@ -4,649 +4,788 @@
     <meta charset="UTF-8">
     <script>(function(){var p=location.pathname;if(/\/index\.html$/i.test(p)){var clean=p.replace(/\/index\.html$/i,'/')||'/';history.replaceState(null,'',location.origin+clean+location.search+location.hash);}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ReplyMate helps you write replies faster in Gmail and Outlook—save hours every week. Free browser extension on the Chrome Web Store.">
+    <meta name="description" content="ReplyMate: In Gmail &amp; Outlook, hover a row and click AI Reply. Tones: Professional, Polite, Friendly, Direct. Length: Short, Medium, Long. Sign in with Google. Translate on any site. Free on Chrome Web Store and Microsoft Edge Add-ons.">
     <title>ReplyMate — Replies in Gmail &amp; Outlook</title>
     <link rel="icon" type="image/png" sizes="64x64" href="images/icon64.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/icon32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icon16.png">
     <link rel="apple-touch-icon" sizes="128x128" href="images/icon128.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #1a1a2e;
-            margin: 0;
-            padding: 0;
-            background: #f8fafc;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            --ink: #1a1a2e;
+            --ink-60: #2d2d4e;
+            --purple: #7c3aed;
+            --purple-dark: #6d28d9;
+            --purple-light: #8b5cf6;
+            --purple-deep: #1e1040;
+            --surface: #f5f3ff;
+            --surface-2: #ede9fe;
+            --cream: #faf5ff;
+            --text-muted: #64748b;
+            --text-body: #475569;
+            --border: #e2e8f0;
+            --border-purple: #ddd6fe;
+            --radius: 14px;
+            --radius-lg: 22px;
         }
 
-        /* Header */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text-body);
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .hidden { display: none !important; }
+        .language-content { display: none; }
+        .language-content.active { display: block; }
+
+        /* ── HEADER ─────────────────────────────────── */
         .header {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            padding: 14px 24px;
-            background: rgba(255,255,255,0.98);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 32px;
+            background: #fff;
+            border-bottom: 1px solid #ececf0;
         }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            min-width: 0;
-        }
-        .header-plan-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: #475569;
-            background: #f1f5f9;
-            border-radius: 999px;
-            border: 1px solid #e2e8f0;
-            text-decoration: none;
-            transition: background 0.15s, border-color 0.15s, color 0.15s;
-            white-space: nowrap;
-        }
-        .header-plan-pill:hover {
-            background: #ede9fe;
-            border-color: #c4b5fd;
-            color: #5b21b6;
-        }
-        .header-plan-pill-label {
-            font-weight: 500;
-            font-size: 0.6875rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .header-plan-pill-name {
-            font-weight: 700;
-        }
-        .header-plan-pill.is-pro {
-            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
-            border-color: #ddd6fe;
-        }
-        .header-plan-pill.is-pro .header-plan-pill-name {
-            color: #5b21b6;
-        }
-        .header-plan-pill.is-pro-plus {
-            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-            border-color: #c4b5fd;
-        }
-        .header-plan-pill.is-pro-plus .header-plan-pill-name {
-            color: #4c1d95;
-        }
-        .hidden {
-            display: none !important;
-        }
+
+        .header-left { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; min-width: 0; }
+
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.5rem;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1.2rem;
             font-weight: 700;
-            color: #1a1a2e;
+            color: #0f172a;
             text-decoration: none;
-            color: inherit;
+            letter-spacing: -0.03em;
         }
-        .logo img {
-            width: 40px;
-            height: 40px;
-            display: block;
-            object-fit: contain;
-        }
-        .header-right {
-            display: flex;
+        .logo img { width: 34px; height: 34px; display: block; border-radius: 8px; }
+
+        .header-plan-pill {
+            display: inline-flex;
             align-items: center;
-            gap: 16px;
+            gap: 6px;
+            padding: 5px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: var(--surface-2);
+            border: 1px solid var(--border-purple);
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--text-body);
+            transition: all 0.15s;
         }
+        .header-plan-pill:hover { background: var(--surface); border-color: var(--purple); color: var(--purple); }
+        .header-plan-pill-label { font-weight: 500; font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .header-plan-pill-name { font-weight: 800; }
+        .header-plan-pill.is-pro .header-plan-pill-name { color: var(--purple); }
+        .header-plan-pill.is-pro-plus .header-plan-pill-name { color: var(--purple-dark); }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
         .lang-btn {
             background: none;
             border: none;
-            padding: 6px 12px;
-            min-width: 36px;
-            font-size: 0.9rem;
-            color: #64748b;
+            padding: 6px 10px;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
             cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        .lang-btn:hover {
-            color: #1a1a2e;
-            background: #f1f5f9;
-        }
-        .lang-btn.active {
-            color: #7c3aed;
-            font-weight: 600;
-        }
-        .cta-header {
-            background: #7c3aed;
-            color: white !important;
-            padding: 10px 20px;
             border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .cta-header:hover {
-            background: #6d28d9;
-        }
-        .cta-header.cta-coming-soon,
-        .hero-cta.cta-coming-soon {
-            cursor: default;
-            user-select: none;
-        }
-        .cta-header.cta-coming-soon {
-            display: inline-block;
-        }
-        .cta-header.cta-coming-soon:hover {
-            background: #7c3aed;
-        }
-        .hero-cta.cta-coming-soon:hover {
-            background: #7c3aed;
-            transform: none;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
-        }
-        a[data-replymate-store] {
-            text-decoration: none;
-        }
-        .header-upgrade {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #5b21b6;
-            text-decoration: none;
-            background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 100%);
-            border: 1px solid rgba(124, 58, 237, 0.5);
-            border-radius: 10px;
-            box-shadow: 0 1px 4px rgba(124, 58, 237, 0.12);
-            transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
-        }
-        .header-upgrade:hover {
-            color: #4c1d95;
-            background: #ede9fe;
-            border-color: #7c3aed;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.22);
-            transform: translateY(-1px);
-        }
-        .footer-upgrade {
-            font-weight: 600;
-            color: #7c3aed !important;
-        }
-        .footer-upgrade:hover {
-            color: #5b21b6 !important;
-        }
-        .hero-cta-row {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-        .hero-pricing-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 26px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #5b21b6;
-            background: #fff;
-            border: 2px solid #8b5cf6;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
-            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.12);
-        }
-        .hero-pricing-btn:hover {
-            background: #faf5ff;
-            border-color: #6d28d9;
-            color: #4c1d95;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.22);
-        }
-        @media (max-width: 520px) {
-            .hero-cta-row {
-                flex-direction: column;
-                width: 100%;
-            }
-            .hero-cta-row .hero-cta,
-            .hero-cta-row .hero-pricing-btn {
-                width: 100%;
-                max-width: 340px;
-            }
-        }
-        .btn-signin {
-            background: #f1f5f9;
-            color: #475569;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-signin:hover {
-            background: #e2e8f0;
-            color: #1a1a2e;
-        }
-        .btn-signin.signed-in {
-            background: transparent;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
-        .btn-signin.signed-in:hover {
-            color: #7c3aed;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 72px 24px 56px;
-            text-align: center;
-            background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 38%, #ffffff 100%);
-        }
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            background: #f3e8ff;
-            color: #6b21a8;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 100px;
-            margin-bottom: 24px;
+            transition: all 0.15s;
             letter-spacing: 0.02em;
         }
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 800;
-            margin: 0 0 20px 0;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            text-wrap: balance;
-            background: linear-gradient(135deg, #1a1a2e 0%, #4c1d95 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .lang-btn:hover { color: var(--ink); background: #f8fafc; }
+        .lang-btn.active { color: var(--purple); font-weight: 700; background: transparent; }
+
+        .btn-signin {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 0.87rem;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.15s;
         }
+        .btn-signin:hover { background: #e5e7eb; border-color: #d1d5db; }
+        .btn-signin.signed-in { color: var(--text-muted); border-color: transparent; font-size: 0.82rem; }
+
+        .header-upgrade {
+            font-size: 0.87rem;
+            font-weight: 600;
+            color: var(--purple);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 9px;
+            border: 1px solid var(--purple);
+            background: #fff;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .header-upgrade:hover { background: rgba(108, 74, 160, 0.08); color: var(--purple-dark); border-color: var(--purple-dark); }
+
+        .cta-header {
+            background: var(--purple);
+            color: #fff !important;
+            padding: 9px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.87rem;
+            text-decoration: none;
+            transition: background 0.15s, transform 0.15s;
+            letter-spacing: 0.01em;
+            border: none;
+        }
+        .cta-header:hover { background: var(--purple-dark); }
+        .cta-header.cta-coming-soon { cursor: default; user-select: none; }
+        .cta-header.cta-coming-soon:hover { background: var(--purple); transform: none; }
+
+        a[data-replymate-store] { text-decoration: none; }
+
+        /* ── HERO ────────────────────────────────────── */
+        .hero {
+            background: linear-gradient(180deg, var(--cream) 0%, var(--surface) 45%, #fff 100%);
+            padding: 90px 32px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 640px;
+            height: 640px;
+            background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 65%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+
+        .hero-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+            gap: clamp(28px, 4vw, 48px);
+            align-items: start;
+        }
+        .hero-copy { min-width: 0; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #f3e8ff;
+            border: 1px solid #e9d5ff;
+            color: #6b21a8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 999px;
+            margin-bottom: 28px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .hero-badge-dot {
+            width: 6px; height: 6px;
+            background: var(--purple);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        .hero h1 {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 22px;
+            max-width: 36rem;
+            color: #0f172a;
+            -webkit-text-fill-color: currentColor;
+            background: none;
+        }
+        .hero h1 .hero-h1-line {
+            color: #0f172a;
+            font-size: clamp(1.75rem, 3vw, 2.45rem);
+            font-weight: 700;
+            display: block;
+        }
+        .hero h1 .hero-h1-brand {
+            display: block;
+            font-size: clamp(2.65rem, 7vw, 4.35rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-top: 0.08em;
+        }
+        .hero h1 .accent {
+            color: var(--purple);
+            font-weight: 700;
+            -webkit-text-fill-color: var(--purple);
+            background: none;
+        }
+        .hero h1 .hero-h1-brand.accent {
+            font-weight: 800;
+            -webkit-text-fill-color: var(--purple);
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
         .hero .tagline {
-            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-            color: #475569;
-            max-width: 580px;
-            margin: 0 auto 16px;
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--text-muted);
+            max-width: 460px;
             line-height: 1.65;
         }
-        .hero-works-with-wrap {
-            margin: 0 auto 28px;
-            display: flex;
-            justify-content: center;
-        }
+
         .hero-works-with {
             display: inline-flex;
             align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px 12px;
-            color: #64748b;
+            gap: 10px;
+            padding: 8px 16px;
+            background: #fff;
+            border: 1px solid var(--border-purple);
+            border-radius: 999px;
+            font-size: 0.82rem;
             font-weight: 600;
-            font-size: 0.95rem;
-            padding: 12px 22px;
-            margin: 0;
-            background: rgba(255,255,255,0.95);
-            border-radius: 100px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            color: var(--text-muted);
+            box-shadow: 0 1px 4px rgba(124,58,237,0.06);
         }
-        .hero-works-with-label {
-            color: #475569;
-            font-weight: 600;
-        }
-        .hero-works-logos {
-            display: inline-flex;
+        .hero-works-with .sep { color: var(--border-purple); }
+        .hero-works-logo { display: block; }
+        .hero-works-gmail { height: 18px; width: auto; }
+        .hero-works-outlook { height: 22px; width: auto; }
+        .hero-works-globe { height: 22px; width: auto; }
+
+        .hero-cta-row {
+            display: flex;
             align-items: center;
-            gap: 0.65rem;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
         }
-        .hero-works-with .hero-works-logo {
-            vertical-align: middle;
-            display: block;
-        }
-        .hero-works-with .hero-works-gmail {
-            height: 22px;
-            width: auto;
-        }
-        .hero-works-with .hero-works-outlook {
-            height: 26px;
-            width: auto;
-        }
-        .hero-works-with .hero-works-globe {
-            height: 26px;
-            width: auto;
-        }
+
         .hero-cta {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 32px;
-            background: #7c3aed;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 16px 30px;
+            background: var(--purple);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
             border-radius: 12px;
             text-decoration: none;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
-            transition: all 0.2s;
+            letter-spacing: 0.01em;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(124,58,237,0.38);
         }
         .hero-cta:hover {
-            background: #6d28d9;
+            background: var(--purple-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+            box-shadow: 0 8px 28px rgba(124,58,237,0.45);
         }
-        .hero-cta-wrap {
-            display: flex;
-            flex-direction: column;
+        .hero-cta.cta-coming-soon { cursor: default; user-select: none; }
+        .hero-cta.cta-coming-soon:hover { transform: none; background: var(--purple); box-shadow: 0 4px 20px rgba(124,58,237,0.38); }
+
+        .hero-pricing-btn {
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 8px;
+            padding: 16px 28px;
+            background: #fff;
+            color: var(--purple);
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 2px solid var(--border-purple);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(124,58,237,0.08);
         }
+        .hero-pricing-btn:hover { background: var(--surface); border-color: var(--purple-light); color: var(--purple-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.15); }
+
         .hero-cta-note {
-            font-size: 0.95rem;
-            color: #64748b;
-            margin: 0;
+            font-size: 0.83rem;
+            color: var(--text-muted);
             font-weight: 500;
         }
 
-        /* Demo video */
-        .demo-video-section {
-            max-width: 920px;
-            margin: 40px auto 0;
-            padding: 0 24px;
+        .hero-demo { position: relative; }
+        .hero-demo-card {
+            background: #fff;
+            border: 1px solid var(--border-purple);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
         }
-        .demo-video-label {
-            font-size: 0.8rem;
+        .hero-demo-chrome {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-demo-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .hero-demo-dot:nth-child(1) { background: #fb7185; }
+        .hero-demo-dot:nth-child(2) { background: #fbbf24; }
+        .hero-demo-dot:nth-child(3) { background: #34d399; }
+        .hero-demo-chrome-label { margin-left: auto; font-size: 0.68rem; color: var(--text-muted); }
+        .hero-demo-body { padding: 16px 16px 14px; }
+        .hero-demo-kicker {
+            font-size: 0.68rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: #7c3aed;
-            margin: 0 0 8px 0;
+            color: var(--purple);
+            margin-bottom: 8px;
         }
-        .demo-video-caption {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin: 0 0 6px 0;
-            line-height: 1.35;
-        }
-        .demo-video-hint {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin: 0 0 18px 0;
-        }
-        .demo-video-frame {
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 24px 48px -12px rgba(124, 58, 237, 0.22), 0 0 0 1px rgba(226, 232, 240, 0.9);
-            background: #0f172a;
-        }
-        .demo-video-frame video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        @media (max-width: 600px) {
-            .demo-video-section { margin-top: 32px; }
-            .demo-video-caption { font-size: 1rem; }
-        }
-
-        /* Gmail mockup */
-        .mockup {
-            max-width: 720px;
-            margin: 48px auto 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        .mockup-bar {
-            height: 40px;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            gap: 8px;
-        }
-        .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .mockup-dot:nth-child(1) { background: #ef4444; }
-        .mockup-dot:nth-child(2) { background: #eab308; }
-        .mockup-dot:nth-child(3) { background: #22c55e; }
-        .mockup-body {
-            padding: 24px;
-            min-height: 200px;
-        }
-        .mockup-email {
+        .hero-demo-incoming {
+            font-size: 0.86rem;
+            color: var(--text-body);
+            line-height: 1.5;
+            padding: 11px 13px;
             background: #f8fafc;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .mockup-email .from { font-weight: 600; color: #1a1a2e; margin-bottom: 4px; }
-        .mockup-email .preview { font-size: 0.9rem; color: #64748b; }
-        .mockup-reply {
-            background: #f8f0ff;
-            border: 2px solid #7c3aed;
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .mockup-reply::before {
-            content: "✨";
-            font-size: 1.5rem;
-        }
-        .mockup-reply span { color: #7c3aed; font-weight: 600; }
-
-        /* Features */
-        .features {
-            padding: 88px 24px 100px;
-            max-width: 1100px;
-            margin: 0 auto;
-            background: #fff;
-        }
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.75rem, 4vw, 2.25rem);
-            font-weight: 700;
-            color: #1a1a2e;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
             margin-bottom: 12px;
         }
-        .section-subtitle {
-            text-align: center;
-            color: #64748b;
-            max-width: 580px;
-            margin: 0 auto 60px;
-            line-height: 1.65;
-        }
-        .feature-grid {
+        .hero-demo-micro-labels {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 2px;
         }
-        .feature-card {
-            padding: 28px;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        .hero-demo-micro-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
         }
-        .feature-card:hover {
+        .hero-demo-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .hero-demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .hero-demo-row--btn { margin-bottom: 0; }
+        .hero-demo-row--btn .hero-demo-btn { width: 100%; justify-content: center; }
+        .hero-demo-select {
+            flex: 1;
+            min-width: 0;
+            padding: 9px 11px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--ink);
+        }
+        .hero-demo-btn {
+            padding: 9px 14px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #fff;
+            background: var(--purple);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .hero-demo-btn:hover { background: var(--purple-dark); }
+        .hero-demo-btn:disabled { opacity: 0.7; cursor: progress; }
+        .hero-demo-draft-wrap {
+            margin-top: 4px;
+            padding-top: 12px;
+            border-top: 1px solid #e8e0f4;
+        }
+        .hero-demo-draft-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .hero-demo-draft {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: #334155;
+            min-height: 5.5em;
+            padding: 14px 14px 16px;
+            background: #faf8fc;
+            border: 1px solid #e4dcf5;
+            border-radius: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            white-space: pre-line;
+        }
+        .hero-demo-draft.is-loading {
+            color: var(--purple);
             border-color: #c4b5fd;
-            box-shadow: 0 8px 28px rgba(124, 58, 237, 0.08);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+            animation: hero-demo-pulse 1s ease-in-out infinite;
         }
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 16px;
+        @keyframes hero-demo-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.72; }
         }
-        .feature-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-            color: #1a1a2e;
-        }
-        .feature-card p {
-            font-size: 0.95rem;
-            color: #64748b;
-            margin: 0;
-            line-height: 1.5;
+        .hero-demo-hint {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
-        /* How it works */
-        .how-it-works {
-            padding: 88px 24px 100px;
-            background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fff 100%);
+        /* ── SOCIAL PROOF ────────────────────────────── */
+        .social-proof {
+            background: var(--surface-2);
+            border-top: 1px solid var(--border-purple);
+            border-bottom: 1px solid var(--border-purple);
+            padding: 20px 32px;
         }
-        .steps {
-            max-width: 900px;
+        .social-proof-inner {
+            max-width: 1100px;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px 40px;
+            justify-content: center;
+        }
+        .sp-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.87rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .sp-item strong { color: var(--ink); font-weight: 800; }
+        .sp-divider { width: 1px; height: 24px; background: var(--border-purple); }
+
+        /* ── VIDEO SECTION ───────────────────────────── */
+        .demo-section {
+            padding: 88px 32px;
+            background: #fff;
+            text-align: center;
+        }
+        .demo-section-inner { max-width: 860px; margin: 0 auto; }
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--purple);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 0 auto 40px;
+            line-height: 1.65;
+        }
+        .demo-video-frame {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px var(--border-purple),
+                0 32px 64px -16px rgba(124,58,237,0.15);
+            background: var(--ink);
+        }
+        .demo-video-frame video { width: 100%; height: auto; display: block; }
+
+        /* ── FEATURES ────────────────────────────────── */
+        .features {
+            padding: 88px 32px 100px;
+            background: linear-gradient(180deg, #6c4aa0 0%, #5a3d8c 100%);
+        }
+        .features-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .features-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 52px;
+            flex-wrap: wrap;
+        }
+        .features-header .section-title { color: #fff; margin: 0; }
+        .features-header .section-subtitle { color: rgba(255,255,255,0.45); margin: 0; max-width: 340px; text-align: right; }
+        .features-header .section-eyebrow { color: var(--purple-light); }
+
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            gap: 2px;
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid rgba(139,92,246,0.2);
         }
-        @media (max-width: 768px) {
-            .steps { grid-template-columns: 1fr; }
+        @media (max-width: 900px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .feature-grid { grid-template-columns: 1fr; } }
+
+        .feature-card {
+            padding: 36px 28px;
+            background: rgba(255,255,255,0.04);
+            transition: background 0.2s;
+            cursor: default;
         }
-        .step {
-            text-align: center;
-            padding: 24px 16px;
-            background: rgba(255,255,255,0.7);
-            border-radius: 16px;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .step-num {
+        .feature-card:hover { background: rgba(139,92,246,0.1); }
+        .feature-icon {
             width: 48px;
             height: 48px;
-            background: #7c3aed;
-            color: white;
-            border-radius: 50%;
+            background: rgba(124,58,237,0.2);
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1.05rem;
             font-weight: 700;
-            font-size: 1.25rem;
-            margin: 0 auto 16px;
-        }
-        .step h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-            color: #1a1a2e;
-        }
-        .step p {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin: 0;
-        }
-
-        /* Trust / Privacy */
-        .trust {
-            padding: 80px 24px 96px;
-            max-width: 700px;
-            margin: 0 auto;
-            text-align: center;
-            background: #fff;
-        }
-        .trust h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 16px;
-        }
-        .trust p {
-            color: #64748b;
-            line-height: 1.7;
-        }
-
-        /* Bottom CTA */
-        .cta-banner {
-            padding: 72px 24px 80px;
-            text-align: center;
-            background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 45%, #ede9fe 100%);
-            border-top: 1px solid #e9d5ff;
-        }
-        .cta-banner h2 {
-            font-size: clamp(1.5rem, 3.5vw, 2rem);
-            font-weight: 700;
-            color: #1a1a2e;
-            margin: 0 0 12px 0;
+            color: #fff;
+            margin-bottom: 10px;
             letter-spacing: -0.02em;
         }
-        .cta-banner p {
-            color: #64748b;
-            max-width: 480px;
-            margin: 0 auto 24px;
-            font-size: 1.05rem;
-            line-height: 1.55;
+        .feature-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+        /* ── STEPS ───────────────────────────────────── */
+        .how-it-works {
+            padding: 88px 32px 100px;
+            background: var(--cream);
         }
-        .cta-banner .hero-cta {
-            margin-top: 4px;
+        .how-it-works-inner { max-width: 1100px; margin: 0 auto; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 52px;
+            border: 1px solid var(--border-purple);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        @media (max-width: 800px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
+        .step {
+            padding: 36px 28px;
+            background: #fff;
+            border-right: 1px solid var(--border-purple);
+            transition: background 0.2s;
+        }
+        .step:last-child { border-right: none; }
+        .step:hover { background: var(--surface); }
+        .step-num {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--purple);
+            line-height: 1;
+            margin-bottom: 16px;
+            letter-spacing: -0.04em;
+            transition: color 0.2s;
+        }
+        .step:hover .step-num { color: var(--purple-dark); }
+        .step h3 {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .step p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+        .how-it-works .how-it-works-inner > .section-eyebrow,
+        .how-it-works .how-it-works-inner > .section-title {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+        .how-it-works .how-it-works-inner > .section-title {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 900px;
         }
 
-        /* Footer */
+        /* ── TRUST ───────────────────────────────────── */
+        .trust {
+            padding: 80px 32px;
+            background: var(--surface);
+            text-align: center;
+        }
+        .trust-inner { max-width: 600px; margin: 0 auto; }
+        .trust-icon {
+            width: 56px; height: 56px;
+            background: #fff;
+            border: 1px solid var(--border-purple);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 12px rgba(124,58,237,0.08);
+        }
+        .trust h2 {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 14px;
+            letter-spacing: -0.03em;
+        }
+        .trust p { color: var(--text-muted); line-height: 1.75; font-size: 0.97rem; }
+
+        /* ── CTA BANNER ──────────────────────────────── */
+        .cta-banner {
+            padding: 96px 32px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--surface) 50%, var(--surface-2) 100%);
+            text-align: center;
+            border-top: 1px solid var(--border-purple);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -120px; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 65%);
+            pointer-events: none; border-radius: 50%;
+        }
+        .cta-banner-inner { max-width: 620px; margin: 0 auto; position: relative; z-index: 1; }
+        .cta-banner h2 {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 16px;
+        }
+        .cta-banner p { color: var(--text-muted); max-width: 440px; margin: 0 auto 36px; font-size: 1.05rem; line-height: 1.55; }
+        .cta-banner .hero-cta { box-shadow: 0 8px 32px rgba(124,58,237,0.35); }
+        .cta-banner .hero-cta:hover { background: var(--purple-dark); }
+        .cta-banner .hero-cta.cta-coming-soon:hover { transform: none; background: var(--purple); }
+
+        /* ── FOOTER ──────────────────────────────────── */
         .footer {
-            padding: 40px 24px;
-            border-top: 1px solid #e2e8f0;
+            padding: 36px 32px;
+            background: #6c4aa0;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            max-width: 1100px;
-            margin: 0 auto;
         }
-        .footer-links {
-            display: flex;
-            gap: 24px;
-        }
-        .footer a {
-            color: #64748b;
+        .footer-left { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+        .footer-logo {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.92);
             text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
+            letter-spacing: -0.02em;
         }
-        .footer a:hover {
-            color: #7c3aed;
+        .footer-links { display: flex; gap: 20px; }
+        .footer a {
+            color: rgba(255,255,255,0.78);
+            text-decoration: none;
+            font-size: 0.87rem;
+            font-weight: 500;
+            transition: color 0.15s;
         }
-        .footer-contact {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
+        .footer a:hover { color: #fff; }
+        .footer-upgrade { color: rgba(255,255,255,0.95) !important; font-weight: 700; }
+        .footer-upgrade:hover { color: #fff !important; }
+        .footer-contact { color: rgba(255,255,255,0.45); font-size: 0.83rem; }
 
-        /* Language content toggle */
-        .language-content { display: none; }
-        .language-content.active { display: block; }
+        .hero-cta-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+
+        @media (max-width: 960px) {
+            .hero-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .header { padding: 12px 16px; }
+            .hero { padding: 60px 20px 60px; }
+            .hero-cta-wrap { align-items: stretch; }
+            .hero-cta-row { flex-direction: column; }
+            .hero-cta, .hero-pricing-btn { width: 100%; justify-content: center; }
+            .features { padding: 60px 20px; }
+            .features-header { flex-direction: column; align-items: flex-start; }
+            .features-header .section-subtitle { text-align: left; }
+            .how-it-works, .demo-section, .trust { padding: 60px 20px; }
+            .cta-banner { padding: 72px 20px; }
+            .footer { padding: 32px 20px; }
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-left">
             <a href="index.html" class="logo">
-                <img src="images/icon128.png" alt="ReplyMate" width="40" height="40">
+                <img src="images/icon128.png" alt="ReplyMate" width="36" height="36">
                 ReplyMate
             </a>
             <a href="pricing/index.html" class="header-plan-pill hidden" id="header-plan-pill" title="">
@@ -665,487 +804,664 @@
         </div>
     </header>
 
-    <!-- English -->
+    <!-- ══════════════ ENGLISH ══════════════ -->
     <div id="en" class="language-content active">
         <section class="hero">
-            <span class="hero-badge">Gmail & Outlook</span>
-            <h1>Write replies faster with ReplyMate</h1>
-            <p class="tagline">Save hours every week right in Gmail and Outlook</p>
-            <div class="hero-works-with-wrap">
-                <p class="hero-works-with" role="group" aria-label="Works with Gmail, Outlook, and translation">
-                    <span class="hero-works-with-label">Works with</span>
-                    <span class="hero-works-logos">
-                        <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail" width="28" height="22">
-                        <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
-                        <img src="images/globe.png" alt="Translation" class="hero-works-logo hero-works-globe">
-                    </span>
-                </p>
-            </div>
-            <div class="hero-cta-wrap">
-                <div class="hero-cta-row">
-                    <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
-                    <a href="pricing/index.html" class="hero-pricing-btn">View plans</a>
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Gmail &amp; Outlook Extension
                 </div>
-                <p class="hero-cta-note">Free extension · Chrome Web Store · Edge Add-ons coming soon</p>
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <h1><span class="hero-h1-line">Write replies faster</span><span class="hero-h1-brand accent">ReplyMate</span></h1>
+                        <div class="hero-meta">
+                            <p class="tagline">In Gmail &amp; Outlook, hover a message row and click <strong>AI Reply</strong>. Set <strong>tone</strong> (Professional, Polite, Friendly, Direct) and <strong>length</strong> (Short, Medium, Long) in the toolbar popup—sign in with Google once—then edit and send. Translate pages anywhere on the web, too.</p>
+                            <p class="hero-works-with">
+                                <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail">
+                                <span class="sep">·</span>
+                                <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
+                                <span class="sep">·</span>
+                                <img src="images/globe.png" alt="Translation" class="hero-works-logo hero-works-globe">
+                            </p>
+                        </div>
+                        <div class="hero-cta-wrap">
+                            <div class="hero-cta-row">
+                                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
+                                <a href="pricing/index.html" class="hero-pricing-btn">View plans →</a>
+                            </div>
+                            <p class="hero-cta-note">Free extension · Chrome Web Store &amp; Microsoft Edge Add-ons · Works in Chrome, Edge &amp; Brave</p>
+                        </div>
+                    </div>
+                    <aside class="hero-demo" data-hero-demo-lang="en" aria-label="Sample reply preview">
+                        <div class="hero-demo-card">
+                            <div class="hero-demo-chrome">
+                                <span class="hero-demo-dot"></span><span class="hero-demo-dot"></span><span class="hero-demo-dot"></span>
+                                <span class="hero-demo-chrome-label">Preview</span>
+                            </div>
+                            <div class="hero-demo-body">
+                                <div class="hero-demo-kicker">Sample thread</div>
+                                <p class="hero-demo-incoming">Hi — could we move Thursday’s sync to 3pm? Same agenda. Thanks!</p>
+                                <div class="hero-demo-micro-labels">
+                                    <span class="hero-demo-micro-label">Tone</span>
+                                    <span class="hero-demo-micro-label">Length</span>
+                                </div>
+                                <div class="hero-demo-controls">
+                                    <select id="hero-demo-tone-en" class="hero-demo-select" data-demo-tone aria-label="Tone">
+                                        <option value="professional">Professional</option>
+                                        <option value="polite" selected>Polite</option>
+                                        <option value="friendly">Friendly</option>
+                                        <option value="direct">Direct</option>
+                                    </select>
+                                    <select id="hero-demo-length-en" class="hero-demo-select" data-demo-length aria-label="Length">
+                                        <option value="short">Short</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="long">Long</option>
+                                    </select>
+                                </div>
+                                <div class="hero-demo-row hero-demo-row--btn">
+                                    <button type="button" class="hero-demo-btn" data-demo-generate>AI Reply</button>
+                                </div>
+                                <div class="hero-demo-draft-wrap">
+                                <div class="hero-demo-draft-label">Draft reply</div>
+                                <div class="hero-demo-draft" data-demo-output role="status">Try a tone and length — then tap <strong>AI Reply</strong> for a sample draft.</div>
+                                </div>
+                                <p class="hero-demo-hint">Illustrative samples for this page. The real extension reads only the thread you’re replying to after you sign in with Google.</p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
-            <div class="demo-video-section">
-                <p class="demo-video-label">See it in action</p>
-                <p class="demo-video-caption">Real inbox, real flow</p>
+        </section>
+
+        <div class="social-proof">
+            <div class="social-proof-inner">
+                <div class="sp-item">✨ <span><strong>Free</strong> on Chrome &amp; Edge</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">⚡ <span>Drafts in <strong>seconds</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🔒 <span>We <strong>don’t sell</strong> your data</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🌍 <span><strong>Translate</strong> on any site</span></div>
+            </div>
+        </div>
+
+        <section class="demo-section">
+            <div class="demo-section-inner">
+                <span class="section-eyebrow">See it in action</span>
+                <h2 class="section-title">From email to draft in seconds</h2>
+                <p class="section-subtitle">See how ReplyMate fits Gmail and Outlook on the web—hover actions, reply composer, and no separate AI tab.</p>
                 <div class="demo-video-frame">
                     <video controls playsinline muted autoplay preload="metadata" title="ReplyMate demo">
                         <source src="videos/replymate%20demo%20video.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
-            <div class="mockup">
-                <div class="mockup-bar">
-                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-email">
-                        <div class="from">Meeting follow-up</div>
-                        <div class="preview">Thanks for the call today. Please find the summary attached...</div>
-                    </div>
-                    <div class="mockup-reply">
-                        <span>ReplyMate</span> — Draft appears here
-                    </div>
-                </div>
-            </div>
         </section>
+
         <section class="features">
-            <h2 class="section-title">Built for your inbox</h2>
-            <p class="section-subtitle">Choose tone, length, and what to mention—then tweak and send without leaving the screen you’re already in.</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Fast first drafts</h3>
-                    <p>Shows up next to the thread—no jumping between tabs or pasting from another chat.</p>
+            <div class="features-inner">
+                <div class="features-header">
+                    <div>
+                        <span class="section-eyebrow">Features</span>
+                        <h2 class="section-title">Built for your inbox,<br>not against it.</h2>
+                    </div>
+                    <p class="section-subtitle">Hover actions, toolbar settings, and AI that stays inside your mail tab—plus translation when you need it.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎚️</div>
-                    <h3>Tone that fits</h3>
-                    <p>More formal or casual, shorter or longer—you pick the tone before it writes.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✏️</div>
-                    <h3>The details you want in</h3>
-                    <p>Dates, names, numbers, a quick thank-you—they’re woven into the reply.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📧</div>
-                    <h3>Gmail & Outlook in the browser</h3>
-                    <p>It runs where your mail lives—so you’re not copying from another window.</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>AI Reply from the inbox row</h3>
+                        <p>In Gmail &amp; Outlook on the web, hover a message row and click <strong>AI Reply</strong>. ReplyMate opens the thread and drops text into the composer—no copy-paste from another app.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎚️</div>
+                        <h3>Tone &amp; length (like the popup)</h3>
+                        <p><strong>Professional</strong>, <strong>Polite</strong>, <strong>Friendly</strong>, or <strong>Direct</strong>; <strong>Short</strong>, <strong>Medium</strong>, or <strong>Long</strong>—the same controls as the extension popup, saved in your browser.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Google sign-in for AI</h3>
+                        <p>Sign in once with Google to generate replies. We use the thread you’re actively answering—nothing sold for ads, nothing stored after your draft is ready (see privacy policy).</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3>Gmail, Outlook &amp; translate</h3>
+                        <p>Built for <strong>Gmail</strong> and <strong>Outlook</strong> on the web. The extension also includes <strong>translation</strong> on other sites when you need it.</p>
+                    </div>
                 </div>
             </div>
         </section>
+
         <section class="how-it-works">
-            <h2 class="section-title">Four quick steps</h2>
-            <p class="section-subtitle">From add to first draft in about a minute.</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>Add to your browser</h3>
-                    <p>From your browser’s extension store—works in Chrome, Edge, Brave, and other Chromium browsers.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>Open your mail</h3>
-                    <p>Go to Gmail or Outlook in the browser, like you already do.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>Tap ReplyMate</h3>
-                    <p>On the message you’re answering. Adjust tone, then generate.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h3>Send</h3>
-                    <p>Skim the draft, tweak anything, hit send—same as always.</p>
+            <div class="how-it-works-inner">
+                <span class="section-eyebrow">How it works</span>
+                <h2 class="section-title">From install to first draft<br>in about one minute.</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">01</div>
+                        <h3>Add to your browser</h3>
+                        <p>Install from the <a href="https://chromewebstore.google.com/detail/replymate-ai-reply-genera/peiobdhdmdklnkkfbcnmindgpclikkfo" target="_blank" rel="noopener noreferrer">Chrome Web Store</a> or <a href="https://microsoftedge.microsoft.com/addons/detail/replymate-ai-email-reply/mjfjibpkigekfjkfhnpjfjmgjihlfnjh" target="_blank" rel="noopener noreferrer">Microsoft Edge Add-ons</a>. Works in Chrome, Microsoft Edge, Brave, and other Chromium-based browsers.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">02</div>
+                        <h3>Open Gmail or Outlook</h3>
+                        <p>Go to <strong>Gmail</strong> or <strong>Outlook</strong> on the web. Sign in with Google the first time ReplyMate asks—needed for AI replies.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">03</div>
+                        <h3>AI Reply</h3>
+                        <p>In Gmail &amp; Outlook, hover the row and click <strong>AI Reply</strong>. ReplyMate opens the reply box and streams in a draft using your tone &amp; length settings.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">04</div>
+                        <h3>Edit &amp; send</h3>
+                        <p>Review the draft, change anything you want, then send—same as a normal reply.</p>
+                    </div>
                 </div>
             </div>
         </section>
+
         <section class="trust">
-            <h2>Privacy</h2>
-            <p>You sign in with Google. We only use the thread you’re replying to so we can generate text—we don’t sell it or use it for ads. More detail in our privacy policy.</p>
+            <div class="trust-inner">
+                <div class="trust-icon">🔒</div>
+                <h2>Your emails stay yours.</h2>
+                <p>You sign in with Google. We only ever read the thread you're actively replying to, purely to generate your draft. We never sell your data, never use it for ads, and never store it beyond the moment it takes to write your reply. Full details in our privacy policy.</p>
+            </div>
         </section>
+
         <section class="cta-banner">
-            <h2>Spend less time staring at an empty reply</h2>
-            <p>Install ReplyMate from the Chrome Web Store and draft your next email right in Gmail or Outlook.</p>
-            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
+            <div class="cta-banner-inner">
+                <h2>Stop staring at a blank reply box.</h2>
+                <p>Install ReplyMate from the Chrome Web Store or Microsoft Edge Add-ons and draft your next email right in <strong>Gmail</strong> or <strong>Outlook</strong> — in seconds, not minutes.</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Add to browser</a>
+            </div>
         </section>
+
         <footer class="footer">
-            <div class="footer-links">
-                <a href="pricing/index.html" class="footer-upgrade">Pricing</a>
-                <a href="privacy/index.html">Privacy Policy</a>
-                <a href="mailto:replymate.support@gmail.com">Contact</a>
+            <div class="footer-left">
+                <a href="index.html" class="footer-logo">ReplyMate</a>
+                <div class="footer-links">
+                    <a href="pricing/index.html" class="footer-upgrade">Pricing</a>
+                    <a href="privacy/index.html">Privacy Policy</a>
+                    <a href="mailto:replymate.support@gmail.com">Contact</a>
+                </div>
             </div>
             <span class="footer-contact">replymate.support@gmail.com</span>
         </footer>
     </div>
 
-    <!-- Korean -->
+    <!-- ══════════════ KOREAN ══════════════ -->
     <div id="ko" class="language-content">
         <section class="hero">
-            <span class="hero-badge">Gmail·Outlook</span>
-            <h1>ReplyMate와 더 빠르게 답장하세요</h1>
-            <p class="tagline">Gmail·Outlook에서 매주 몇 시간을 아끼세요</p>
-            <div class="hero-works-with-wrap">
-                <p class="hero-works-with" role="group" aria-label="Gmail, Outlook 및 번역 지원">
-                    <span class="hero-works-logos">
-                        <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail" width="28" height="22">
-                        <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
-                        <img src="images/globe.png" alt="번역" class="hero-works-logo hero-works-globe">
-                    </span>
-                    <span class="hero-works-with-label">지원</span>
-                </p>
-            </div>
-            <div class="hero-cta-wrap">
-                <div class="hero-cta-row">
-                    <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">브라우저에 추가</a>
-                    <a href="pricing/index.html?lang=ko" class="hero-pricing-btn">요금제 보기</a>
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Gmail · Outlook 확장 프로그램
                 </div>
-                <p class="hero-cta-note">무료 확장 프로그램 · Chrome 웹스토어 · Edge 추가 예정</p>
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <h1><span class="hero-h1-line">답장을 더 빠르게</span><span class="hero-h1-brand accent">ReplyMate</span></h1>
+                        <div class="hero-meta">
+                            <p class="tagline">Gmail·Outlook에서 메일 행에 마우스를 올리고 <strong>AI 답장</strong>을 누르세요. 툴바 팝업에서 <strong>말투</strong>(전문적·공손·친근·직설)와 <strong>길이</strong>(짧게·보통·길게)를 설정하고, Google 로그인 한 번 한 뒤 수정해 보내면 됩니다. 웹 어디서나 <strong>번역</strong>도 이용할 수 있어요.</p>
+                            <p class="hero-works-with">
+                                <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail">
+                                <span class="sep">·</span>
+                                <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
+                                <span class="sep">·</span>
+                                <img src="images/globe.png" alt="번역" class="hero-works-logo hero-works-globe">
+                            </p>
+                        </div>
+                        <div class="hero-cta-wrap">
+                            <div class="hero-cta-row">
+                                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">브라우저에 추가</a>
+                                <a href="pricing/index.html?lang=ko" class="hero-pricing-btn">요금제 보기 →</a>
+                            </div>
+                            <p class="hero-cta-note">무료 확장 프로그램 · Chrome 웹스토어 &amp; Microsoft Edge 추가 기능 · Chrome·Edge·Brave 지원</p>
+                        </div>
+                    </div>
+                    <aside class="hero-demo" data-hero-demo-lang="ko" aria-label="샘플 답장 미리보기">
+                        <div class="hero-demo-card">
+                            <div class="hero-demo-chrome">
+                                <span class="hero-demo-dot"></span><span class="hero-demo-dot"></span><span class="hero-demo-dot"></span>
+                                <span class="hero-demo-chrome-label">미리보기</span>
+                            </div>
+                            <div class="hero-demo-body">
+                                <div class="hero-demo-kicker">예시 스레드</div>
+                                <p class="hero-demo-incoming">안녕하세요, 목요일 미팅을 오후 3시로 옮겨도 될까요? 안건은 동일합니다. 감사합니다.</p>
+                                <div class="hero-demo-micro-labels">
+                                    <span class="hero-demo-micro-label">말투</span>
+                                    <span class="hero-demo-micro-label">길이</span>
+                                </div>
+                                <div class="hero-demo-controls">
+                                    <select id="hero-demo-tone-ko" class="hero-demo-select" data-demo-tone aria-label="말투">
+                                        <option value="professional">전문적으로</option>
+                                        <option value="polite" selected>공손하게</option>
+                                        <option value="friendly">친근하게</option>
+                                        <option value="direct">직설적으로</option>
+                                    </select>
+                                    <select id="hero-demo-length-ko" class="hero-demo-select" data-demo-length aria-label="길이">
+                                        <option value="short">짧게</option>
+                                        <option value="medium" selected>보통</option>
+                                        <option value="long">길게</option>
+                                    </select>
+                                </div>
+                                <div class="hero-demo-row hero-demo-row--btn">
+                                    <button type="button" class="hero-demo-btn" data-demo-generate>AI 답장</button>
+                                </div>
+                                <div class="hero-demo-draft-wrap">
+                                <div class="hero-demo-draft-label">초안</div>
+                                <div class="hero-demo-draft" data-demo-output role="status">말투와 길이를 고른 뒤 <strong>AI 답장</strong>을 눌러 예시 초안을 확인해 보세요.</div>
+                                </div>
+                                <p class="hero-demo-hint">이 페이지의 문구는 예시입니다. 실제로는 Google 로그인 후 답장 중인 스레드만 사용합니다.</p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
-            <div class="demo-video-section">
-                <p class="demo-video-label">실제 화면 보기</p>
-                <p class="demo-video-caption">실제 받은편지함 흐름</p>
-                <p class="demo-video-hint">처음엔 음소거로 재생돼요. 소리는 아이콘으로 켜면 됩니다.</p>
+        </section>
+
+        <div class="social-proof">
+            <div class="social-proof-inner">
+                <div class="sp-item">✨ <span>Chrome·Edge <strong>무료</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">⚡ <span><strong>몇 초 만에</strong> 초안</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🔒 <span>데이터 <strong>판매 없음</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🌍 <span>웹 어디서나 <strong>번역</strong></span></div>
+            </div>
+        </div>
+
+        <section class="demo-section">
+            <div class="demo-section-inner">
+                <span class="section-eyebrow">실제 화면 보기</span>
+                <h2 class="section-title">메일에서 초안까지,<br>단 몇 초 만에</h2>
+                <p class="section-subtitle">Gmail·Outlook 웹에서 호버 동작과 답장 작성 화면까지 한 흐름으로 보세요.</p>
                 <div class="demo-video-frame">
                     <video controls playsinline muted autoplay preload="metadata" title="ReplyMate 데모">
                         <source src="videos/replymate%20demo%20video.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
-            <div class="mockup">
-                <div class="mockup-bar">
-                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-email">
-                        <div class="from">미팅 후속 메일</div>
-                        <div class="preview">오늘 통화 감사합니다. 요약본 첨부드립니다...</div>
-                    </div>
-                    <div class="mockup-reply">
-                        <span>ReplyMate</span> — 여기에 초안이 뜹니다
-                    </div>
-                </div>
-            </div>
         </section>
+
         <section class="features">
-            <h2 class="section-title">받은편지함에서 바로</h2>
-            <p class="section-subtitle">말투·길이·꼭 넣을 말만 정하면, 지금 보고 있는 화면에서 고치고 보내면 돼요.</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>몇 초 만에 초안</h3>
-                    <p>스레드 옆에 뜹니다. 다른 탭이나 챗봇에 복붙할 필요 없어요.</p>
+            <div class="features-inner">
+                <div class="features-header">
+                    <div>
+                        <span class="section-eyebrow">기능</span>
+                        <h2 class="section-title">받은편지함에 맞게,<br>방해 없이.</h2>
+                    </div>
+                    <p class="section-subtitle">받은편지함에서 바로 생성하고, 툴바 설정·번역까지 한 제품 안에서 처리합니다.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎚️</div>
-                    <h3>말투 맞추기</h3>
-                    <p>격식 있게, 편하게, 짧게—생성하기 전에 골라요.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✏️</div>
-                    <h3>꼭 넣을 내용</h3>
-                    <p>마감일, 이름, 금액, 짧은 감사말 등을 적으면 답장에 반영돼요.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📧</div>
-                    <h3>Gmail·Outlook (웹)</h3>
-                    <p>브라우저 확장이라 웹 메일 안에서 씁니다. 따로 띄운 채팅창에서 붙여 넣지 않아도 돼요.</p>
+                <div class="feature-grid">
+                    <div class="feature-card"><div class="feature-icon">⚡</div><h3>목록에서 AI 답장</h3><p>Gmail·Outlook 웹에서 메일 행에 마우스를 올리고 <strong>AI 답장</strong>을 누르면 됩니다. 복사·붙여넣기 없이 작성 창에 초안이 들어갑니다.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🎚️</div><h3>말투·길이 (팝업과 동일)</h3><p><strong>전문적·공손·친근·직설</strong> 말투와 <strong>짧게·보통·길게</strong> 길이는 확장 프로그램 팝업과 같고 브라우저에 저장됩니다.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔐</div><h3>Google 로그인</h3><p>AI 답장을 쓰려면 Google 로그인이 필요합니다. 답장 중인 스레드만 사용하며, 광고용으로 판매하지 않습니다.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🌍</div><h3>Gmail·Outlook·번역</h3><p><strong>Gmail</strong>과 <strong>Outlook</strong> 웹용이며, 다른 사이트에서는 <strong>번역</strong> 기능을 쓸 수 있어요.</p></div>
                 </div>
             </div>
         </section>
+
         <section class="how-it-works">
-            <h2 class="section-title">네 단계면 끝</h2>
-            <p class="section-subtitle">추가부터 첫 초안까지 약 1분이면 충분해요.</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>브라우저에 추가</h3>
-                    <p>확장 프로그램 스토어에서 추가—Chrome, Edge, Brave 등 크로미움 기반 브라우저에서 이용할 수 있어요.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>메일 열기</h3>
-                    <p>평소처럼 브라우저에서 Gmail 또는 Outlook 웹을 열어요.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>ReplyMate</h3>
-                    <p>답장할 메일에서 누르고, 말투를 정한 뒤 생성해요.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h3>보내기</h3>
-                    <p>읽고 다듬고, 평소처럼 전송하면 돼요.</p>
+            <div class="how-it-works-inner">
+                <span class="section-eyebrow">사용 방법</span>
+                <h2 class="section-title">설치부터 첫 초안까지<br>약 1분이면 충분해요.</h2>
+                <div class="steps">
+                    <div class="step"><div class="step-num">01</div><h3>브라우저에 추가</h3><p>Chrome 웹스토어 또는 Microsoft Edge 추가 기능에서 설치. Chrome, Microsoft Edge, Brave 등 크로미움 기반 브라우저에서 사용할 수 있어요.</p></div>
+                    <div class="step"><div class="step-num">02</div><h3>Gmail 또는 Outlook 열기</h3><p><strong>Gmail</strong> 또는 <strong>Outlook</strong> 웹을 엽니다. 처음에는 AI 사용을 위해 Google 로그인을 요청할 수 있어요.</p></div>
+                    <div class="step"><div class="step-num">03</div><h3>AI 답장</h3><p>Gmail·Outlook에서 행에 마우스를 올리고 <strong>AI 답장</strong>을 누르세요. 설정한 말투·길이로 초안이 만들어집니다.</p></div>
+                    <div class="step"><div class="step-num">04</div><h3>수정 후 전송</h3><p>초안을 확인·수정한 뒤 평소처럼 보내면 됩니다.</p></div>
                 </div>
             </div>
         </section>
+
         <section class="trust">
-            <h2>개인정보</h2>
-            <p>Google로 로그인합니다. 답장 생성에 필요한 그 메일 내용만 사용하고, 판매하거나 광고에 넘기지 않아요. 자세한 내용은 개인정보 처리방침을 참고해 주세요.</p>
+            <div class="trust-inner">
+                <div class="trust-icon">🔒</div>
+                <h2>내 이메일은 내 것.</h2>
+                <p>Google 계정으로 로그인합니다. 초안 생성에 필요한 해당 메일 내용만 사용하며, 데이터를 판매하거나 광고에 활용하지 않습니다. 초안이 완성되는 순간 이후에는 저장하지 않아요. 자세한 내용은 개인정보 처리방침을 확인하세요.</p>
+            </div>
         </section>
+
         <section class="cta-banner">
-            <h2>빈 칸만 보다가 시간 쓰지 마세요</h2>
-            <p>Chrome 웹스토어에서 ReplyMate를 설치하고 Gmail·Outlook에서 바로 답장 초안을 만드세요.</p>
-            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">브라우저에 추가</a>
+            <div class="cta-banner-inner">
+                <h2>빈 답장 창 앞에서 멈추지 마세요.</h2>
+                <p>Chrome 웹스토어 또는 Microsoft Edge 추가 기능에서 ReplyMate를 설치하고 <strong>Gmail</strong>·<strong>Outlook</strong>에서 바로 초안을 완성하세요.</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">브라우저에 추가</a>
+            </div>
         </section>
+
         <footer class="footer">
-            <div class="footer-links">
-                <a href="pricing/index.html?lang=ko" class="footer-upgrade">요금제</a>
-                <a href="privacy/index.html">개인정보 처리방침</a>
-                <a href="mailto:replymate.support@gmail.com">문의하기</a>
+            <div class="footer-left">
+                <a href="index.html" class="footer-logo">ReplyMate</a>
+                <div class="footer-links">
+                    <a href="pricing/index.html?lang=ko" class="footer-upgrade">요금제</a>
+                    <a href="privacy/index.html">개인정보 처리방침</a>
+                    <a href="mailto:replymate.support@gmail.com">문의하기</a>
+                </div>
             </div>
             <span class="footer-contact">replymate.support@gmail.com</span>
         </footer>
     </div>
 
-    <!-- Japanese -->
+    <!-- ══════════════ JAPANESE ══════════════ -->
     <div id="ja" class="language-content">
         <section class="hero">
-            <span class="hero-badge">Gmail・Outlook</span>
-            <h1>ReplyMateで返信をもっと速く</h1>
-            <p class="tagline">Gmail・Outlookの中で、毎週何時間も節約</p>
-            <div class="hero-works-with-wrap">
-                <p class="hero-works-with" role="group" aria-label="Gmail、Outlook、翻訳に対応">
-                    <span class="hero-works-logos">
-                        <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail" width="28" height="22">
-                        <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
-                        <img src="images/globe.png" alt="翻訳" class="hero-works-logo hero-works-globe">
-                    </span>
-                    <span class="hero-works-with-label">に対応</span>
-                </p>
-            </div>
-            <div class="hero-cta-wrap">
-                <div class="hero-cta-row">
-                    <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">ブラウザに追加</a>
-                    <a href="pricing/index.html?lang=ja" class="hero-pricing-btn">プランを見る</a>
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Gmail・Outlook 拡張機能
                 </div>
-                <p class="hero-cta-note">無料拡張機能 · Chrome ウェブストア · Edge版は近日対応予定</p>
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <h1><span class="hero-h1-line">もっと速く返信を</span><span class="hero-h1-brand accent">ReplyMate</span></h1>
+                        <div class="hero-meta">
+                            <p class="tagline">Gmail・Outlookでメッセージ行にホバーして<strong>AI返信</strong>をクリック。ツールバーのポップアップで<strong>トーン</strong>（プロフェッショナル・丁寧・フレンドリー・ダイレクト）と<strong>長さ</strong>（短く・標準・長め）を設定し、Googleでサインインしてから編集・送信。ウェブ上のどのページでも<strong>翻訳</strong>できます。</p>
+                            <p class="hero-works-with">
+                                <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail">
+                                <span class="sep">·</span>
+                                <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
+                                <span class="sep">·</span>
+                                <img src="images/globe.png" alt="翻訳" class="hero-works-logo hero-works-globe">
+                            </p>
+                        </div>
+                        <div class="hero-cta-wrap">
+                            <div class="hero-cta-row">
+                                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">ブラウザに追加</a>
+                                <a href="pricing/index.html?lang=ja" class="hero-pricing-btn">プランを見る →</a>
+                            </div>
+                            <p class="hero-cta-note">無料拡張機能 · Chrome ウェブストア &amp; Microsoft Edge アドオン · Chrome / Edge / Brave 対応</p>
+                        </div>
+                    </div>
+                    <aside class="hero-demo" data-hero-demo-lang="ja" aria-label="サンプル返信のプレビュー">
+                        <div class="hero-demo-card">
+                            <div class="hero-demo-chrome">
+                                <span class="hero-demo-dot"></span><span class="hero-demo-dot"></span><span class="hero-demo-dot"></span>
+                                <span class="hero-demo-chrome-label">プレビュー</span>
+                            </div>
+                            <div class="hero-demo-body">
+                                <div class="hero-demo-kicker">サンプルスレッド</div>
+                                <p class="hero-demo-incoming">木曜の打ち合わせを15時に変更してもよろしいでしょうか。議題は同じです。よろしくお願いします。</p>
+                                <div class="hero-demo-micro-labels">
+                                    <span class="hero-demo-micro-label">トーン</span>
+                                    <span class="hero-demo-micro-label">長さ</span>
+                                </div>
+                                <div class="hero-demo-controls">
+                                    <select id="hero-demo-tone-ja" class="hero-demo-select" data-demo-tone aria-label="トーン">
+                                        <option value="professional">プロフェッショナル</option>
+                                        <option value="polite" selected>丁寧</option>
+                                        <option value="friendly">フレンドリー</option>
+                                        <option value="direct">ダイレクト</option>
+                                    </select>
+                                    <select id="hero-demo-length-ja" class="hero-demo-select" data-demo-length aria-label="長さ">
+                                        <option value="short">短く</option>
+                                        <option value="medium" selected>標準</option>
+                                        <option value="long">長め</option>
+                                    </select>
+                                </div>
+                                <div class="hero-demo-row hero-demo-row--btn">
+                                    <button type="button" class="hero-demo-btn" data-demo-generate>AI返信</button>
+                                </div>
+                                <div class="hero-demo-draft-wrap">
+                                <div class="hero-demo-draft-label">下書き</div>
+                                <div class="hero-demo-draft" data-demo-output role="status">トーンと長さを選んで<strong>AI返信</strong>を押し、サンプル下書きを試してください。</div>
+                                </div>
+                                <p class="hero-demo-hint">この場の文は例示です。本番ではGoogleサインイン後、返信中のスレッドのみを利用します。</p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
-            <div class="demo-video-section">
-                <p class="demo-video-label">動作を見る</p>
-                <p class="demo-video-caption">実際の受信トレイ</p>
-                <p class="demo-video-hint">最初はミュート再生です。音量はアイコンから。</p>
+        </section>
+
+        <div class="social-proof">
+            <div class="social-proof-inner">
+                <div class="sp-item">✨ <span>Chrome・Edge<strong>無料</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">⚡ <span><strong>数秒</strong>で下書き</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🔒 <span>データ<strong>販売なし</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🌍 <span>ページ<strong>翻訳</strong></span></div>
+            </div>
+        </div>
+
+        <section class="demo-section">
+            <div class="demo-section-inner">
+                <span class="section-eyebrow">動作を見る</span>
+                <h2 class="section-title">メールから下書きまで、<br>数秒で</h2>
+                <p class="section-subtitle">Gmail・Outlookウェブでのホバー操作から返信ボックスまでをまとめてご覧ください。</p>
                 <div class="demo-video-frame">
                     <video controls playsinline muted autoplay preload="metadata" title="ReplyMate デモ">
                         <source src="videos/replymate%20demo%20video.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
-            <div class="mockup">
-                <div class="mockup-bar">
-                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-email">
-                        <div class="from">打ち合わせのフォローアップ</div>
-                        <div class="preview">本日はお電話ありがとうございました。議事録を添付いたします...</div>
-                    </div>
-                    <div class="mockup-reply">
-                        <span>ReplyMate</span> — ここにたたき台が出ます
-                    </div>
-                </div>
-            </div>
         </section>
+
         <section class="features">
-            <h2 class="section-title">毎日のメールに合わせて</h2>
-            <p class="section-subtitle">トーン・長さ・入れたい内容を、いまの画面のまま整えて送信できます。</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>すぐ使えるたたき台</h3>
-                    <p>スレッドの横に表示。別のサイトへ行ったり、チャットにコピーしたりしません。</p>
+            <div class="features-inner">
+                <div class="features-header">
+                    <div>
+                        <span class="section-eyebrow">機能</span>
+                        <h2 class="section-title">受信トレイのために、<br>邪魔せずに動く。</h2>
+                    </div>
+                    <p class="section-subtitle">受信トレイからツールバー設定、必要ならページ翻訳まで、この拡張機能ひとつで。</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎚️</div>
-                    <h3>トーンを選ぶ</h3>
-                    <p>堅め・カジュアル・短めなど、生成する前に選べます。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✏️</div>
-                    <h3>細かい内容も</h3>
-                    <p>期限、名前、金額、「火曜はありがとう」など、返信に含められます。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📧</div>
-                    <h3>Gmail・Outlook（Web）</h3>
-                    <p>ブラウザの受信トレイで使う拡張機能です。別ウィンドウのチャットに貼り付けなくて大丈夫です。</p>
+                <div class="feature-grid">
+                    <div class="feature-card"><div class="feature-icon">⚡</div><h3>一覧からAI返信</h3><p>Gmail・Outlookウェブで行にホバーして<strong>AI返信</strong>。別アプリへのコピペなしでエディタに下書きが入ります。</p></div>
+                    <div class="feature-card"><div class="feature-icon">🎚️</div><h3>トーンと長さ（ポップアップと同じ）</h3><p><strong>プロフェッショナル・丁寧・フレンドリー・ダイレクト</strong>と<strong>短く・標準・長め</strong>は拡張機能のポップアップと同じで、設定は保存されます。</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔐</div><h3>Googleでサインイン</h3><p>AI返信にはGoogleサインインが必要です。返信中のスレッドのみ利用し、広告用に販売しません。</p></div>
+                    <div class="feature-card"><div class="feature-icon">🌍</div><h3>Gmail・Outlook・翻訳</h3><p><strong>Gmail</strong>と<strong>Outlook</strong>ウェブ向け。ほかのサイトでは<strong>翻訳</strong>パネルが使えます。</p></div>
                 </div>
             </div>
         </section>
+
         <section class="how-it-works">
-            <h2 class="section-title">4ステップで開始</h2>
-            <p class="section-subtitle">追加から最初の下書きまで、およそ1分です。</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>ブラウザに追加</h3>
-                    <p>拡張機能ストアから追加。Chrome、Edge、BraveなどChromium系ブラウザで利用できます。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>メールを開く</h3>
-                    <p>いつもどおりブラウザでGmailまたはOutlookのWebを開きます。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>ReplyMate</h3>
-                    <p>返信したいメールでタップし、トーンを決めて生成。</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h3>送信</h3>
-                    <p>読み直して調整し、いつもどおり送信。</p>
+            <div class="how-it-works-inner">
+                <span class="section-eyebrow">使い方</span>
+                <h2 class="section-title">追加から最初の下書きまで<br>約1分です。</h2>
+                <div class="steps">
+                    <div class="step"><div class="step-num">01</div><h3>ブラウザに追加</h3><p>Chrome ウェブストアまたは Microsoft Edge アドオンから追加。Chrome、Microsoft Edge、BraveなどChromium系ブラウザで利用できます。</p></div>
+                    <div class="step"><div class="step-num">02</div><h3>GmailまたはOutlookを開く</h3><p><strong>Gmail</strong>または<strong>Outlook</strong>のWebを開きます。初回はAI利用のためGoogleサインインを求められることがあります。</p></div>
+                    <div class="step"><div class="step-num">03</div><h3>AI返信</h3><p>Gmail・Outlookで行にホバーして<strong>AI返信</strong>。設定したトーンと長さで下書きが作成されます。</p></div>
+                    <div class="step"><div class="step-num">04</div><h3>確認して送信</h3><p>内容を確認・編集し、いつもどおり送信します。</p></div>
                 </div>
             </div>
         </section>
+
         <section class="trust">
-            <h2>プライバシー</h2>
-            <p>Googleでログインします。返信生成に必要なメール内容のみを使い、販売や広告には利用しません。詳細はポリシーをご覧ください。</p>
+            <div class="trust-inner">
+                <div class="trust-icon">🔒</div>
+                <h2>メールはあなたのもの。</h2>
+                <p>Googleでログインします。返信生成に必要なメール内容のみを使用し、販売や広告には一切利用しません。下書きが完成した瞬間以降は保存しません。詳細はプライバシーポリシーをご覧ください。</p>
+            </div>
         </section>
+
         <section class="cta-banner">
-            <h2>空の返信欄で止まる時間を減らす</h2>
-            <p>Chrome ウェブストアから ReplyMate を追加し、Gmail・Outlook でその場で下書きを。</p>
-            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">ブラウザに追加</a>
+            <div class="cta-banner-inner">
+                <h2>空の返信欄で止まるのは、もうやめよう。</h2>
+                <p>Chrome ウェブストアまたは Microsoft Edge アドオンからReplyMateを追加して、<strong>Gmail</strong>・<strong>Outlook</strong>でその場で下書きを完成させましょう。</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">ブラウザに追加</a>
+            </div>
         </section>
+
         <footer class="footer">
-            <div class="footer-links">
-                <a href="pricing/index.html?lang=ja" class="footer-upgrade">料金</a>
-                <a href="privacy/index.html">プライバシーポリシー</a>
-                <a href="mailto:replymate.support@gmail.com">お問い合わせ</a>
+            <div class="footer-left">
+                <a href="index.html" class="footer-logo">ReplyMate</a>
+                <div class="footer-links">
+                    <a href="pricing/index.html?lang=ja" class="footer-upgrade">料金</a>
+                    <a href="privacy/index.html">プライバシーポリシー</a>
+                    <a href="mailto:replymate.support@gmail.com">お問い合わせ</a>
+                </div>
             </div>
             <span class="footer-contact">replymate.support@gmail.com</span>
         </footer>
     </div>
 
-    <!-- Spanish -->
+    <!-- ══════════════ SPANISH ══════════════ -->
     <div id="es" class="language-content">
         <section class="hero">
-            <span class="hero-badge">Gmail y Outlook</span>
-            <h1>Escribe respuestas más rápido con ReplyMate</h1>
-            <p class="tagline">Ahorra horas cada semana en Gmail y Outlook</p>
-            <div class="hero-works-with-wrap">
-                <p class="hero-works-with" role="group" aria-label="Compatible con Gmail, Outlook y traducción">
-                    <span class="hero-works-with-label">Compatible con</span>
-                    <span class="hero-works-logos">
-                        <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail" width="28" height="22">
-                        <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
-                        <img src="images/globe.png" alt="Traducción" class="hero-works-logo hero-works-globe">
-                    </span>
-                </p>
-            </div>
-            <div class="hero-cta-wrap">
-                <div class="hero-cta-row">
-                    <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Añadir al navegador</a>
-                    <a href="pricing/index.html?lang=es" class="hero-pricing-btn">Ver precios</a>
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Extensión para Gmail y Outlook
                 </div>
-                <p class="hero-cta-note">Extensión gratuita · Chrome Web Store · Edge próximamente</p>
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <h1><span class="hero-h1-line">Responde más rápido</span><span class="hero-h1-brand accent">ReplyMate</span></h1>
+                        <div class="hero-meta">
+                            <p class="tagline">En Gmail y Outlook, pasa el cursor por una fila y haz clic en <strong>Respuesta con IA</strong>. En el popup de la barra elige <strong>tono</strong> (Profesional, Cortés, Cercano, Directo) y <strong>longitud</strong> (Corta, Media, Larga); inicia sesión con Google una vez—luego edita y envía. También puedes <strong>traducir</strong> páginas en cualquier sitio.</p>
+                            <p class="hero-works-with">
+                                <img src="images/gmail64.png" alt="Gmail" class="hero-works-logo hero-works-gmail">
+                                <span class="sep">·</span>
+                                <img src="images/outlook48.png" alt="Outlook" class="hero-works-logo hero-works-outlook">
+                                <span class="sep">·</span>
+                                <img src="images/globe.png" alt="Traducción" class="hero-works-logo hero-works-globe">
+                            </p>
+                        </div>
+                        <div class="hero-cta-wrap">
+                            <div class="hero-cta-row">
+                                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Añadir al navegador</a>
+                                <a href="pricing/index.html?lang=es" class="hero-pricing-btn">Ver precios →</a>
+                            </div>
+                            <p class="hero-cta-note">Extensión gratuita · Chrome Web Store y Microsoft Edge Add-ons · Chrome, Edge y Brave</p>
+                        </div>
+                    </div>
+                    <aside class="hero-demo" data-hero-demo-lang="es" aria-label="Vista previa de respuesta de ejemplo">
+                        <div class="hero-demo-card">
+                            <div class="hero-demo-chrome">
+                                <span class="hero-demo-dot"></span><span class="hero-demo-dot"></span><span class="hero-demo-dot"></span>
+                                <span class="hero-demo-chrome-label">Vista previa</span>
+                            </div>
+                            <div class="hero-demo-body">
+                                <div class="hero-demo-kicker">Hilo de ejemplo</div>
+                                <p class="hero-demo-incoming">Hola — ¿podemos mover la reunión del jueves a las 15:00? Misma agenda. ¡Gracias!</p>
+                                <div class="hero-demo-micro-labels">
+                                    <span class="hero-demo-micro-label">Tono</span>
+                                    <span class="hero-demo-micro-label">Longitud</span>
+                                </div>
+                                <div class="hero-demo-controls">
+                                    <select id="hero-demo-tone-es" class="hero-demo-select" data-demo-tone aria-label="Tono">
+                                        <option value="professional">Profesional</option>
+                                        <option value="polite" selected>Cortés</option>
+                                        <option value="friendly">Cercano</option>
+                                        <option value="direct">Directo</option>
+                                    </select>
+                                    <select id="hero-demo-length-es" class="hero-demo-select" data-demo-length aria-label="Longitud">
+                                        <option value="short">Corta</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="long">Larga</option>
+                                    </select>
+                                </div>
+                                <div class="hero-demo-row hero-demo-row--btn">
+                                    <button type="button" class="hero-demo-btn" data-demo-generate>Respuesta con IA</button>
+                                </div>
+                                <div class="hero-demo-draft-wrap">
+                                <div class="hero-demo-draft-label">Borrador</div>
+                                <div class="hero-demo-draft" data-demo-output role="status">Prueba tono y longitud — pulsa <strong>Respuesta con IA</strong> para ver un borrador de ejemplo.</div>
+                                </div>
+                                <p class="hero-demo-hint">Textos de ejemplo en esta página. En la extensión solo se usa el hilo al que respondes, tras iniciar sesión con Google.</p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
-            <div class="demo-video-section">
-                <p class="demo-video-label">Ver en acción</p>
-                <p class="demo-video-caption">Bandeja real</p>
-                <p class="demo-video-hint">Empieza en silencio; sube el volumen si quieres.</p>
+        </section>
+
+        <div class="social-proof">
+            <div class="social-proof-inner">
+                <div class="sp-item">✨ <span><strong>Gratis</strong> en Chrome y Edge</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">⚡ <span>Borrador en <strong>segundos</strong></span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🔒 <span><strong>No vendemos</strong> tus datos</span></div>
+                <span class="sp-divider"></span>
+                <div class="sp-item">🌍 <span><strong>Traducción</strong> en cualquier página</span></div>
+            </div>
+        </div>
+
+        <section class="demo-section">
+            <div class="demo-section-inner">
+                <span class="section-eyebrow">Ver en acción</span>
+                <h2 class="section-title">Del correo al borrador<br>en segundos</h2>
+                <p class="section-subtitle">Desde el hover en la lista hasta el editor de respuesta, sin otra pestaña de IA.</p>
                 <div class="demo-video-frame">
                     <video controls playsinline muted autoplay preload="metadata" title="Demo ReplyMate">
                         <source src="videos/replymate%20demo%20video.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
-            <div class="mockup">
-                <div class="mockup-bar">
-                    <span class="mockup-dot"></span><span class="mockup-dot"></span><span class="mockup-dot"></span>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-email">
-                        <div class="from">Seguimiento de reunión</div>
-                        <div class="preview">Gracias por la llamada de hoy. Te adjunto el resumen...</div>
-                    </div>
-                    <div class="mockup-reply">
-                        <span>ReplyMate</span> — El borrador aparece aquí
-                    </div>
-                </div>
-            </div>
         </section>
+
         <section class="features">
-            <h2 class="section-title">Hecho para tu bandeja</h2>
-            <p class="section-subtitle">Elige tono, longitud y qué mencionar—luego revisa y envía en la misma ventana.</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Borrador al instante</h3>
-                    <p>Junto al hilo. Sin abrir otra pestaña ni copiar desde un chat aparte.</p>
+            <div class="features-inner">
+                <div class="features-header">
+                    <div>
+                        <span class="section-eyebrow">Funcionalidades</span>
+                        <h2 class="section-title">Hecho para tu bandeja,<br>no contra ella.</h2>
+                    </div>
+                    <p class="section-subtitle">Acciones al pasar el cursor, ajustes en la barra de herramientas y traducción cuando la necesites.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎚️</div>
-                    <h3>El tono que buscas</h3>
-                    <p>Más formal, más corto, más cercano—lo eliges antes de generar.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✏️</div>
-                    <h3>Los detalles que importan</h3>
-                    <p>Fechas, nombres, importes, un gracias rápido—los mete en el texto.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📧</div>
-                    <h3>Gmail y Outlook en la web</h3>
-                    <p>La extensión va donde está tu correo; no hace falta ir a otra ventana de IA.</p>
+                <div class="feature-grid">
+                    <div class="feature-card"><div class="feature-icon">⚡</div><h3>Desde la fila: Respuesta con IA</h3><p>En Gmail y Outlook en la web, pasa el cursor y pulsa <strong>Respuesta con IA</strong>. El borrador va al editor sin copiar de otro sitio.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🎚️</div><h3>Tono y longitud (como el popup)</h3><p><strong>Profesional, Cortés, Cercano o Directo</strong>; <strong>Corta, Media o Larga</strong> — las mismas opciones que el popup de la extensión, guardadas en el navegador.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🔐</div><h3>Inicio de sesión con Google</h3><p>Necesario para la IA. Solo usamos el hilo al que respondes; no vendemos datos para anuncios.</p></div>
+                    <div class="feature-card"><div class="feature-icon">🌍</div><h3>Gmail, Outlook y traducción</h3><p>Pensado para <strong>Gmail</strong> y <strong>Outlook</strong> en la web; en otras páginas puedes usar la <strong>traducción</strong>.</p></div>
                 </div>
             </div>
         </section>
+
         <section class="how-it-works">
-            <h2 class="section-title">Cuatro pasos</h2>
-            <p class="section-subtitle">De añadir a tu navegador al primer borrador en alrededor de un minuto.</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>Añadir al navegador</h3>
-                    <p>Desde la tienda de extensiones—compatible con Chrome, Edge, Brave y otros navegadores basados en Chromium.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>Abre tu correo</h3>
-                    <p>Gmail u Outlook en el navegador, como siempre.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>ReplyMate</h3>
-                    <p>En el mensaje que vas a contestar. Ajusta el tono y genera.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <h3>Enviar</h3>
-                    <p>Revísalo, edita y envía con normalidad.</p>
+            <div class="how-it-works-inner">
+                <span class="section-eyebrow">Cómo funciona</span>
+                <h2 class="section-title">De instalar a tu primer borrador<br>en alrededor de un minuto.</h2>
+                <div class="steps">
+                    <div class="step"><div class="step-num">01</div><h3>Añadir al navegador</h3><p>Desde Chrome Web Store o Microsoft Edge Add-ons. Funciona en Chrome, Microsoft Edge, Brave y otros navegadores Chromium.</p></div>
+                    <div class="step"><div class="step-num">02</div><h3>Abre Gmail u Outlook</h3><p>Entra en <strong>Gmail</strong> o <strong>Outlook</strong> en el navegador. La primera vez, inicia sesión con Google cuando lo pida la extensión.</p></div>
+                    <div class="step"><div class="step-num">03</div><h3>Respuesta con IA</h3><p>En Gmail y Outlook, pasa el cursor y pulsa <strong>Respuesta con IA</strong>. Se usa tu tono y longitud configurados.</p></div>
+                    <div class="step"><div class="step-num">04</div><h3>Revisa y envía</h3><p>Edita el borrador si quieres y envía con normalidad.</p></div>
                 </div>
             </div>
         </section>
+
         <section class="trust">
-            <h2>Privacidad</h2>
-            <p>Inicias sesión con Google. Solo usamos el hilo al que respondes para generar texto—no lo vendemos ni lo usamos para publicidad. Más información en la política de privacidad.</p>
+            <div class="trust-inner">
+                <div class="trust-icon">🔒</div>
+                <h2>Tus correos son tuyos.</h2>
+                <p>Inicias sesión con Google. Solo usamos el hilo al que estás respondiendo para generar el borrador. Nunca vendemos tus datos, nunca los usamos para publicidad y no los guardamos más allá del momento de escribir tu respuesta. Todos los detalles en la política de privacidad.</p>
+            </div>
         </section>
+
         <section class="cta-banner">
-            <h2>Menos tiempo mirando la pantalla en blanco</h2>
-            <p>Instala ReplyMate desde Chrome Web Store y redacta tu próximo correo en Gmail o Outlook.</p>
-            <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Añadir al navegador</a>
+            <div class="cta-banner-inner">
+                <h2>Deja de mirar el cursor parpadear.</h2>
+                <p>Instala ReplyMate desde Chrome Web Store o Microsoft Edge Add-ons y redacta tu próximo correo en <strong>Gmail</strong> o <strong>Outlook</strong> en cuestión de segundos.</p>
+                <a href="#" class="hero-cta cta-coming-soon" data-replymate-store aria-disabled="true">Añadir al navegador</a>
+            </div>
         </section>
+
         <footer class="footer">
-            <div class="footer-links">
-                <a href="pricing/index.html?lang=es" class="footer-upgrade">Precios</a>
-                <a href="privacy/index.html">Política de privacidad</a>
-                <a href="mailto:replymate.support@gmail.com">Contacto</a>
+            <div class="footer-left">
+                <a href="index.html" class="footer-logo">ReplyMate</a>
+                <div class="footer-links">
+                    <a href="pricing/index.html?lang=es" class="footer-upgrade">Precios</a>
+                    <a href="privacy/index.html">Política de privacidad</a>
+                    <a href="mailto:replymate.support@gmail.com">Contacto</a>
+                </div>
             </div>
             <span class="footer-contact">replymate.support@gmail.com</span>
         </footer>
     </div>
 
+    <!-- ══════════════ SCRIPTS (unchanged logic) ══════════════ -->
     <script>
         window.REPLYMATE_SUPABASE_URL = "https://cmmoirdihefyswerkkay.supabase.co";
         window.REPLYMATE_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtbW9pcmRpaGVmeXN3ZXJra2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NjIzNDUsImV4cCI6MjA4OTAzODM0NX0.gOButw9b4ZrUhVFMBwqf5le2rq7pAeJ0pFhSTKEOcek";
         window.REPLYMATE_BASE_URL = "https://replymateai.app/";
         window.REPLYMATE_BACKEND = "https://replymate-backend-bot8.onrender.com";
-        /** Edge users use edgeAddonsUrl when set; otherwise Chrome Web Store (Edge can allow other stores). */
         window.REPLYMATE_STORE = {
             live: true,
             chromeWebStoreUrl: "https://chromewebstore.google.com/detail/replymate-ai-reply-genera/peiobdhdmdklnkkfbcnmindgpclikkfo",
@@ -1171,10 +1487,7 @@
             const upgradeEl = document.getElementById('header-upgrade');
             const pill = document.getElementById('header-plan-pill');
             const comingSoonEl = document.getElementById('header-coming-soon');
-            if (upgradeEl) {
-                upgradeEl.textContent = upgradeLabels[lang] || 'Pricing';
-                upgradeEl.href = href;
-            }
+            if (upgradeEl) { upgradeEl.textContent = upgradeLabels[lang] || 'Pricing'; upgradeEl.href = href; }
             if (pill) pill.href = href;
             if (comingSoonEl) comingSoonEl.textContent = storeCtaLabels[lang] || storeCtaLabels.en;
         }
@@ -1205,9 +1518,7 @@
             const anon = window.REPLYMATE_SUPABASE_ANON;
             const BACKEND = window.REPLYMATE_BACKEND || 'https://replymate-backend-bot8.onrender.com';
             if (!url || !anon || !window.supabase) return;
-            const supabase = window.supabase.createClient(url, anon, {
-                auth: { storageKey: "replymate-auth" }
-            });
+            const supabase = window.supabase.createClient(url, anon, { auth: { storageKey: "replymate-auth" } });
             const authBtn = document.getElementById('auth-btn');
             const planPill = document.getElementById('header-plan-pill');
             const planPillLabel = document.getElementById('header-plan-pill-label');
@@ -1215,94 +1526,192 @@
 
             function getLang() {
                 const l = document.documentElement.lang || 'en';
-                return ['en', 'ko', 'ja', 'es'].includes(l) ? l : 'en';
+                return ['en','ko','ja','es'].includes(l) ? l : 'en';
             }
-
             function getAuthLabel(key) {
                 const lang = getLang();
                 return (authLabels[key] && authLabels[key][lang]) || authLabels[key]?.en || key;
             }
-
             function planLabel(key) {
                 const lang = getLang();
                 return (planPillLabels[key] && planPillLabels[key][lang]) || planPillLabels[key]?.en || '';
             }
-
             function normalizePlanFromApi(data) {
                 let plan = (data.plan || data.subscription?.plan || '').toLowerCase();
-                if (['free', 'pro', 'pro_plus'].includes(plan)) return plan;
+                if (['free','pro','pro_plus'].includes(plan)) return plan;
                 if (plan === 'proplus') return 'pro_plus';
                 if (plan.includes('pro_plus') || plan.includes('proplus')) return 'pro_plus';
                 return 'free';
             }
-
             async function refreshHeaderPlan() {
                 if (!planPill || !planPillLabel || !planPillName) return;
                 const { data: { session } } = await supabase.auth.getSession();
-                if (!session?.access_token) {
-                    planPill.classList.add('hidden');
-                    return;
-                }
+                if (!session?.access_token) { planPill.classList.add('hidden'); return; }
                 planPill.classList.remove('hidden');
                 planPillLabel.textContent = planLabel('plan');
                 let planKey = 'free';
                 try {
-                    const res = await fetch(BACKEND + '/billing/me', {
-                        headers: { Authorization: 'Bearer ' + session.access_token }
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        planKey = normalizePlanFromApi(data);
-                    }
-                } catch (e) {
-                    console.warn('[ReplyMate] billing/me', e);
-                }
+                    const res = await fetch(BACKEND + '/billing/me', { headers: { Authorization: 'Bearer ' + session.access_token } });
+                    if (res.ok) { const data = await res.json(); planKey = normalizePlanFromApi(data); }
+                } catch(e) { console.warn('[ReplyMate] billing/me', e); }
                 planPillName.textContent = planLabel(planKey);
-                planPill.classList.remove('is-pro', 'is-pro-plus');
+                planPill.classList.remove('is-pro','is-pro-plus');
                 if (planKey === 'pro') planPill.classList.add('is-pro');
                 else if (planKey === 'pro_plus') planPill.classList.add('is-pro-plus');
                 planPill.title = planLabel('plan') + ': ' + planLabel(planKey);
             }
-
             window.replymateRefreshHeaderPlan = refreshHeaderPlan;
-
             function updateAuthUI(session) {
                 authBtn.style.display = 'inline-block';
-                if (session?.user) {
-                    authBtn.textContent = getAuthLabel('signOut');
-                    authBtn.classList.add('signed-in');
-                } else {
-                    authBtn.textContent = getAuthLabel('signIn');
-                    authBtn.classList.remove('signed-in');
-                }
+                if (session?.user) { authBtn.textContent = getAuthLabel('signOut'); authBtn.classList.add('signed-in'); }
+                else { authBtn.textContent = getAuthLabel('signIn'); authBtn.classList.remove('signed-in'); }
                 refreshHeaderPlan();
             }
-
-            supabase.auth.getSession().then(({ data: { session } }) => {
-                updateAuthUI(session);
-            });
-            supabase.auth.onAuthStateChange((_, session) => {
-                updateAuthUI(session);
-            });
-
+            supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            supabase.auth.onAuthStateChange((_, session) => updateAuthUI(session));
             window.replymateUpdateAuthLabels = () => {
                 supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
             };
-
             authBtn.addEventListener('click', async () => {
                 const session = (await supabase.auth.getSession()).data.session;
-                if (session) {
-                    await supabase.auth.signOut();
-                    location.reload();
-                    return;
-                }
+                if (session) { await supabase.auth.signOut(); location.reload(); return; }
                 const isLocalhost = /localhost|127\.0\.0\.1/i.test(window.location.hostname);
                 const base = isLocalhost ? (window.location.origin + '/') : (window.REPLYMATE_BASE_URL || window.location.origin + '/');
-                const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: { redirectTo: base }
-                });
+                const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: base } });
                 if (error) console.error('[ReplyMate Auth]', error);
+            });
+        })();
+
+        (function initHeroDemo() {
+            var DEMO_LOADING = { en: 'Generating…', ko: '생성 중…', ja: '生成中…', es: 'Generando…' };
+            var HERO_DEMO_TEXT = {
+                en: {
+                    professional: {
+                        short: "I confirm Thursday 3:00 p.m.; the agenda is unchanged.\n\nKind regards,",
+                        medium: "Dear colleague,\n\nThank you for your message. I am writing to confirm that Thursday at 3:00 p.m. is acceptable, and that we may proceed with the same agenda as circulated.\n\nPlease let me know if you require any further information ahead of the session.\n\nSincerely,",
+                        long: "Dear Team,\n\nFurther to your email, I am pleased to confirm my availability for Thursday at 3:00 p.m.\n\nI note that the agenda will remain as previously agreed; I do not anticipate any changes from my side.\n\nShould there be pre-reading or materials you would like distributed, kindly send them at your convenience and I will review them in advance.\n\nI would be grateful if you could confirm that this time still suits all participants.\n\nBest regards,"
+                    },
+                    polite: {
+                        short: "Hi — Thursday 3pm works for me, same agenda. Thanks!",
+                        medium: "Hi, thanks for your note.\n\nThursday at 3pm sounds good, and I'm happy to keep the same agenda.\n\nLooking forward to it!",
+                        long: "Hi there,\n\nThanks so much for reaching out about the time change — really appreciate it.\n\nThursday at 3pm works well on my side, and I'm glad we can stick with the same agenda we already aligned on.\n\nIf there's anything you'd like me to skim before we meet, just send it over and I'll take a look.\n\nSpeak soon,"
+                    },
+                    friendly: {
+                        short: "Hey! 3pm Thursday is perfect — same agenda, I'm in. See you then!",
+                        medium: "Hey!\n\nSuper — 3pm on Thursday works great for me, and keeping the same agenda sounds ideal.\n\nCan't wait to catch up!",
+                        long: "Hey!\n\nThanks for looping me in — love the move to Thursday 3pm.\n\nSame agenda is totally fine with me; nothing to add from my end right now.\n\nIf you want to share a doc or deck beforehand, feel free — otherwise I'll see you on the call.\n\nCheers,"
+                    },
+                    direct: {
+                        short: "Thu 3pm OK. Agenda unchanged.",
+                        medium: "Thursday 15:00 — confirmed.\n\nAgenda: no changes from me.\n\nFlag if dial-in or room moves.",
+                        long: "Thursday 3pm — locked.\n\nAgenda stays as last sent.\n\nUpdate me only if meeting link, room, or attendees change.\n\nNothing else from my side."
+                    }
+                },
+                ko: {
+                    professional: {
+                        short: "목요일 15시로 확정합니다. 안건은 기존과 동일합니다.\n\n감사합니다.",
+                        medium: "안녕하세요.\n\n회신 주신 일정 변경안에 따라 목요일 오후 3시로 진행 가능함을 확인드립니다. 안건은 공유해 주신 대로 유지하겠습니다.\n\n추가로 필요하신 자료가 있으시면 사전에 전달 부탁드립니다.\n\n감사합니다.",
+                        long: "안녕하세요.\n\n금번 일정 조정 관련 메일 잘 받았습니다.\n\n목요일 오후 3시로 변경하는 데 동의하며, 논의 안건은 이전에 합의된 범위를 그대로 따르겠습니다.\n\n사전 검토가 필요한 문서가 있으시면 일정에 맞춰 공유해 주시면 검토 후 회의에 임하겠습니다.\n\n참석자 전원에게 일정이 적합한지 한 번 더 확인 부탁드립니다.\n\n감사합니다."
+                    },
+                    polite: {
+                        short: "네, 목요일 오후 3시 괜찮아요. 안건은 그대로 가면 돼요!",
+                        medium: "안녕하세요.\n\n목요일 오후 3시로 변경해 주셔서 감사해요. 안건도 말씀하신 대로 동일하게 진행하면 될 것 같아요.\n\n그때 뵙겠습니다!",
+                        long: "안녕하세요.\n\n연락 주셔서 감사합니다.\n\n목요일 오후 3시로 옮기는 거 전혀 문제없고, 안건도 지금 정해진 그대로 가면 좋겠어요.\n\n미리 보내주실 자료가 있으면 편하게 주시면 읽어 둘게요.\n\n편한 하루 보내세요!",
+                    },
+                    friendly: {
+                        short: "완전 좋아요! 목요일 3시 + 안건 그대로 ㅎㅎ 그때 봐요!",
+                        medium: "안녕!\n\n목요일 3시 완전 OK! 안건도 그대로 가자 — 나도 그게 편해.\n\n그때 만나서 얘기하자!",
+                        long: "헬로~\n\n목요일 3시로 바꾸는 거 찬성이에요! 안건도 그대로 가면 깔끔할 듯.\n\n뭐 미리 볼 파일 있으면 던져 주고, 없으면 그냥 그날 봐요.\n\n기대돼요 — 그때 봐요!",
+                    },
+                    direct: {
+                        short: "목 15시. 안건 동일.",
+                        medium: "목요일 15시 확정.\n\n안건 변동 없음.\n\n링크·장소 바뀌면 알림.",
+                        long: "목요일 15시 고정.\n\n안건: 직전 공유본 기준 유지.\n\n참석·링크·회의실 변경 시에만 연락.\n\n추가 의견 없음."
+                    }
+                },
+                ja: {
+                    professional: {
+                        short: "木曜15時にて承知いたしました。議題に変更はございません。\n\n敬具",
+                        medium: "お世話になっております。\n\nご連絡のとおり、木曜15時への変更で差し支えございません。議題は共有済みの内容を踏襲いたします。\n\n事前資料のご用意がございましたらお送りください。\n\nよろしくお願いいたします。",
+                        long: "お世話になっております。\n\n日程変更のご連絡ありがとうございます。\n\n木曜15時での開催、および議題の据え置きにつき、こちらにて問題ございません。\n\n必要資料がございましたら期日までにご共有いただければ、事前に拝見いたします。\n\n関係者各位の都合確認についても、お手数ですがご調整をお願い申し上げます。\n\n引き続きよろしくお願いいたします。"
+                    },
+                    polite: {
+                        short: "木曜15時で大丈夫です。議題もそのままで進めます！",
+                        medium: "こんにちは。\n\n木曜15時への変更、問題ありません。議題もこれまでどおりで進めましょう。\n\n当日よろしくお願いします。",
+                        long: "こんにちは。\n\nご連絡ありがとうございます。\n\n木曜15時、私も大丈夫です。議題も変えずに進められると助かります。\n\n事前に見ておきたい資料があれば送ってくださいね。\n\nでは当日お会いしましょう。"
+                    },
+                    friendly: {
+                        short: "木曜15時いいよ〜！議題そのまんまで行こう、楽しみ！",
+                        medium: "やっほー！\n\n木曜15時バッチリ！議題もそのままで大丈夫そう。\n\nまたね！",
+                        long: "ども！\n\n木曜15時に変更、全然OK！議題もそのままが一番ラクで助かる〜。\n\nなんか事前に見とくものあったら投げといて！\n\n当日よろしく〜！"
+                    },
+                    direct: {
+                        short: "木曜15時・議題変更なし。以上。",
+                        medium: "木曜15時で確定。\n\n議題：変更なし。\n\nURL・会議室の変更のみ連絡。",
+                        long: "木曜15時固定。\n\n議題は最終共有版どおり。\n\n参加者・リンク・会議室に変動が出た場合のみ連絡。\n\nこちらから追加なし。"
+                    }
+                },
+                es: {
+                    professional: {
+                        short: "Confirmo el jueves a las 15:00 h; el orden del día se mantiene.\n\nSaludos cordiales,",
+                        medium: "Estimado/a equipo,\n\nAgradezco su mensaje. Confirmo mi disponibilidad para el jueves a las 15:00 h y el mantenimiento del mismo orden del día.\n\nQuedo a su disposición si necesitan documentación previa.\n\nAtentamente,",
+                        long: "Estimados/as,\n\nEn relación con el cambio de horario, confirmo mi asistencia el jueves a las 15:00 h.\n\nEl orden del día permanecerá conforme al último envío compartido.\n\nSi requieren que revise material con antelación, por favor indíquenlo y lo haré antes de la sesión.\n\nAgradecería confirmar que el horario sigue siendo válido para todos los asistentes.\n\nReciban un cordial saludo,"
+                    },
+                    polite: {
+                        short: "¡Hola! El jueves a las 15:00 me viene genial, misma agenda. ¡Gracias!",
+                        medium: "Hola, gracias por el aviso.\n\nEl jueves a las 15:00 me encaja y podemos seguir con la misma agenda sin problema.\n\n¡Nos vemos!",
+                        long: "Hola,\n\nMuchas gracias por escribir.\n\nEl jueves a las 15:00 me va perfecto y me alegra que mantengamos la misma agenda.\n\nSi quieres que revise algo antes, mándamelo cuando puedas.\n\nUn abrazo,"
+                    },
+                    friendly: {
+                        short: "¡Buenísimo! Jueves 15:00 + misma agenda, cuenta conmigo. ¡Nos vemos!",
+                        medium: "¡Ey!\n\nJueves a las 15:00 perfecto; misma agenda, me parece ideal.\n\n¡Hablamos!",
+                        long: "¡Hola!\n\nMe encanta lo del jueves a las 15:00 — misma agenda, súper.\n\nSi hay algo que quieras que mire antes, pásamelo; si no, nos vemos en la reunión.\n\n¡Gracias y hasta pronto!"
+                    },
+                    direct: {
+                        short: "Jue 15:00. Agenda sin cambios.",
+                        medium: "Jueves 15:00 confirmado.\n\nAgenda: sin cambios.\n\nAvisar solo si cambia enlace o sala.",
+                        long: "Jueves 15:00 cerrado.\n\nAgenda: última versión enviada.\n\nContactar solo si cambian asistentes, enlace o sala.\n\nSin más comentarios."
+                    }
+                }
+            };
+            function pickDemoText(lang, tone, lengthKey) {
+                var pack = HERO_DEMO_TEXT[lang] || HERO_DEMO_TEXT.en;
+                var byTone = pack[tone] || pack.polite;
+                return byTone[lengthKey] || byTone.medium;
+            }
+            document.querySelectorAll('[data-hero-demo-lang]').forEach(function (root) {
+                var lang = root.getAttribute('data-hero-demo-lang') || 'en';
+                var toneSel = root.querySelector('[data-demo-tone]');
+                var lenSel = root.querySelector('[data-demo-length]');
+                var btn = root.querySelector('[data-demo-generate]');
+                var out = root.querySelector('[data-demo-output]');
+                if (!btn || !out || !toneSel) return;
+                var genId = 0;
+                btn.addEventListener('click', function () {
+                    var lk = lenSel ? lenSel.value : 'medium';
+                    var text = pickDemoText(lang, toneSel.value, lk);
+                    genId += 1;
+                    var myId = genId;
+                    btn.disabled = true;
+                    out.classList.add('is-loading');
+                    out.textContent = DEMO_LOADING[lang] || DEMO_LOADING.en;
+                    setTimeout(function () {
+                        if (myId !== genId) return;
+                        out.classList.remove('is-loading');
+                        out.textContent = '';
+                        var i = 0;
+                        function step() {
+                            if (myId !== genId) return;
+                            if (i < text.length) {
+                                out.textContent += text.charAt(i++);
+                                setTimeout(step, 7 + (i % 4));
+                            } else if (myId === genId) {
+                                btn.disabled = false;
+                            }
+                        }
+                        step();
+                    }, 480);
+                });
             });
         })();
     </script>
